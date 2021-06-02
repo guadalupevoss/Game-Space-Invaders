@@ -1,6 +1,9 @@
 #ifndef BULLET_H
 #define BULLET_H
 
+#define ALIEN_BULLET 1
+#define SPACESHIP_BULLET 2
+
 typedef struct {
 	int x;
 	int y;
@@ -8,6 +11,8 @@ typedef struct {
 	int on;
 }bullet_t;
 
+//Inicializa la posicion, el tipo y el on o off de la bala. Que arranque en off. Recibe un numero que indica si es de alien (ALIEN_BULLET) o de nave (SPACESHIP_BULLET).
+void initBullet(bullet_t bullet)
 //Función lógica de la bala.
 void updateBullet(bullet_t bullet);
 //Mueve la bala.

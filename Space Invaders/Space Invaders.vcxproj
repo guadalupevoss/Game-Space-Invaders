@@ -149,6 +149,7 @@
     <ClCompile Include="main.c" />
     <ClCompile Include="menu.c" />
     <ClCompile Include="play.c" />
+    <ClCompile Include="position.c" />
     <ClCompile Include="randomalien.c" />
     <ClCompile Include="raspi.c" />
     <ClCompile Include="spaceInvaders.c" />
@@ -167,6 +168,7 @@
     <ClInclude Include="libaudio.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="play.h" />
+    <ClInclude Include="position.h" />
     <ClInclude Include="randomalien.h" />
     <ClInclude Include="raspi.h" />
     <ClInclude Include="spaceInvaders.h" />

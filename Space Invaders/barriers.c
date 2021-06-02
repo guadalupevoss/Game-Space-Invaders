@@ -6,3 +6,7 @@ void barrierIsShot(barriers_t barrier, bullet_t bullet){
 	
 	
 }
+
+void initBarriers (barriers_t* barriers){
+
+}

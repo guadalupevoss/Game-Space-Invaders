@@ -13,6 +13,6 @@ void updateAliens(void);
 void moveAliens(void);  //no
 void alienIsShot(void); //no
 void lastAlien(void);	//no
-void initAlienPos(int level);
+void initAlien(int level); //POSICION + LIVE
 
 #endif // ALIENS_H

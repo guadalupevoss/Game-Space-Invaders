@@ -12,6 +12,8 @@ void alienIsShot(void) {
 void lastAlien(void) {
 
 }
-void initAlienPos(int level) {
+
+//Inicializa posicion y vidas.
+void initAlien(int level) {
 
 }

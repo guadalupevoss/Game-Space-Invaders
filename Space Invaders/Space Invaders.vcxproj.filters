@@ -81,6 +81,9 @@
     <ClCompile Include="fondos.c">
       <Filter>Source Files\FrontEnd\Raspi</Filter>
     </ClCompile>
+    <ClCompile Include="position.c">
+      <Filter>Source Files\BackEnd</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="aliens.h">
@@ -130,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="libaudio.h">
       <Filter>Header Files\FrontEnd\Raspi</Filter>
+    </ClInclude>
+    <ClInclude Include="position.h">
+      <Filter>Header Files\BackEnd</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
