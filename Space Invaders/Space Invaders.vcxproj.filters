@@ -60,9 +60,6 @@
     <ClCompile Include="BackEnd\randomalien.c">
       <Filter>Source Files\BackEnd</Filter>
     </ClCompile>
-    <ClCompile Include="BackEnd\spaceInvaders.c">
-      <Filter>Source Files\BackEnd</Filter>
-    </ClCompile>
     <ClCompile Include="BackEnd\spaceship.c">
       <Filter>Source Files\BackEnd</Filter>
     </ClCompile>
@@ -89,6 +86,9 @@
     </ClCompile>
     <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BackEnd\spaceInvaders.c">
+      <Filter>Source Files\BackEnd</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

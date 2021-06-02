@@ -2,14 +2,15 @@
 #define SPACEINVADERS_H
 
 #include "menu.h"
+#include "../FrontEnd/graphics.h"
 
-#define OK_SPACE_INCADERS		0
-#define ERROR_SPACE_INCADERS	-1
+#define OK_SPACE_INVADERS		0
+#define ERROR_SPACE_INVADERS	-1
 #define NAME_LENGHT				20			//Número máximo de caracteres de un nombre
 
-struct player {
-	char[NAME_LENGHT]	name;	//Nombre del jugador.
-	int					score;			//Puntaje del jugador.				
-};
+typedef struct{
+	char*	name;	//Nombre del jugador.
+	int		score;	//Puntaje del jugador.				
+}player_t;
 
 #endif // SPACEINVADERS_H
