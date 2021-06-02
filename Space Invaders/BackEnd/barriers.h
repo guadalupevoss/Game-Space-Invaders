@@ -13,11 +13,15 @@
 #ifdef RASPI
 #include "raspi.h"
 #endif
+
+ESTO EN REALIDAD ES 
+#include "graphics.h"
 */
 //ESTO TIENE QUE ESTAR DEFINIDO EN ALLEGRO O EN RASPI pero lo defino para q no tire error
 #define BARRIER_POS_Y 1
 #define BARRIER_LIVES 4
 #define UNIDAD 1
+
 
 
 #define NUM_BARRIERS 4

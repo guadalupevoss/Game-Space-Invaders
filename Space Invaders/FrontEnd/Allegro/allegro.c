@@ -1,7 +1,7 @@
 #include "allegro.h"
 
 //Inicializa Allegro y sus variables.
-int initAllegro(graphics_t allegro) {
+int initGraphics(graphics_t allegro) {
 
     if (!al_init()) {
         return ERROR_GRAPHICS;
@@ -33,7 +33,8 @@ int initAllegro(graphics_t allegro) {
 
     return OK_GRSPHICS;
 }
-//Destruye Allegro y las variables.
-int destroyAllegro(graphics_t allegro) {
+
+
+int destroyGraphics(graphics_t allegro) {
 
 }

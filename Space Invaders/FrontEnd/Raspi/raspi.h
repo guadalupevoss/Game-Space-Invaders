@@ -19,7 +19,14 @@
 //#include "libaudio.h"
 #include "fondos.h"
 
-void init_raspi (void);
+//Inicializa Raspi y sus variables.
+int initGraphics(graphics_t allegro);
+//Destruye Raspi y las variables.
+int destroyGraphics(graphics_t allegro);
+//Función que imprime el menú.
+void printMenu(graphics_t graphics);
+//Función que se fija si cambió el estado (si se presionó algún botón o saltó error) y devuelve el estado indicado.
+int stateMenu(graphics_t graphics);
 
 #endif /* RASPI_H */
 

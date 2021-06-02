@@ -18,6 +18,8 @@
 #define INITIAL_SPASESHIP_POS_X 8 
 #define SPACESHIP_LIVES 3
 #define UNIDAD 1
+#define WIDTH 15    //esto sirve pa todo
+#define HEIGHT 15	
 
 typedef struct {
 	position_t pos;
@@ -26,9 +28,15 @@ typedef struct {
 }spaceship_t;
 
 void initSpaceship(spaceship_t* spaceship);
-void updateSpaceship(void);
-void moveSpaceship(void);  //no
-void isSpaceshipShot(void);//no
-void throwBullet(void);    //no
+int updateSpaceship(spaceship_t* spaceship);
+
+//Se envia 1 si se quiere mover a la derecha y 0 si se quiere mover a la izquierda
+void moveSpaceship(int moveRight, spaceship_t* spaceship); 
+
+//devuelve 1 si la spaceship esta shot
+int isSpaceshipShot(void);//no
+
+
+void throwBullet(spaceship_t* spaceship);    
 
 #endif // SPACESHIP_H

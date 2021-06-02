@@ -32,9 +32,9 @@ typedef struct {
 
 
 void initAliens(alien_t* aliens, int numAliens); //POSICION + LIVE
-void updateAliens(void);
-void moveAliens(void);  //no
-void alienIsShot(void); //no
-void lastAlien(void);	//no
+//Se encarga de fijarse si le dispararon a algun alien y luego de mover los aliens que esten vivos.
+void updateAliens(alien_t* aliens, bullet_t* spaceshipBullet);
+//Devuelve la cantidad de aliens vivos, si es cero gano.
+int lastAlien(alien_t* aliens);	//no
 
 #endif // ALIENS_H

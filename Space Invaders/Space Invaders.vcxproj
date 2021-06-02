@@ -153,6 +153,7 @@
     <ClCompile Include="FrontEnd\Raspi\caracteres.c" />
     <ClCompile Include="FrontEnd\Raspi\fondos.c" />
     <ClCompile Include="FrontEnd\Raspi\raspi.c" />
+    <ClCompile Include="main.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackEnd\aliens.h" />

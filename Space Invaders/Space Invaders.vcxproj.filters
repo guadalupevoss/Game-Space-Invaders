@@ -87,6 +87,9 @@
     <ClCompile Include="BackEnd\menu.c">
       <Filter>Source Files\BackEnd</Filter>
     </ClCompile>
+    <ClCompile Include="main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackEnd\aliens.h">

@@ -26,8 +26,12 @@ typedef struct {
 }graphics_t;
 
 //Inicializa Allegro y sus variables.
-int initAllegro(graphics_t allegro);
+int initGraphics(graphics_t allegro);
 //Destruye Allegro y las variables.
-int destroyAllegro(graphics_t allegro);
+int destroyGraphics(graphics_t allegro);
+//Función que imprime el menú.
+void printMenu(graphics_t graphics);
+//Función que se fija si cambió el estado (si se presionó algún botón o saltó error) y devuelve el estado indicado.
+int stateMenu(graphics_t graphics);
 
 #endif //ALLEGRO_H
