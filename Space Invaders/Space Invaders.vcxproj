@@ -139,40 +139,40 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="aliens.c" />
-    <ClCompile Include="allegro.c" />
-    <ClCompile Include="barriers.c" />
-    <ClCompile Include="bullet.c" />
-    <ClCompile Include="caracteres.c" />
-    <ClCompile Include="fondos.c" />
-    <ClCompile Include="graphics.c" />
-    <ClCompile Include="main.c" />
-    <ClCompile Include="menu.c" />
-    <ClCompile Include="play.c" />
-    <ClCompile Include="position.c" />
-    <ClCompile Include="randomalien.c" />
-    <ClCompile Include="raspi.c" />
-    <ClCompile Include="spaceInvaders.c" />
-    <ClCompile Include="spaceship.c" />
+    <ClCompile Include="BackEnd\aliens.c" />
+    <ClCompile Include="BackEnd\barriers.c" />
+    <ClCompile Include="BackEnd\bullet.c" />
+    <ClCompile Include="BackEnd\menu.c" />
+    <ClCompile Include="BackEnd\play.c" />
+    <ClCompile Include="BackEnd\position.c" />
+    <ClCompile Include="BackEnd\randomalien.c" />
+    <ClCompile Include="BackEnd\spaceInvaders.c" />
+    <ClCompile Include="BackEnd\spaceship.c" />
+    <ClCompile Include="FrontEnd\Allegro\allegro.c" />
+    <ClCompile Include="FrontEnd\graphics.c" />
+    <ClCompile Include="FrontEnd\Raspi\caracteres.c" />
+    <ClCompile Include="FrontEnd\Raspi\fondos.c" />
+    <ClCompile Include="FrontEnd\Raspi\raspi.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="aliens.h" />
-    <ClInclude Include="allegro.h" />
-    <ClInclude Include="barriers.h" />
-    <ClInclude Include="bullet.h" />
-    <ClInclude Include="caracteres.h" />
-    <ClInclude Include="disdrv.h" />
-    <ClInclude Include="fondos.h" />
-    <ClInclude Include="graphics.h" />
-    <ClInclude Include="joydrv.h" />
-    <ClInclude Include="libaudio.h" />
-    <ClInclude Include="menu.h" />
-    <ClInclude Include="play.h" />
-    <ClInclude Include="position.h" />
-    <ClInclude Include="randomalien.h" />
-    <ClInclude Include="raspi.h" />
-    <ClInclude Include="spaceInvaders.h" />
-    <ClInclude Include="spaceship.h" />
+    <ClInclude Include="BackEnd\aliens.h" />
+    <ClInclude Include="BackEnd\barriers.h" />
+    <ClInclude Include="BackEnd\bullet.h" />
+    <ClInclude Include="BackEnd\menu.h" />
+    <ClInclude Include="BackEnd\play.h" />
+    <ClInclude Include="BackEnd\position.h" />
+    <ClInclude Include="BackEnd\randomalien.h" />
+    <ClInclude Include="BackEnd\spaceInvaders.h" />
+    <ClInclude Include="BackEnd\spaceship.h" />
+    <ClInclude Include="FrontEnd\Allegro\allegro.h" />
+    <ClInclude Include="FrontEnd\graphics.h" />
+    <ClInclude Include="FrontEnd\Raspi\audio_raspi.h" />
+    <ClInclude Include="FrontEnd\Raspi\caracteres.h" />
+    <ClInclude Include="FrontEnd\Raspi\disdrv.h" />
+    <ClInclude Include="FrontEnd\Raspi\fondos.h" />
+    <ClInclude Include="FrontEnd\Raspi\joydrv.h" />
+    <ClInclude Include="FrontEnd\Raspi\libaudio.h" />
+    <ClInclude Include="FrontEnd\Raspi\raspi.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\scoreboard.txt" />

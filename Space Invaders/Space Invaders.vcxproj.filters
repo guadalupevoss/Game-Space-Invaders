@@ -45,103 +45,103 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="aliens.c">
+    <ClCompile Include="BackEnd\aliens.c">
       <Filter>Source Files\BackEnd</Filter>
     </ClCompile>
-    <ClCompile Include="barriers.c">
+    <ClCompile Include="BackEnd\barriers.c">
       <Filter>Source Files\BackEnd</Filter>
     </ClCompile>
-    <ClCompile Include="bullet.c">
+    <ClCompile Include="BackEnd\bullet.c">
       <Filter>Source Files\BackEnd</Filter>
     </ClCompile>
-    <ClCompile Include="menu.c">
+    <ClCompile Include="BackEnd\menu.c">
       <Filter>Source Files\BackEnd</Filter>
     </ClCompile>
-    <ClCompile Include="play.c">
+    <ClCompile Include="BackEnd\play.c">
       <Filter>Source Files\BackEnd</Filter>
     </ClCompile>
-    <ClCompile Include="randomalien.c">
+    <ClCompile Include="BackEnd\position.c">
       <Filter>Source Files\BackEnd</Filter>
     </ClCompile>
-    <ClCompile Include="spaceship.c">
+    <ClCompile Include="BackEnd\randomalien.c">
       <Filter>Source Files\BackEnd</Filter>
     </ClCompile>
-    <ClCompile Include="graphics.c">
-      <Filter>Source Files\FrontEnd</Filter>
-    </ClCompile>
-    <ClCompile Include="main.c">
+    <ClCompile Include="BackEnd\spaceInvaders.c">
       <Filter>Source Files\BackEnd</Filter>
     </ClCompile>
-    <ClCompile Include="spaceInvaders.c">
+    <ClCompile Include="BackEnd\spaceship.c">
       <Filter>Source Files\BackEnd</Filter>
     </ClCompile>
-    <ClCompile Include="allegro.c">
+    <ClCompile Include="FrontEnd\Allegro\allegro.c">
       <Filter>Source Files\FrontEnd\Allegro</Filter>
     </ClCompile>
-    <ClCompile Include="raspi.c">
+    <ClCompile Include="FrontEnd\Raspi\caracteres.c">
       <Filter>Source Files\FrontEnd\Raspi</Filter>
     </ClCompile>
-    <ClCompile Include="caracteres.c">
+    <ClCompile Include="FrontEnd\Raspi\fondos.c">
       <Filter>Source Files\FrontEnd\Raspi</Filter>
     </ClCompile>
-    <ClCompile Include="fondos.c">
+    <ClCompile Include="FrontEnd\Raspi\raspi.c">
       <Filter>Source Files\FrontEnd\Raspi</Filter>
     </ClCompile>
-    <ClCompile Include="position.c">
-      <Filter>Source Files\BackEnd</Filter>
+    <ClCompile Include="FrontEnd\graphics.c">
+      <Filter>Source Files\FrontEnd</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="aliens.h">
+    <ClInclude Include="BackEnd\aliens.h">
       <Filter>Header Files\BackEnd</Filter>
     </ClInclude>
-    <ClInclude Include="barriers.h">
+    <ClInclude Include="BackEnd\barriers.h">
       <Filter>Header Files\BackEnd</Filter>
     </ClInclude>
-    <ClInclude Include="bullet.h">
+    <ClInclude Include="BackEnd\bullet.h">
       <Filter>Header Files\BackEnd</Filter>
     </ClInclude>
-    <ClInclude Include="menu.h">
+    <ClInclude Include="BackEnd\menu.h">
       <Filter>Header Files\BackEnd</Filter>
     </ClInclude>
-    <ClInclude Include="play.h">
+    <ClInclude Include="BackEnd\play.h">
       <Filter>Header Files\BackEnd</Filter>
     </ClInclude>
-    <ClInclude Include="randomalien.h">
+    <ClInclude Include="BackEnd\position.h">
       <Filter>Header Files\BackEnd</Filter>
     </ClInclude>
-    <ClInclude Include="spaceship.h">
+    <ClInclude Include="BackEnd\randomalien.h">
       <Filter>Header Files\BackEnd</Filter>
     </ClInclude>
-    <ClInclude Include="graphics.h">
+    <ClInclude Include="BackEnd\spaceInvaders.h">
+      <Filter>Header Files\BackEnd</Filter>
+    </ClInclude>
+    <ClInclude Include="BackEnd\spaceship.h">
+      <Filter>Header Files\BackEnd</Filter>
+    </ClInclude>
+    <ClInclude Include="FrontEnd\graphics.h">
       <Filter>Header Files\FrontEnd</Filter>
     </ClInclude>
-    <ClInclude Include="spaceInvaders.h">
-      <Filter>Header Files\BackEnd</Filter>
+    <ClInclude Include="FrontEnd\Raspi\audio_raspi.h">
+      <Filter>Header Files\FrontEnd\Raspi</Filter>
     </ClInclude>
-    <ClInclude Include="allegro.h">
+    <ClInclude Include="FrontEnd\Raspi\caracteres.h">
+      <Filter>Header Files\FrontEnd\Raspi</Filter>
+    </ClInclude>
+    <ClInclude Include="FrontEnd\Raspi\disdrv.h">
+      <Filter>Header Files\FrontEnd\Raspi</Filter>
+    </ClInclude>
+    <ClInclude Include="FrontEnd\Raspi\fondos.h">
+      <Filter>Header Files\FrontEnd\Raspi</Filter>
+    </ClInclude>
+    <ClInclude Include="FrontEnd\Raspi\joydrv.h">
+      <Filter>Header Files\FrontEnd\Raspi</Filter>
+    </ClInclude>
+    <ClInclude Include="FrontEnd\Raspi\libaudio.h">
+      <Filter>Header Files\FrontEnd\Raspi</Filter>
+    </ClInclude>
+    <ClInclude Include="FrontEnd\Raspi\raspi.h">
+      <Filter>Header Files\FrontEnd\Raspi</Filter>
+    </ClInclude>
+    <ClInclude Include="FrontEnd\Allegro\allegro.h">
       <Filter>Header Files\FrontEnd\Allegro</Filter>
-    </ClInclude>
-    <ClInclude Include="raspi.h">
-      <Filter>Header Files\FrontEnd\Raspi</Filter>
-    </ClInclude>
-    <ClInclude Include="caracteres.h">
-      <Filter>Header Files\FrontEnd\Raspi</Filter>
-    </ClInclude>
-    <ClInclude Include="disdrv.h">
-      <Filter>Header Files\FrontEnd\Raspi</Filter>
-    </ClInclude>
-    <ClInclude Include="fondos.h">
-      <Filter>Header Files\FrontEnd\Raspi</Filter>
-    </ClInclude>
-    <ClInclude Include="joydrv.h">
-      <Filter>Header Files\FrontEnd\Raspi</Filter>
-    </ClInclude>
-    <ClInclude Include="libaudio.h">
-      <Filter>Header Files\FrontEnd\Raspi</Filter>
-    </ClInclude>
-    <ClInclude Include="position.h">
-      <Filter>Header Files\BackEnd</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
