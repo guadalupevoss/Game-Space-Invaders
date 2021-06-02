@@ -7,6 +7,7 @@ int spaceInvaders(void) {
 	int score = 0;
 	int estado = MENU;
 
+
 while((!doExit)&&(!error))
 
 	switch (estado) {

@@ -1,7 +1,7 @@
 #include "barriers.h"
 
 //Se fija si le dispararon a la barrera que nos estamos fijando.
-void barrierIsShot(barriers_t barrier, bullet_t bullet);
+void barrierIsShot(barriers_t* barrier, bullet_t* bullet);
 
 void initBarriers (barriers_t* barriers){
 	int i;
@@ -11,11 +11,24 @@ void initBarriers (barriers_t* barriers){
 	}
 }
 
-void updateBarriers(barriers_t* barriers, alien_t* aliens, bullet_t spaceshipBullet) {
-
+void updateBarriers(barriers_t* barriers, alien_t* aliens, bullet_t* spaceshipBullet) {
+	int i, j;
+	for (i = 0; i < NUM_BARRIERS; i++) {
+		for (j = 0; j < NUM_ALIENS; j++) {
+			if (aliens[j].bullet.state == ON) {
+				barrierIsShot(&barriers[i], &aliens[j].bullet);
+			}
+		}
+		barrierIsShot(&barriers[i], &spaceshipBullet);
+	}
 }
 
 //Si la bala llega a la barrera, entonces pierde una vida.
-void barrierIsShot(barriers_t barrier, bullet_t bullet) {
-
+void barrierIsShot(barriers_t* barrier, bullet_t* bullet) {
+	if (comparePosition(barrier->pos, bullet->pos)) {
+		if (barrier->lives > 0) {
+			--barrier->lives;
+			bullet->state = OFF;
+		}
+	}
 }

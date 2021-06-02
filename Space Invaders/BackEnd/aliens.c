@@ -16,12 +16,15 @@ void initAliens(alien_t* aliens, int numAliens) {
 void updateAliens(void) {
 
 }
+
 void moveAliens(void) {
 
 }
+
 void alienIsShot(void) {
 
 }
+
 void lastAlien(void) {
 
 }
