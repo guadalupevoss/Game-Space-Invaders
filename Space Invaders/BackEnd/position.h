@@ -12,5 +12,4 @@ void initPosition (position_t* pos, int x, int y);
 void changePosition (position_t* pos, int x, int y);
 //Compara dos posiciones y se fija si son iguales. Devuelve 1 si si o 0 si no.
 int comparePosition (position_t pos1, position_t pos2);
-
 #endif //POSITION_H

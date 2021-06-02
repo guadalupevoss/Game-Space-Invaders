@@ -45,9 +45,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BackEnd\aliens.c">
-      <Filter>Source Files\BackEnd</Filter>
-    </ClCompile>
     <ClCompile Include="BackEnd\barriers.c">
       <Filter>Source Files\BackEnd</Filter>
     </ClCompile>
@@ -72,9 +69,6 @@
     <ClCompile Include="BackEnd\spaceship.c">
       <Filter>Source Files\BackEnd</Filter>
     </ClCompile>
-    <ClCompile Include="FrontEnd\Allegro\allegro.c">
-      <Filter>Source Files\FrontEnd\Allegro</Filter>
-    </ClCompile>
     <ClCompile Include="FrontEnd\Raspi\caracteres.c">
       <Filter>Source Files\FrontEnd\Raspi</Filter>
     </ClCompile>
@@ -86,6 +80,12 @@
     </ClCompile>
     <ClCompile Include="FrontEnd\graphics.c">
       <Filter>Source Files\FrontEnd</Filter>
+    </ClCompile>
+    <ClCompile Include="FrontEnd\Allegro\allegro.c">
+      <Filter>Source Files\FrontEnd\Allegro</Filter>
+    </ClCompile>
+    <ClCompile Include="BackEnd\aliens.c">
+      <Filter>Source Files\BackEnd</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
