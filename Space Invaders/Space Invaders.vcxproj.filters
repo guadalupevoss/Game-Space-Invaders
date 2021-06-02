@@ -25,6 +25,18 @@
     <Filter Include="Header Files\FrontEnd">
       <UniqueIdentifier>{572a8835-cf77-4104-a890-d56426f786c4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\FrontEnd\Allegro">
+      <UniqueIdentifier>{da89bf66-c8b5-49cb-a497-1d281b4d4531}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\FrontEnd\Raspi">
+      <UniqueIdentifier>{452cf2b2-44d1-4a5c-bf16-4b06d9c66525}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\FrontEnd\Allegro">
+      <UniqueIdentifier>{85171e61-0857-4d71-8706-52e5886dbbbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\FrontEnd\Raspi">
+      <UniqueIdentifier>{5a48ad93-fa70-4580-8060-fec34c8b9177}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="aliens.c">
@@ -48,17 +60,26 @@
     <ClCompile Include="spaceship.c">
       <Filter>Source Files\BackEnd</Filter>
     </ClCompile>
-    <ClCompile Include="allegro.c">
-      <Filter>Source Files\FrontEnd</Filter>
-    </ClCompile>
     <ClCompile Include="graphics.c">
-      <Filter>Source Files\FrontEnd</Filter>
-    </ClCompile>
-    <ClCompile Include="raspi.c">
       <Filter>Source Files\FrontEnd</Filter>
     </ClCompile>
     <ClCompile Include="main.c">
       <Filter>Source Files\BackEnd</Filter>
+    </ClCompile>
+    <ClCompile Include="spaceInvaders.c">
+      <Filter>Source Files\BackEnd</Filter>
+    </ClCompile>
+    <ClCompile Include="allegro.c">
+      <Filter>Source Files\FrontEnd\Allegro</Filter>
+    </ClCompile>
+    <ClCompile Include="raspi.c">
+      <Filter>Source Files\FrontEnd\Raspi</Filter>
+    </ClCompile>
+    <ClCompile Include="caracteres.c">
+      <Filter>Source Files\FrontEnd\Raspi</Filter>
+    </ClCompile>
+    <ClCompile Include="fondos.c">
+      <Filter>Source Files\FrontEnd\Raspi</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -83,14 +104,32 @@
     <ClInclude Include="spaceship.h">
       <Filter>Header Files\BackEnd</Filter>
     </ClInclude>
-    <ClInclude Include="allegro.h">
-      <Filter>Header Files\FrontEnd</Filter>
-    </ClInclude>
-    <ClInclude Include="raspi.h">
-      <Filter>Header Files\FrontEnd</Filter>
-    </ClInclude>
     <ClInclude Include="graphics.h">
       <Filter>Header Files\FrontEnd</Filter>
+    </ClInclude>
+    <ClInclude Include="spaceInvaders.h">
+      <Filter>Header Files\BackEnd</Filter>
+    </ClInclude>
+    <ClInclude Include="allegro.h">
+      <Filter>Header Files\FrontEnd\Allegro</Filter>
+    </ClInclude>
+    <ClInclude Include="raspi.h">
+      <Filter>Header Files\FrontEnd\Raspi</Filter>
+    </ClInclude>
+    <ClInclude Include="caracteres.h">
+      <Filter>Header Files\FrontEnd\Raspi</Filter>
+    </ClInclude>
+    <ClInclude Include="disdrv.h">
+      <Filter>Header Files\FrontEnd\Raspi</Filter>
+    </ClInclude>
+    <ClInclude Include="fondos.h">
+      <Filter>Header Files\FrontEnd\Raspi</Filter>
+    </ClInclude>
+    <ClInclude Include="joydrv.h">
+      <Filter>Header Files\FrontEnd\Raspi</Filter>
+    </ClInclude>
+    <ClInclude Include="libaudio.h">
+      <Filter>Header Files\FrontEnd\Raspi</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
