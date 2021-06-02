@@ -139,7 +139,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="aliens.c" />
+    <ClCompile Include="allegro.c" />
+    <ClCompile Include="barriers.c" />
+    <ClCompile Include="bullet.c" />
+    <ClCompile Include="graphics.c" />
+    <ClCompile Include="main.c" />
+    <ClCompile Include="menu.c" />
+    <ClCompile Include="play.c" />
+    <ClCompile Include="randomalien.c" />
+    <ClCompile Include="raspi.c" />
+    <ClCompile Include="spaceship.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="aliens.h" />
+    <ClInclude Include="allegro.h" />
+    <ClInclude Include="barriers.h" />
+    <ClInclude Include="bullet.h" />
+    <ClInclude Include="graphics.h" />
+    <ClInclude Include="menu.h" />
+    <ClInclude Include="play.h" />
+    <ClInclude Include="randomalien.h" />
+    <ClInclude Include="raspi.h" />
+    <ClInclude Include="spaceship.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
