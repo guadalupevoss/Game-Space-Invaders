@@ -1,7 +1,7 @@
 #include "spaceInvaders.h"
 
 //Inicializa lo que necesita spaceInvaders.
-void initSpaceInvaders(player_t* player, graphics_t* graphics);
+int initSpaceInvaders(player_t* player, graphics_t* graphics);
 //Inicializa la variables del jugador.
 void initPlayer(player_t* player);
 //Limpia un arreglo de char de cantidad de caracteres countChar.
@@ -20,10 +20,12 @@ int spaceInvaders(void) {
 	graphics_t graphics;
 
 	//Inicializo lo necesario para Space Invaders.
-	initSpaceInvaders(&player,&graphics);
+	if (initSpaceInvaders(&player, &graphics) == ERROR_SPACE_INVADERS) {
+		doExit = 1;
+		estado = ERROR;
+	}
 
-	while ((!doExit))
-
+	while ((!doExit)) {
 		switch (estado) {
 			//Entra al menú (que es otro while) y devuelve el estado cuando se cambia. 
 		case MENU:
@@ -55,6 +57,7 @@ int spaceInvaders(void) {
 			estado = MENU;
 			break;
 		}
+	}
 
 	destroyGraphics(&graphics);
 	//Si hay un error devuelve un ERROR_SPACE_INCADERS.
@@ -66,10 +69,16 @@ int spaceInvaders(void) {
 		return OK_SPACE_INVADERS;
 	}
 }
-void initSpaceInvaders(player_t* player, graphics_t* graphics) {
+
+int initSpaceInvaders(player_t* player, graphics_t* graphics) {
 	initPlayer(player);
-	initGraphics(graphics);
+	if (initGraphics(graphics) == ERROR_GRAPHICS)
+	{
+		return ERROR_SPACE_INVADERS;
+	}
+	return OK_SPACE_INVADERS;
 }
+
 void initPlayer(player_t* player) {
 	player->score = 0;
 	clearArr(&player->name, NAME_LENGHT);

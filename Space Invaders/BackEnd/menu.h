@@ -3,11 +3,7 @@
 
 #include "../FrontEnd/graphics.h"
 
-#define PLAY -1
-#define HIGHSCORE -2
-#define MENU -3
-#define EXIT -4
-#define ERROR -5
+//enum{MENU=0, PLAY, HIGHSCORE, EXIT};
 
 //Devuelve el estado y dibuja el menú.
 int menu(graphics_t* graphics);

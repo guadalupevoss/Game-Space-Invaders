@@ -27,7 +27,9 @@ void randomAlienIsBorn(alienRandom_t* alien, int ciclos_random) {
 
 void updateRandomAlien(alienRandom_t * alien, bullet_t* bullet){
     if (alien->alive){
-        randomAlienIsShot(alien, bullet);
+        if (bullet->state == ON) {
+            randomAlienIsShot(alien, bullet);
+        }
         moveRandomAlien(alien);
     }   
 }

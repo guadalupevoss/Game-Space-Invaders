@@ -31,6 +31,11 @@
 
 #define UNIDAD SCREEN_W/16
 
+//Defines para mouse
+#define MOUSE_IN_PLAY ((ev.mouse.x>210)&(ev.mouse.x<550)&(ev.mouse.y>334)&(ev.mouse.y<407)) //COORDENADAS DE LOS BOTONES DEL MENÚ
+#define MOUSE_IN_EXIT ((ev.mouse.x>208)&(ev.mouse.x<548)&(ev.mouse.y>680)&(ev.mouse.y<767))
+#define MOUSE_IN_HIGH_SCORE ((ev.mouse.x>130)&(ev.mouse.x<650)&(ev.mouse.y>531)&(ev.mouse.y<568))
+
 //Defines de la nave
 #define NAVE_SIZE_X     40  //TAMAnO DE LA NAVE
 #define NAVE_SIZE_Y     40
@@ -43,6 +48,7 @@
 #define ALIEN_SIZE_Y    32
 #define DISTANCIA_TECHO_Y   60  //DISTANCIA INICIAL ENTRE ALIEN Y BORDE SUPERIOR DE LA PANTALLA.
 #define NUM_ALIENS		55
+#define INIT_NUM_ALIENS 6
 #define INITIAL_ALIEN_SPEED 50
 #define CANT_TIPOS_ALIEN    6   //TIPOS DE ALIENS (CONTANDO LA IMAGEN DEL ALIEN MUERTO)
 #define INITIAL_ALIEN_BULLET_SPEED	1.5
@@ -75,7 +81,7 @@
 #define ESP_SCORE_NUM   15	//ESPACIO ENTRE LA PALABRA "SCORE" Y LOS NUMEROS
 #define CARACTER_SCORE  11  //NUMERO DEL ARREGLO DONDE ESTA SCORE (y esto??????????????)
 #define CIFRAS_SCORE    9
-#define CANT_BTM_MENU	4	//Numero de bitmaps para el menú.
+#define CANT_BTM_MENU	6	//Numero de bitmaps para el menú.
 #define CANT_SAMPL_MENU	4	//Establece la cantidad de audios que se utilizan en el menú.
 #define CANT_LIVES_BTM	2
 #define CANT_FONDOS_EXTRA 3
@@ -95,6 +101,8 @@
 
 #ifndef  RASPI
 typedef struct {
+	int state;
+
 	ALLEGRO_DISPLAY* display;
 	ALLEGRO_TIMER* timer;
 	ALLEGRO_EVENT_QUEUE* eventQueue;
@@ -127,12 +135,15 @@ typedef struct {
 
 }graphics_t;
 
-enum{FONDO=0, PLAY, HIGHSCORE, EXIT};
+enum{MENU_GR=0, PLAY_GR, HIGHSCORE_GR, EXIT_GR, FONDO_GR, SPACEINVADERS_GR};
 enum{ALIEN0=0, ALIEN1, ALIEN2, ALIEN3, ALIEN4, DEADALIEN};
 enum{BARRIER0=0, BARRIER1, BARRIER2, BARRIER3, DEADBARRIER};
 enum{DEAD=0, ALIVE};
 enum{GAMEOVER=0, HIGHSCORES, MENUPAUSE};
 
+
+//Estados del MENU
+enum { MENU = 0, PLAY, HIGHSCORE, EXIT, ERROR};
 
 //Inicializa Allegro y sus variables.
 int initGraphics(graphics_t* allegro);

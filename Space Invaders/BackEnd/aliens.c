@@ -13,13 +13,19 @@ void initAliens(alien_t* aliens, int numAliens) {
             //aliens[i].score = ;
             aliens[i].alive = ALIVE;
         }
+        for (; i < NUM_ALIENS; i++) {
+            aliens[i].alive = DEAD;
+        }
     }
+
 }
 
 void updateAliens(alien_t* aliens, bullet_t* spaceshipBullet) {
     int i;
-    for (i = 0; i < NUM_ALIENS; i++) {
-        alienIsShot(&aliens[i], spaceshipBullet);
+    if (spaceshipBullet->state == ON) {
+        for (i = 0; i < NUM_ALIENS; i++) {
+            alienIsShot(&aliens[i], spaceshipBullet);
+        }
     }
     moveAliens(aliens);
 }

@@ -47,6 +47,8 @@
 #define RANGO_X         15
 #define RANGO_Y         60
 #define VELOCIDAD_BALA_ALIEN    1.5
+#define NUM_ALIENS		18
+#define INIT_NUM_ALIENS	4
 
 //Defines de las balas
 #define BALA_SIZE_X     1   //TAMAÑO DE LA BALA (DEPENDE DE LA IMÁGEN QUE TENGA)
@@ -73,6 +75,8 @@
 #define RANDOM_ALIEN_SPEED  2
 
 //Defines para los menus
+enum { MENU = 0, PLAY, HIGHSCORE, EXIT };
+
 #define PLAY -1
 #define HIGHSCORE -2
 #define MENU_PAUSE -3

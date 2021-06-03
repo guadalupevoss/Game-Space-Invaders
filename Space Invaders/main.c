@@ -7,7 +7,7 @@ int main(void) {
     if (spaceInvaders() == OK_SPACE_INVADERS) {
         printf("Ok Space Invaders.\n");
     }
-    else if (spaceInvaders() == ERROR_SPACE_INVADERS) {
+    else{
         printf("ERROR en Space Invaders.\n");
     }
 

@@ -58,7 +58,7 @@ int initGraphics(graphics_t* allegro) {
         return ERROR_GRAPHICS;
     }
 
-    if (!al_reserve_samples(3)) {
+    if (!al_reserve_samples(CANT_SAMPL_MENU)) {
         return ERROR_GRAPHICS;
     }
 
@@ -90,6 +90,8 @@ int initGraphics(graphics_t* allegro) {
         printf("Failed to load menu Samples !\n");
         return ERROR_GRAPHICS;
     }
+
+    allegro->state = MENU;
 
     al_set_window_title(allegro->display, "Space Invaders");
     al_register_event_source(allegro->eventQueue, al_get_display_event_source(allegro->display));
@@ -171,7 +173,7 @@ int loadMenuSamples(ALLEGRO_SAMPLE* menuSamples[]) {
     int i, err = 0;
     char path[100];
     for (i = 0; (err == 0) && (i < CANT_SAMPL_MENU); ++i) {
-        sprintf(path, "Resources/Sounds/SampleMenu%d.bmp", i);
+        sprintf(path, "Resources/Sounds/SampleMenu%d.wav", i);
         menuSamples[i] = al_load_sample(path);
         if (menuSamples[i] == NULL) {
             err = 1;
@@ -206,12 +208,77 @@ int loadBitmaps(ALLEGRO_BITMAP* bitmaps[], char* pathTemplate, int cantBitmaps) 
     }
 }
 
-void printMenu(graphics_t* graphics) {
-    al_draw_bitmap(graphics->menuBitmaps[0], 0, 0, 0);
-    al_draw_bitmap(graphics->menuBitmaps[1], 0, 0, 0);
-    al_draw_bitmap(graphics->menuBitmaps[2], 0, 0, 0);
 
-    //updateGraphics();
+void printMenu(graphics_t* graphics){
+
+    al_draw_bitmap(graphics->menuBitmaps[FONDO_GR], 0, 0, 0);
+    al_draw_bitmap(graphics->menuBitmaps[SPACEINVADERS_GR], 0, 0, 0);
+    al_play_sample(graphics->menuSamples[MENU_GR], 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
+    switch (graphics->state)
+    {
+        case MENU_GR:
+            al_draw_bitmap(graphics->menuBitmaps[MENU_GR], 0, 0, 0);
+            //al_play_sample(graphics->menuSamples[MENU], 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL); 
+            break;
+        case PLAY_GR:
+            al_draw_bitmap(graphics->menuBitmaps[PLAY_GR], 0, 0, 0);
+            //pongo el pan centered nose q es si no funciona poner ALLEGRO_AUDIO_PAN_NONE.
+            al_play_sample(graphics->menuSamples[PLAY_GR], 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+            break;
+        case HIGHSCORE_GR:
+            al_draw_bitmap(graphics->menuBitmaps[HIGHSCORE_GR], 0, 0, 0);
+            al_play_sample(graphics->menuSamples[HIGHSCORE_GR], 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+            break;
+        case EXIT_GR:
+            al_draw_bitmap(graphics->menuBitmaps[EXIT_GR], 0, 0, 0);
+            al_play_sample(graphics->menuSamples[EXIT_GR], 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+            break;
+    }
+}
+
+int stateMenu(graphics_t* graphics) {
+
+    int tempState = MENU;
+    int tempCursorState = graphics->state;
+
+    ALLEGRO_EVENT ev;
+    if (al_get_next_event(graphics->eventQueue, &ev)) {
+        if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
+            printf("HOLAAA display close :)\n");
+            tempState = EXIT;
+        }
+        else if(ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP){
+            switch(graphics->state){
+                case PLAY_GR:
+                    tempState = PLAY;
+                    break;
+                case HIGHSCORE_GR:
+                    tempState = HIGHSCORE;
+                    break;
+                case EXIT_GR:
+                    tempState = EXIT;
+                    break;
+            }
+        }
+        else if (ev.type == ALLEGRO_EVENT_TIMER) {
+           // redraw = true;//Podríamos probar para un redraw
+        }
+        else if (MOUSE_IN_PLAY) {
+            tempCursorState = PLAY_GR;
+        }
+        else if (MOUSE_IN_EXIT) {
+            tempCursorState = EXIT_GR;
+        }
+        else if (MOUSE_IN_HIGH_SCORE) {
+            tempCursorState = HIGHSCORE_GR;
+        }
+        else {
+            tempCursorState = MENU_GR;
+        }
+    }
+
+    graphics->state = tempCursorState;
+    return tempState;
 }
 
 //int loadMenuBitmaps(ALLEGRO_BITMAP* menuBitmaps[]){
