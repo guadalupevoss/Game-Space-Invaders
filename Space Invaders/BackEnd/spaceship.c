@@ -5,7 +5,7 @@ int isSpaceshipShot(bullet_t* bullet, spaceship_t* spaceship);
 
 void initSpaceship(spaceship_t* spaceship) {
 	initPosition(&spaceship->pos, INITIAL_SPASESHIP_POS_X, SPACESHIP_POS_Y);
-	initBullet(&spaceship->bullet, spaceship->pos.x, spaceship->pos.y, SPACESHIP_BULLET);
+	initBullet(&spaceship->bullet, spaceship->pos.x, spaceship->pos.y, SPACESHIP_BULLET, INITIAL_ALIEN_BULLET_SPEED);
 	spaceship->lives = SPACESHIP_LIVES;
 }
 

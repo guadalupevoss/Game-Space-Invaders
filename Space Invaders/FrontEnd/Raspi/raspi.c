@@ -10,6 +10,7 @@
  * 
  * Created on February 21, 2021, 11:21 AM
  */
+#ifdef RASPI
 
 #include "raspi.h"
 
@@ -130,3 +131,5 @@ int stateMenu(graphics_t* graphics) {
 void updateGraphics(void) {
 	disp_update();
 }
+
+#endif

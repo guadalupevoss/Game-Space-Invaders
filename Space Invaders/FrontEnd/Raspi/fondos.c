@@ -1,3 +1,5 @@
+#ifdef RASPI
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -939,3 +941,5 @@ void draw_flechitas(void)
     dcoord_t myPoint_flecha8 = {12,13};
     disp_write (myPoint_flecha8, D_ON);
 }
+
+#endif

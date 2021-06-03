@@ -15,7 +15,7 @@ void updateBullet(bullet_t* bullet){
 }
 
 void moveBullet(bullet_t* bullet) {
-	if (bullet->pos.y != 0 || bullet->pos.y != HEIGHT) {
+	if (bullet->pos.y != 0 || bullet->pos.y != (HEIGHT-1)) {
 		if (bullet->type == ALIEN_BULLET) {
 			changePosition(&bullet->pos, 0, bullet->speed);
 		}

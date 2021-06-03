@@ -1,11 +1,11 @@
 #include "spaceInvaders.h"
 
 //Inicializa lo que necesita spaceInvaders.
-void initSpaceInvaders(player_t player);
+void initSpaceInvaders(player_t* player, graphics_t* graphics);
 //Inicializa la variables del jugador.
-void initPlayer(void);
+void initPlayer(player_t* player);
 //Limpia un arreglo de char de cantidad de caracteres countChar.
-void clearArr(char arr[], int countChar);
+void clearArr(char* arr, int countChar);
 
 int spaceInvaders(void) {
 	//Variable para controlar la salida del while.
@@ -27,17 +27,17 @@ int spaceInvaders(void) {
 		switch (estado) {
 			//Entra al menú (que es otro while) y devuelve el estado cuando se cambia. 
 		case MENU:
-			estado = menu();
+			estado = menu(&graphics);
 			break;
 			//Si el estado es PLAY, entra al juego. 
 			//Si se cierra el display devuelve EXIT. Ante un error devuelve ERROR. Si se vuelve al menú o pierde devuelve el puntaje.
 		case PLAY:
-			estado = playSpaceInvaders();
+			//estado = playSpaceInvaders();
 			break;
 			//Entra a los highsocres. 
 			//Si se cierra el display cierra el display devuelve EXIT. En caso contrario devuelve MENU.
 		case HIGHSCORE:
-			estado = showHighscore();
+			//estado = showHighscore();
 			break;
 			//Cierra el programa.
 		case EXIT:
@@ -59,15 +59,14 @@ int spaceInvaders(void) {
 	destroyGraphics(&graphics);
 	//Si hay un error devuelve un ERROR_SPACE_INCADERS.
 	if (estado == ERROR) {
-		return ERROR_SPACE_INCADERS;
+		return ERROR_SPACE_INVADERS;
 	}
 	//Si no hay un error devuelve un OK_SPACE_INCADERS.
 	else {
-		return OK_SPACE_INCADERS;
+		return OK_SPACE_INVADERS;
 	}
 }
-
-void initSpaceInvaders(player_t* player,graphics_t graphics) {
+void initSpaceInvaders(player_t* player, graphics_t* graphics) {
 	initPlayer(player);
 	initGraphics(graphics);
 }

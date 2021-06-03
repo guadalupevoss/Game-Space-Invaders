@@ -1,3 +1,7 @@
+#pragma warning (disable: 4996)
+
+#ifndef RASPI
+
 #include "allegro.h"
 
 //Carga los bitmaps necesarios. Si está todo bien devuelve OK_GRAPHICS. En caso contrario devuelve ERROR_GRAPHICS.
@@ -6,6 +10,9 @@ int loadAllBitmaps(graphics_t* allegro);
 int loadBitmaps(ALLEGRO_BITMAP* bitmaps[], char* pathTemplate, int cantBitmaps);
 //Carga los samples para el menu. Si está todo bien devuelve OK_GRSPHICS. En caso contrario devuelve ERROR_GRAPHICS.
 int loadMenuSamples(ALLEGRO_SAMPLE* menuSamples[]);
+void destroyBitmaps(graphics_t* allegro);
+void destroyBitmap(ALLEGRO_BITMAP* bitmaps[], int cant);
+
 ////Carga los bitmaps para el menu. Si está todo bien devuelve OK_GRAPHICS. En caso contrario devuelve ERROR_GRAPHICS.
 //int loadMenuBitmaps(ALLEGRO_BITMAP* menuBitmaps[]);
 ////Carga los bitmaps para las barreras. Si esta todo bien devuelve OK_GRAPHICS. En caso contrario devuelve ERROR_GRAPHICS.
@@ -41,13 +48,19 @@ int initGraphics(graphics_t* allegro) {
     if (!al_init_primitives_addon()) {
         return ERROR_GRAPHICS;
     }
-    if (!al_reserve_samples(3)) {
-        return ERROR_GRAPHICS;
 
-    }
     al_install_keyboard();
     al_init_font_addon();
     al_init_ttf_addon();
+    al_install_audio();
+    
+    if (!al_init_acodec_addon()) {
+        return ERROR_GRAPHICS;
+    }
+
+    if (!al_reserve_samples(3)) {
+        return ERROR_GRAPHICS;
+    }
 
     allegro->display = al_create_display(SCREEN_W, SCREEN_H);
     if (allegro->display == NULL) {
@@ -103,28 +116,32 @@ void updateGraphics(void) {
 }
 
 int loadAllBitmaps(graphics_t* allegro) {
-    if (loadBitmaps(allegro->menuBitmaps, "Resources/Bitmaps/BitmapMenu%d.bmp", CANT_BTM_MENU) == ERROR_GRAPHICS) {
+    if (loadBitmaps(allegro->menuBitmaps, "Resources/Bitmaps/BitmapMenu%d.png", CANT_BTM_MENU) == ERROR_GRAPHICS) {
+        printf("error 1\n");
         return ERROR_GRAPHICS;
     }
-    else if (loadBitmaps(allegro->aliensBitmaps, "Resources/Bitmaps/BitmapAlien%d.bmp", CANT_TIPOS_ALIEN) == ERROR_GRAPHICS) {
+    if (loadBitmaps(allegro->aliensBitmaps, "Resources/Bitmaps/BitmapAlien%d.bmp", CANT_TIPOS_ALIEN) == ERROR_GRAPHICS) {
+        printf("error 2\n");
         return ERROR_GRAPHICS;
     }
-    else if (loadBitmaps(allegro->randomAlienBitmap, "Resources/Bitmaps/BitmapRandomAlien%d.bmp", 1) == ERROR_GRAPHICS) {
+    else if (loadBitmaps(&allegro->randomAlienBitmap, "Resources/Bitmaps/BitmapRandomAlien%d.bmp", 1) == ERROR_GRAPHICS) {
+        printf("error 3\n");
         return ERROR_GRAPHICS;
     }
     else if (loadBitmaps(allegro->barriersBitmaps, "Resources/Bitmaps/BitmapBarriers%d.bmp", CANT_TIPOS_BARRERAS) == ERROR_GRAPHICS) {
+        printf("error 4\n");
         return ERROR_GRAPHICS;
     }
     else if (loadBitmaps(allegro->livesBitmap, "Resources/Bitmaps/BitmapLives%d.bmp", CANT_LIVES_BTM) == ERROR_GRAPHICS) {
+        printf("error 5\n");
         return ERROR_GRAPHICS;
     }
-    else if (loadBitmaps(allegro->livesBitmap, "Resources/Bitmaps/BitmapLives%d.bmp", CANT_LIVES_BTM) == ERROR_GRAPHICS) {
+    else if (loadBitmaps(&allegro->spaceshipBitmap, "Resources/Bitmaps/BitmapSpaceship%d.bmp", 1) == ERROR_GRAPHICS) {
+        printf("error 6\n");
         return ERROR_GRAPHICS;
     }
-    else if (loadBitmaps(allegro->spaceshipBitmap, "Resources/Bitmaps/BitmapSpaceship%d.bmp", 1) == ERROR_GRAPHICS) {
-        return ERROR_GRAPHICS;
-    }
-    else if (loadBitmaps(allegro->bulletBitmap, "Resources/Bitmaps/BitmapBullet%d.bmp", 1) == ERROR_GRAPHICS) {
+    else if (loadBitmaps(&allegro->bulletBitmap, "Resources/Bitmaps/BitmapBullet%d.bmp", 1) == ERROR_GRAPHICS) {
+        printf("error 7\n");
         return ERROR_GRAPHICS;
     }
 
@@ -155,13 +172,13 @@ int loadMenuSamples(ALLEGRO_SAMPLE* menuSamples[]) {
     char path[100];
     for (i = 0; (err == 0) && (i < CANT_SAMPL_MENU); ++i) {
         sprintf(path, "Resources/Sounds/SampleMenu%d.bmp", i);
-        menuSamples[i] = al_load_bitmap(path);
+        menuSamples[i] = al_load_sample(path);
         if (menuSamples[i] == NULL) {
             err = 1;
         }
     }
     //Si todo está bien devuelvo OK. En caso contrario devuelvo ERROR.
-    if (err = 0) {
+    if (err == 0) {
         return OK_GRAPHICS;
     }
     else {
@@ -181,7 +198,7 @@ int loadBitmaps(ALLEGRO_BITMAP* bitmaps[], char* pathTemplate, int cantBitmaps) 
         }
     }
     //Si todo está bien devuelvo OK. En caso contrario devuelvo ERROR.
-    if (err = 0) {
+    if (err == 0) {
         return OK_GRAPHICS;
     }
     else {
@@ -189,9 +206,17 @@ int loadBitmaps(ALLEGRO_BITMAP* bitmaps[], char* pathTemplate, int cantBitmaps) 
     }
 }
 
+void printMenu(graphics_t* graphics) {
+    al_draw_bitmap(graphics->menuBitmaps[0], 0, 0, 0);
+    al_draw_bitmap(graphics->menuBitmaps[1], 0, 0, 0);
+    al_draw_bitmap(graphics->menuBitmaps[2], 0, 0, 0);
+
+    //updateGraphics();
+}
+
 //int loadMenuBitmaps(ALLEGRO_BITMAP* menuBitmaps[]){
 //    int i=0, err=0;
-//    char path[100];
+//    char* path;
 //
 //    for(i=0; (err==0)&&(i<CANT_BTM_MENU); ++i){
 //        sprintf(path, "Resources/Bitmaps/BitmapMenu%d.bmp",i);
@@ -201,7 +226,7 @@ int loadBitmaps(ALLEGRO_BITMAP* bitmaps[], char* pathTemplate, int cantBitmaps) 
 //        }
 //    }
 //    //Si todo está bien devuelvo OK. En caso contrario devuelvo ERROR.
-//    if(err=0){
+//    if(err==0){
 //        return OK_GRAPHICS;
 //    }
 //    else{
@@ -209,17 +234,9 @@ int loadBitmaps(ALLEGRO_BITMAP* bitmaps[], char* pathTemplate, int cantBitmaps) 
 //    }
 //}
 //
-//
-//void printMenu(graphics_t* graphics){
-//        
-//    //imprime el menu
-//
-//    updateGraphics();
-//}
-//
 //int loadAliensBitmaps(ALLEGRO_BITMAP* aliensBitmaps[]) {
 //    int i = 0, err = 0;
-//    char path[100];
+//    char* path;
 //
 //    for (i = 0; (err == 0) && (i < CANT_TIPOS_ALIEN); ++i) {
 //        sprintf(path, "Resources/Bitmaps/BitmapAlien%d.bmp", i);
@@ -229,7 +246,7 @@ int loadBitmaps(ALLEGRO_BITMAP* bitmaps[], char* pathTemplate, int cantBitmaps) 
 //        }
 //    }
 //    //Si todo está bien devuelvo OK. En caso contrario devuelvo ERROR.
-//    if (err = 0) {
+//    if (err == 0) {
 //        return OK_GRAPHICS;
 //    }
 //    else {
@@ -239,7 +256,7 @@ int loadBitmaps(ALLEGRO_BITMAP* bitmaps[], char* pathTemplate, int cantBitmaps) 
 //
 //int loadBarrierBitmaps(ALLEGRO_BITMAP* barriersBitmaps[]) {
 //    int i = 0, err = 0;
-//    char path[100];
+//    char* path;
 //
 //    for (i = 0; (err == 0) && (i < CANT_TIPOS_BARRERAS); ++i) {
 //        sprintf(path, "Resources/Bitmaps/BitmapBarriers%d.bmp", i); //CAMBIAR
@@ -249,7 +266,7 @@ int loadBitmaps(ALLEGRO_BITMAP* bitmaps[], char* pathTemplate, int cantBitmaps) 
 //        }
 //    }
 //    //Si todo está bien devuelvo OK. En caso contrario devuelvo ERROR.
-//    if (err = 0) {
+//    if (err == 0) {
 //        return OK_GRAPHICS;
 //    }
 //    else {
@@ -259,14 +276,14 @@ int loadBitmaps(ALLEGRO_BITMAP* bitmaps[], char* pathTemplate, int cantBitmaps) 
 //
 //int loadRandomAlienBitmap(ALLEGRO_BITMAP* randomAlienBitmap) {
 //    int i = 0, err = 0;
-//    char path[100];
+//    char* path;
 //    path = "Resources/Bitmaps/BitmapRandomAlien.bmp";
 //    randomAlienBitmap = al_load_bitmap(path);
 //    if (randomAlienBitmap == NULL) {
 //        err = 1;
 //    }
 //    //Si todo está bien devuelvo OK. En caso contrario devuelvo ERROR.
-//    if (err = 0) {
+//    if (err == 0) {
 //        return OK_GRAPHICS;
 //    }
 //    else {
@@ -276,14 +293,14 @@ int loadBitmaps(ALLEGRO_BITMAP* bitmaps[], char* pathTemplate, int cantBitmaps) 
 //
 //int loadBulletBitmap(ALLEGRO_BITMAP* bulletBitmap) {
 //    int i = 0, err = 0;
-//    char path[100];
+//    char* path;
 //    path = "Resources/Bitmaps/BitmapBullet.bmp";
 //    bulletBitmap = al_load_bitmap(path);
 //    if (bulletBitmap == NULL) {
 //        err = 1;
 //    }
 //    //Si todo está bien devuelvo OK. En caso contrario devuelvo ERROR.
-//    if (err = 0) {
+//    if (err == 0) {
 //        return OK_GRAPHICS;
 //    }
 //    else {
@@ -293,14 +310,14 @@ int loadBitmaps(ALLEGRO_BITMAP* bitmaps[], char* pathTemplate, int cantBitmaps) 
 //
 //int loadSpaceshipBitmap(ALLEGRO_BITMAP* spaceshipBitmap) {
 //    int i = 0, err = 0;
-//    char path[100];
+//    char* path;
 //    path = "Resources/Bitmaps/BitmapSpaceship.bmp";
 //    spaceshipBitmap = al_load_bitmap(path);
 //    if (spaceshipBitmap == NULL) {
 //        err = 1;
 //    }
 //    //Si todo está bien devuelvo OK. En caso contrario devuelvo ERROR.
-//    if (err = 0) {
+//    if (err == 0) {
 //        return OK_GRAPHICS;
 //    }
 //    else {
@@ -310,7 +327,7 @@ int loadBitmaps(ALLEGRO_BITMAP* bitmaps[], char* pathTemplate, int cantBitmaps) 
 //
 //int loadLivesBitmaps(ALLEGRO_BITMAP* livesBitmaps[]) {
 //    int i = 0, err = 0;
-//    char path[100];
+//    char* path;
 //
 //    for (i = 0; (err == 0) && (i < CANT_LIVES_BTM); ++i) {
 //        sprintf(path, "Resources/Bitmaps/BitmapLives%d.bmp", i); 
@@ -320,7 +337,7 @@ int loadBitmaps(ALLEGRO_BITMAP* bitmaps[], char* pathTemplate, int cantBitmaps) 
 //        }
 //    }
 //    //Si todo está bien devuelvo OK. En caso contrario devuelvo ERROR.
-//    if (err = 0) {
+//    if (err == 0) {
 //        return OK_GRAPHICS;
 //    }
 //    else {
@@ -331,7 +348,7 @@ int loadBitmaps(ALLEGRO_BITMAP* bitmaps[], char* pathTemplate, int cantBitmaps) 
 //int loadFondosExtraBitmap(ALLEGRO_BITMAP* fondosExtraBitmaps[]) {
 //
 //    int i = 0, err = 0;
-//    char path[100];
+//    char* path;
 //    for (i = 0; (err == 0) && (i < CANT_FONDOS_EXTRA); ++i) {
 //        sprintf(path, "Resources/Bitmaps/BitmapFondosExtra%d.bmp", i);
 //        fondosExtraBitmaps[i] = al_load_bitmap(path);
@@ -340,10 +357,12 @@ int loadBitmaps(ALLEGRO_BITMAP* bitmaps[], char* pathTemplate, int cantBitmaps) 
 //        }
 //    }
 //    //Si todo está bien devuelvo OK. En caso contrario devuelvo ERROR.
-//    if (err = 0) {
+//    if (err == 0) {
 //        return OK_GRAPHICS;
 //    }
 //    else {
 //        return ERROR_GRAPHICS;
 //    }
 //}
+
+#endif // !RASPI

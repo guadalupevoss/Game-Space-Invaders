@@ -10,7 +10,7 @@
 #define ERROR -5
 
 //Devuelve el estado y dibuja el menú.
-int menu(graphics_t graphics);
+int menu(graphics_t* graphics);
 
 
 #endif // MENU_H

@@ -81,9 +81,10 @@
 #define PLAY_PAUSE -5
 #define EXIT_PAUSE -6
 
-typedef struct {
-	int state;
-}graphics_t;
+#ifdef RASPI
+	typedef struct {
+		int state;
+	}graphics_t
 
 //Inicializa Raspi y sus variables.
 int initGraphics(graphics_t* allegro);
@@ -95,6 +96,8 @@ void printMenu(graphics_t* graphics);
 int stateMenu(graphics_t* graphics);
 //Se encarga de realizar el update del Front End.
 void updateGraphics();
+
+#endif
 
 #endif /* RASPI_H */
 

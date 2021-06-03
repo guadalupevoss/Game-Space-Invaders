@@ -22,6 +22,6 @@ typedef struct {
 
 void updateRandomAlien(alienRandom_t* alien, bullet_t* bullet);
 void initRandomAlien(alienRandom_t* alien); //posicion + alive + puntaje (puntaje es random y posicion es en y siempre la misma y la inicial en x puede variar entre der e izq)
-void randomAlienIsBorn(alienRandom_t* alien, int ciclos_random)
+void randomAlienIsBorn(alienRandom_t* alien, int ciclos_random);
 
 #endif // RANDOM_ALIEN_H

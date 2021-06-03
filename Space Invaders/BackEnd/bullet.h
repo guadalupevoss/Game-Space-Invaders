@@ -2,6 +2,7 @@
 #define BULLET_H
 
 #include "position.h"
+#include "../FrontEnd/graphics.h"
 
 #define ALIEN_BULLET 1
 #define SPACESHIP_BULLET 2

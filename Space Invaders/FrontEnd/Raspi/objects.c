@@ -1,3 +1,5 @@
+#ifdef RASPI
+
 #include "objects.h"
 #include "disdrv.h"
 
@@ -33,7 +35,7 @@ void printAliens(alien_t aliens[], int cantidad_aliens_usados)
 
     if ((aliens[0].pos.x > 0) && (aliens[cantidad_aliens_usados - 1].pos.x < 15))
     {
-        for (contador = 0; contador < CANTIDAD_ALIENS; ++contador)
+        for (contador = 0; contador < NUM_ALIENS; ++contador)
         {
             if (aliens[contador].alive)
             {
@@ -127,3 +129,4 @@ void printLives(int cantidad_vidas){
     }
 }
 
+#endif

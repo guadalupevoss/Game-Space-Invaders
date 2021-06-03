@@ -1,6 +1,7 @@
 #ifndef ALLEGRO_H
 #define ALLEGRO_H
 
+
 //Include de allegro.
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_color.h>
@@ -12,6 +13,9 @@
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_font.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <stdio.h>
 
 //En caso de error las funciones devuelven ERROR_GRAPHICS, si todo está bien devuelven un OK_GRSPHICS.
 #define ERROR_GRAPHICS -1
@@ -89,11 +93,12 @@
 #define MAX_ARR_CARACTER	40 
 #define DISTANCE_POINTS_PLAYER 250
 
+#ifndef  RASPI
 typedef struct {
-	ALLEGRO_DISPLAY*		display;
-	ALLEGRO_TIMER*			timer;
-	ALLEGRO_EVENT_QUEUE*	eventQueue;
-	ALLEGRO_FONT*			font;
+	ALLEGRO_DISPLAY* display;
+	ALLEGRO_TIMER* timer;
+	ALLEGRO_EVENT_QUEUE* eventQueue;
+	ALLEGRO_FONT* font;
 
 	//Para el menu(Podría ser un struct para el menú).
 	ALLEGRO_BITMAP* menuBitmaps[CANT_BTM_MENU];
@@ -128,6 +133,7 @@ enum{BARRIER0=0, BARRIER1, BARRIER2, BARRIER3, DEADBARRIER};
 enum{DEAD=0, ALIVE};
 enum{GAMEOVER=0, HIGHSCORES, MENUPAUSE};
 
+
 //Inicializa Allegro y sus variables.
 int initGraphics(graphics_t* allegro);
 //Destruye Allegro y las variables.
@@ -139,6 +145,7 @@ void printMenu(graphics_t* graphics);
 //Función que se fija si cambió el estado (si se presionó algún botón o saltó error) y devuelve el estado indicado.
 int stateMenu(graphics_t* graphics);
 
+#endif // ! RASPI
 
 #endif //ALLEGRO_H
 
