@@ -9,6 +9,8 @@
 #include "Raspi/raspi.h"
 #endif // RASPI
 
+#define WIDTH 16
+#define HEIGHT 16
 
 
 #endif //GRAPHICS_H

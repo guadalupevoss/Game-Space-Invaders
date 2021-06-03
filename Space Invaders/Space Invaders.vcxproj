@@ -152,6 +152,7 @@
     <ClCompile Include="FrontEnd\graphics.c" />
     <ClCompile Include="FrontEnd\Raspi\caracteres.c" />
     <ClCompile Include="FrontEnd\Raspi\fondos.c" />
+    <ClCompile Include="FrontEnd\Raspi\objects.c" />
     <ClCompile Include="FrontEnd\Raspi\raspi.c" />
     <ClCompile Include="main.c" />
   </ItemGroup>
@@ -173,6 +174,7 @@
     <ClInclude Include="FrontEnd\Raspi\fondos.h" />
     <ClInclude Include="FrontEnd\Raspi\joydrv.h" />
     <ClInclude Include="FrontEnd\Raspi\libaudio.h" />
+    <ClInclude Include="FrontEnd\Raspi\objects.h" />
     <ClInclude Include="FrontEnd\Raspi\raspi.h" />
   </ItemGroup>
   <ItemGroup>

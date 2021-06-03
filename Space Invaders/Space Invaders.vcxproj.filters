@@ -90,6 +90,9 @@
     <ClCompile Include="BackEnd\spaceInvaders.c">
       <Filter>Source Files\BackEnd</Filter>
     </ClCompile>
+    <ClCompile Include="FrontEnd\Raspi\objects.c">
+      <Filter>Source Files\FrontEnd\Raspi</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackEnd\aliens.h">
@@ -145,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="FrontEnd\Allegro\allegro.h">
       <Filter>Header Files\FrontEnd\Allegro</Filter>
+    </ClInclude>
+    <ClInclude Include="FrontEnd\Raspi\objects.h">
+      <Filter>Header Files\FrontEnd\Raspi</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

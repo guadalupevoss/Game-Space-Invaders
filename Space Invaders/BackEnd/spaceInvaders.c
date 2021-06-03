@@ -1,23 +1,26 @@
 #include "spaceInvaders.h"
 
 //Inicializa lo que necesita spaceInvaders.
-void initSpaceInvaders(void);
+void initSpaceInvaders(player_t player);
 //Inicializa la variables del jugador.
 void initPlayer(void);
-
-
 //Limpia un arreglo de char de cantidad de caracteres countChar.
-clearArr(char arr[], int countChar);
-
+void clearArr(char arr[], int countChar);
 
 int spaceInvaders(void) {
 	//Variable para controlar la salida del while.
 	int doExit = 0;
 	//Una variable para cambiar el esado del juego. Inicialmente es menú. La función menú será la encargada de cambiarla.
 	int estado = MENU;
-	char playerName[]
-		//Inicializo lo necesario para Space Invaders.
-		initSpaceInvaders();
+	//Variable con los datos del jugador.
+	player_t player;
+	char playerName[NAME_LENGHT];
+	player.name=playerName;
+	//Variable con recursos gráficos.
+	graphics_t graphics;
+
+	//Inicializo lo necesario para Space Invaders.
+	initSpaceInvaders(&player,&graphics);
 
 	while ((!doExit))
 
@@ -48,32 +51,31 @@ int spaceInvaders(void) {
 		default:
 			player.score = estado;
 			//player.name= funcion Ingresar nombre. 
-			//Cargar Score
+			//Cargar Score al txt.
 			estado = MENU;
 			break;
 		}
 
-	//Si hay un error devuelve un ERROR_SPACE_INCADERS
+	destroyGraphics(&graphics);
+	//Si hay un error devuelve un ERROR_SPACE_INCADERS.
 	if (estado == ERROR) {
 		return ERROR_SPACE_INCADERS;
 	}
-	//Si no hay un error devuelve un OK_SPACE_INCADERS
+	//Si no hay un error devuelve un OK_SPACE_INCADERS.
 	else {
 		return OK_SPACE_INCADERS;
 	}
 }
 
-
-void initSpaceInvaders(void) {
-	initPlayer();
-	initGraphics();
+void initSpaceInvaders(player_t* player,graphics_t graphics) {
+	initPlayer(player);
+	initGraphics(graphics);
 }
-void initPlayer(*) {
-	player.score = 0;
-	clearArr(&player.name, NAME_LENGHT);
+void initPlayer(player_t* player) {
+	player->score = 0;
+	clearArr(&player->name, NAME_LENGHT);
 }
-
-clearArr(char* arr, int countChar) {
+void clearArr(char* arr, int countChar) {
 
 	int i = 0;
 	for (i = 0; i < countChar; ++i) {

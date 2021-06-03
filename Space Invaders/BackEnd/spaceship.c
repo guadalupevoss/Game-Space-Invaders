@@ -1,14 +1,17 @@
 #include "spaceship.h"
 
+//Devuelve 1 si le dispararon a la nave o 0 si no.
+int isSpaceshipShot(bullet_t* bullet, spaceship_t* spaceship);
+
 void initSpaceship(spaceship_t* spaceship) {
 	initPosition(&spaceship->pos, INITIAL_SPASESHIP_POS_X, SPACESHIP_POS_Y);
 	initBullet(&spaceship->bullet, spaceship->pos.x, spaceship->pos.y, SPACESHIP_BULLET);
 	spaceship->lives = SPACESHIP_LIVES;
 }
 
-int updateSpaceship(spaceship_t* spaceship){
+int updateSpaceship(bullet_t* bullet, spaceship_t* spaceship){
 	int lost = 0;
-	if (isSpaceshipShot(spaceship)){
+	if (isSpaceshipShot(bullet, spaceship)){
 		if(spaceship->lives){
 			(spaceship->lives)--;
 		}
@@ -20,11 +23,11 @@ int updateSpaceship(spaceship_t* spaceship){
 }
 
 void moveSpaceship(int moveRight, spaceship_t* spaceship) {
-	if ((moveRight)&&(spaceship->pos.x =! WIDTH)){
-		(spaceship->pos.x)++;
+	if ((moveRight)&&(spaceship->pos.x != (WIDTH - 1))){
+		changePosition(&spaceship->pos, 1, 0);
 	}
-	else ((!moveRight)&&(spaceship->pos.x =! 0)){
-		(spaceship->pos.x)--;
+	else if((!moveRight)&&(spaceship->pos.x != 0)){
+		changePosition(&spaceship->pos, -1, 0);
 	}
 }
 
@@ -37,6 +40,7 @@ int isSpaceshipShot(bullet_t* bullet, spaceship_t* spaceship) {
 	}
 	return shot;
 }
+
 void throwBullet(spaceship_t* spaceship) {
 	changePosition(&spaceship->bullet.pos, spaceship->pos.x, spaceship->pos.y);
 	spaceship->bullet.state = ON;

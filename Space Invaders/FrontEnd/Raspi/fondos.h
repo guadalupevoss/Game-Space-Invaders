@@ -42,28 +42,42 @@ void draw_exit (void);
  * Función: draw_pause                                                           *
  * Esta función se encarga de imprimir pause en el display de la Raspberry Pi.   *
  *********************************************************************************/
-void draw_pause (void);
-
-/*********************************************************************************
- * Función: draw_menu                                                            *
- * Esta función se encarga de imprimir menu en el display de la Raspberry Pi.    *
- *********************************************************************************/
-void draw_menu (void);
+//void draw_pause (void);
 
 /**********************************************************************************
- * Función: draw_menu                                                             *
+ * Función: draw_gameover                                                         *
  * Esta función se encarga de imprimir game over en el display de la Raspberry Pi.*
  **********************************************************************************/
 void draw_gameover(void);
 
+/**********************************************************************************
+ * Función: draw_flechitas                                                        *
+ * Esta función se encarga de imprimir flechitas en el display de la Raspberry Pi.*
+ **********************************************************************************/
 void draw_flechitas (void);
 
+/**********************************************************************************
+ * Función: draw_palitos                                                          *
+ * Esta función se encarga de imprimir palitos en el display de la Raspberry Pi.  *
+ **********************************************************************************/
 void draw_palitos(void);
 
+/**********************************************************************************
+ * Función: draw_pause_exit                                                       *
+ * Esta función se encarga de imprimir exit en el display de la Raspberry Pi.	  *
+ **********************************************************************************/
 void draw_pause_exit (void);
 
+/**********************************************************************************
+ * Función: draw_pause_play                                                       *
+ * Esta función se encarga de imprimir play en el display de la Raspberry Pi.	  *
+ **********************************************************************************/
 void draw_pause_play (void);
 
+/**********************************************************************************
+ * Función: draw_pause_menu                                                       *
+ * Esta función se encarga de imprimir menu en el display de la Raspberry Pi.	  *
+ **********************************************************************************/
 void draw_pause_menu (void);
 
 #endif /* FONDOS_H */

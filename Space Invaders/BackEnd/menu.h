@@ -1,7 +1,7 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include "graphics.h"
+#include "../FrontEnd/graphics.h"
 
 #define PLAY -1
 #define HIGHSCORE -2

@@ -6,7 +6,8 @@ void barrierIsShot(barriers_t* barrier, bullet_t* bullet);
 void initBarriers (barriers_t* barriers){
 	int i;
 	for (i = 0; i < NUM_BARRIERS; i++) {
-		initPosition(&barriers[i].pos, (UNIDAD*(4*i + 1)), BARRIER_POS_Y);
+		//Acordarse de multiplicar por UNIDAD cuando lo queremos imprimir a las posiciones.
+		initPosition(&barriers[i].pos, (4*i + 1), BARRIER_POS_Y);
 		barriers[i].lives = BARRIER_LIVES;
 	}
 }

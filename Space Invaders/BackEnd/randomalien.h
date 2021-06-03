@@ -3,8 +3,7 @@
 
 #include "position.h"
 #include "bullet.h"
-//ESTO DEBERIA IR EN RASPI.H O ALLEGRO.H
-#define RANDOM_ALIEN_POS_Y 1
+#include "../FrontEnd/graphics.h"
 
 #define DERECHA 1
 #define IZQUIERDA 0
@@ -21,9 +20,7 @@ typedef struct {
 	int direction;
 }alienRandom_t;
 
-void updateRandomAlien(void);
-void moveRandomAlien(alienRandom_t* alien);  //no
-void randomAlienIsShot(void); //no
+void updateRandomAlien(alienRandom_t* alien, bullet_t* bullet);
 void initRandomAlien(alienRandom_t* alien); //posicion + alive + puntaje (puntaje es random y posicion es en y siempre la misma y la inicial en x puede variar entre der e izq)
 void randomAlienIsBorn(alienRandom_t* alien, int ciclos_random)
 
