@@ -75,9 +75,6 @@
     <ClCompile Include="FrontEnd\graphics.c">
       <Filter>Source Files\FrontEnd</Filter>
     </ClCompile>
-    <ClCompile Include="FrontEnd\Allegro\allegro.c">
-      <Filter>Source Files\FrontEnd\Allegro</Filter>
-    </ClCompile>
     <ClCompile Include="BackEnd\aliens.c">
       <Filter>Source Files\BackEnd</Filter>
     </ClCompile>
@@ -92,6 +89,9 @@
     </ClCompile>
     <ClCompile Include="FrontEnd\Raspi\objects.c">
       <Filter>Source Files\FrontEnd\Raspi</Filter>
+    </ClCompile>
+    <ClCompile Include="FrontEnd\Allegro\allegro.c">
+      <Filter>Source Files\FrontEnd\Allegro</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -279,6 +279,81 @@
       <Filter>Resource Files\Bitmaps</Filter>
     </Image>
     <Image Include="Resources\Bitmaps\vivo.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="Resources\Bitmaps\BitmapAlien0.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="Resources\Bitmaps\BitmapAlien1.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="Resources\Bitmaps\BitmapAlien2.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="Resources\Bitmaps\BitmapAlien3.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="Resources\Bitmaps\BitmapAlien4.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="Resources\Bitmaps\BitmapAlien5.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="Resources\Bitmaps\BitmapBarriers0.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="Resources\Bitmaps\BitmapBarriers1.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="Resources\Bitmaps\BitmapBarriers2.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="Resources\Bitmaps\BitmapBarriers3.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="Resources\Bitmaps\BitmapBarriers4.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="Resources\Bitmaps\BitmapBullet0.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="Resources\Bitmaps\BitmapFondosExtra0.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="Resources\Bitmaps\BitmapFondosExtra1.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="Resources\Bitmaps\BitmapFondosExtra2.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="Resources\Bitmaps\BitmapLives0.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="Resources\Bitmaps\BitmapLives1.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="Resources\Bitmaps\BitmapMenu0.png">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="Resources\Bitmaps\BitmapMenu1.png">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="Resources\Bitmaps\BitmapMenu2.png">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="Resources\Bitmaps\BitmapMenu3.png">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="Resources\Bitmaps\BitmapMenu4.png">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="Resources\Bitmaps\BitmapMenu5.png">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="Resources\Bitmaps\BitmapRandomAlien0.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="Resources\Bitmaps\BitmapSpaceship0.bmp">
       <Filter>Resource Files\Bitmaps</Filter>
     </Image>
   </ItemGroup>

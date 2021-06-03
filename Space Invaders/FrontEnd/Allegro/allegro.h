@@ -15,7 +15,7 @@
 
 //En caso de error las funciones devuelven ERROR_GRAPHICS, si todo está bien devuelven un OK_GRSPHICS.
 #define ERROR_GRAPHICS -1
-#define OK_GRSPHICS		0
+#define OK_GRAPHICS		0
 
 #define FPS             60.0
 
@@ -73,6 +73,8 @@
 #define CIFRAS_SCORE    9
 #define CANT_BTM_MENU	4	//Numero de bitmaps para el menú.
 #define CANT_SAMPL_MENU	4	//Establece la cantidad de audios que se utilizan en el menú.
+#define CANT_LIVES_BTM	2
+#define CANT_FONDOS_EXTRA 3
 
 //Defines para el highscore
 #define FUENTE_SIZE			30
@@ -97,10 +99,34 @@ typedef struct {
 	ALLEGRO_BITMAP* menuBitmaps[CANT_BTM_MENU];
 	ALLEGRO_SAMPLE* menuSamples[CANT_SAMPL_MENU];
 
+	//Para los aliens
+	ALLEGRO_BITMAP* aliensBitmaps[NUM_ALIENS];
+
+	//Para las barreras
+	ALLEGRO_BITMAP* barriersBitmaps[NUM_BARRIERS];
+
+	//Para el random alien
+	ALLEGRO_BITMAP* randomAlienBitmap;
+
+	//Para la bala
+	ALLEGRO_BITMAP* bulletBitmap;
+
+	//Para la nave
+	ALLEGRO_BITMAP* spaceshipBitmap;
+
+	//Para las vidas (2) lives
+	ALLEGRO_BITMAP* livesBitmap[CANT_LIVES_BTM];
+
+	//Para fondos extra (game over, high scores, menu pausa)
+	ALLEGRO_BITMAP* fondosExtra[CANT_FONDOS_EXTRA];
 
 }graphics_t;
 
 enum{FONDO=0, PLAY, HIGHSCORE, EXIT};
+enum{ALIEN0=0, ALIEN1, ALIEN2, ALIEN3, ALIEN4, DEADALIEN};
+enum{BARRIER0=0, BARRIER1, BARRIER2, BARRIER3, DEADBARRIER};
+enum{DEAD=0, ALIVE};
+enum{GAMEOVER=0, HIGHSCORES, MENUPAUSE};
 
 //Inicializa Allegro y sus variables.
 int initGraphics(graphics_t* allegro);
