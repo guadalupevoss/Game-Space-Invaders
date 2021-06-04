@@ -93,6 +93,12 @@
     <ClCompile Include="FrontEnd\Allegro\allegro.c">
       <Filter>Source Files\FrontEnd\Allegro</Filter>
     </ClCompile>
+    <ClCompile Include="BackEnd\highscore.c">
+      <Filter>Source Files\BackEnd</Filter>
+    </ClCompile>
+    <ClCompile Include="BackEnd\pause.c">
+      <Filter>Source Files\BackEnd</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackEnd\aliens.h">
@@ -151,6 +157,12 @@
     </ClInclude>
     <ClInclude Include="FrontEnd\Raspi\objects.h">
       <Filter>Header Files\FrontEnd\Raspi</Filter>
+    </ClInclude>
+    <ClInclude Include="BackEnd\highscore.h">
+      <Filter>Header Files\BackEnd</Filter>
+    </ClInclude>
+    <ClInclude Include="BackEnd\pause.h">
+      <Filter>Header Files\BackEnd</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

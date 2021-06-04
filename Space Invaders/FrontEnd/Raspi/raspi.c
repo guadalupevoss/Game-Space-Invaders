@@ -14,6 +14,9 @@
 
 #include "raspi.h"
 
+//Estados del juego
+enum { NOTHING = 0, SS_BULLET, SS_MOVE_R, SS_MOVE_L, PAUSE, EXIT };
+
 //Inicializa Raspi y sus variables.
 int initGraphics(graphics_t* allegro) {
     disp_init();
@@ -43,6 +46,7 @@ void printMenu(graphics_t* graphics) {
 			break;
 	}
 }
+
 //Función que se fija si cambió el estado (si se presionó algún botón o saltó error) y devuelve el estado indicado.
 int stateMenu(graphics_t* graphics) {
 	int newState;
@@ -127,9 +131,88 @@ int stateMenu(graphics_t* graphics) {
 
 	disp_update();
 }
+
 //Se encarga de hacer el flip display.
 void updateGraphics(void) {
 	disp_update();
+}
+
+int getEvent(graphics_t* graphics) {
+	int newState;
+	joy_update();
+
+	jcoord_t myCoords;
+	myCoords = joy_get_coord();
+	jswitch_t mySwitch;
+	mySwitch = joy_get_switch();
+
+	if (myCoords.x > 10)
+	{
+		newState = SS_MOVE_R;
+	}
+	while ((myCoords.x > 10) && (myCoords.x < 100))
+	{
+		joy_update();
+		myCoords = joy_get_coord();
+	}
+
+	if (myCoords.x < -10)
+	{
+		newState = SS_MOVE_L;
+	}
+	while ((myCoords.x < -10) && (myCoords.x > -100))
+	{
+		joy_update();
+		myCoords = joy_get_coord();
+	}
+
+	//Si se movio para abajo, es pausa.
+	if (myCoords.y < -100)
+	{
+		newState = PAUSE;
+	}
+	while (myCoords.y < -100)
+	{
+		joy_update();
+		myCoords = joy_get_coord();
+	}
+
+	//Si se aprieta el botón del joystick se prende la bala.
+	if (mySwitch == J_PRESS)//&&(!shot_reset))
+	{
+		newState = SS_BULLET;
+	}
+	while (mySwitch == J_PRESS)
+	{
+		joy_update();
+		mySwitch = joy_get_switch();
+	}
+	return newState;
+}
+
+void printSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien) {
+	static int prevSSLives = 3, prevSSX = INITIAL_SPASESHIP_POS_X, prevRAX = ;
+	if ((spaceship->pos.x != prevSSX) && spaceship->lives) {
+		clearNave(prevSSX);
+		printNave(spaceship->pos.x);
+		prevSSX = spaceship->pos.x;
+	}
+	printAliens(aliens, lastAlien(aliens));
+	if (rAlien->alive) {
+		printAlienRandom(rAlien->pos.x, rAlien->pos.y);
+	}
+	if(spaceship->lives != prevSSLives){
+		printLives(spaceship->lives);
+		prevSSLives = spaceship->lives;
+	}
+}
+
+void clearSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien) {
+	static int prevSSLives = 3, prevSSX = INITIAL_SPASESHIP_POS_X;
+	clearAliens(aliens, lastAlien(aliens));
+	if (rAlien->alive) {
+		clearAlienRandom(rAlien->pos.x, rAlien->pos.y);
+	}
 }
 
 #endif

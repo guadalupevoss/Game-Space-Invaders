@@ -142,7 +142,9 @@
     <ClCompile Include="BackEnd\aliens.c" />
     <ClCompile Include="BackEnd\barriers.c" />
     <ClCompile Include="BackEnd\bullet.c" />
+    <ClCompile Include="BackEnd\highscore.c" />
     <ClCompile Include="BackEnd\menu.c" />
+    <ClCompile Include="BackEnd\pause.c" />
     <ClCompile Include="BackEnd\play.c" />
     <ClCompile Include="BackEnd\position.c" />
     <ClCompile Include="BackEnd\randomalien.c" />
@@ -160,7 +162,9 @@
     <ClInclude Include="BackEnd\aliens.h" />
     <ClInclude Include="BackEnd\barriers.h" />
     <ClInclude Include="BackEnd\bullet.h" />
+    <ClInclude Include="BackEnd\highscore.h" />
     <ClInclude Include="BackEnd\menu.h" />
+    <ClInclude Include="BackEnd\pause.h" />
     <ClInclude Include="BackEnd\play.h" />
     <ClInclude Include="BackEnd\position.h" />
     <ClInclude Include="BackEnd\randomalien.h" />

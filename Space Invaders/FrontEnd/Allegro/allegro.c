@@ -244,7 +244,6 @@ int stateMenu(graphics_t* graphics) {
     ALLEGRO_EVENT ev;
     if (al_get_next_event(graphics->eventQueue, &ev)) {
         if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
-            printf("HOLAAA display close :)\n");
             tempState = EXIT;
         }
         else if(ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP){
@@ -281,6 +280,51 @@ int stateMenu(graphics_t* graphics) {
     return tempState;
 }
 
+//enum{NOTHING=0, SS_BULLET, SS_MOVE_R, SS_MOVE_L, PAUSE, EXIT};
+int getEvent(graphics_t graphics){
+    
+    int tempEvent =NOTHING;
+    ALLEGRO_EVENT ev;
+
+     //Tomo el siguiente evento en la cola de eventos.
+    if (al_get_next_event(graphics->eventQueue, &ev)){
+
+        if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
+                tempEvent = EXIT;
+            }
+
+        else if (ev.type == ALLEGRO_EVENT_TIMER) {
+
+        }
+        else if (ev.type == ALLEGRO_EVENT_KEY_DOWN){
+
+            switch (ev.keyboard.keycode) {
+			    case ALLEGRO_KEY_LEFT:
+			        key_pressed[KEY_LEFT] = true;
+			        break;
+			    case ALLEGRO_KEY_RIGHT:
+			        key_pressed[KEY_RIGHT] = true;
+			        break;
+			    case ALLEGRO_KEY_SPACE:
+			        key_pressed[KEY_SPACE] = true;
+			        break;
+		    }
+        }
+        else if (ev.type == ALLEGRO_EVENT_KEY_UP){
+            switch (ev.keyboard.keycode) {
+			    case ALLEGRO_KEY_LEFT:
+			        key_pressed[KEY_LEFT] = false;
+			        break;
+			    case ALLEGRO_KEY_RIGHT:
+			        key_pressed[KEY_RIGHT] = false;
+			        break;
+			    case ALLEGRO_KEY_SPACE:
+			        key_pressed[KEY_SPACE] = false;
+			        break;
+        }
+    }
+
+}
 //int loadMenuBitmaps(ALLEGRO_BITMAP* menuBitmaps[]){
 //    int i=0, err=0;
 //    char* path;

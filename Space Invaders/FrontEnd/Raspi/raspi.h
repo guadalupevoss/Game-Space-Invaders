@@ -20,6 +20,11 @@
 #include "fondos.h"
 #include "objects.h"
 #include "caracteres.h"
+#include "../../BackEnd/bullet.h"
+#include "../../BackEnd/barriers.h"
+#include "../../BackEnd/spaceship.h"
+#include "../../BackEnd/randomalien.h"
+
 
 //Tamano del display
 #define SCREEN_W 16
@@ -74,16 +79,11 @@
 #define RANDOM_ALIEN_POS_Y  1 //Posición en el eje y que mantendrá el alien random
 #define RANDOM_ALIEN_SPEED  2
 
-//Defines para los menus
-enum { MENU = 0, PLAY, HIGHSCORE, EXIT };
+//Estados del MENU
+enum { MENU = 0, PLAY, HIGHSCORE, EXIT, ERROR };
 
-#define PLAY -1
-#define HIGHSCORE -2
-#define MENU_PAUSE -3
-#define EXIT -4
-
-#define PLAY_PAUSE -5
-#define EXIT_PAUSE -6
+//Estados del MENU DE PAUSA
+enum {MENU_PAUSE = 0, PLAY_PAUSE, EXIT_PAUSE, ERROR_PAUSE};
 
 #ifdef RASPI
 	typedef struct {
@@ -100,6 +100,10 @@ void printMenu(graphics_t* graphics);
 int stateMenu(graphics_t* graphics);
 //Se encarga de realizar el update del Front End.
 void updateGraphics();
+//Realiza todos los prints necesarios
+void printSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien);
+//Realiza todos los clears necesarios.
+void clearSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien);
 
 #endif
 

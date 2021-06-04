@@ -45,6 +45,8 @@ int playSpaceInvaders(graphics_t* graphics, int* playerScore) {
 				doExit = 1;
 				break;
 		}
+		//(graphics_t* graphics, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien)
+		//clearSpaceInvaders(graphics, aliens, barriers, &spaceShip, &alienRandom);
 
 		//Actualizamos todos los objetos
 		//playerScore += updateAliens(aliens, &spaceShip.bullet);
@@ -55,6 +57,8 @@ int playSpaceInvaders(graphics_t* graphics, int* playerScore) {
 			}
 
 		}
+
+		//printSpaceInvaders(graphics, aliens, barriers, &spaceShip, &alienRandom);
 	}
 }
 
