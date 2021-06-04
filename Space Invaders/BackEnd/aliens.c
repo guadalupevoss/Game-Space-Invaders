@@ -1,9 +1,19 @@
 #include "aliens.h"
 
-void moveAliens(alien_t* aliens);  //no
+/**********************************************************************************
+ * Función: moveAliens                                                            *
+ * Esta función se encarga de mover a los aliens que corresponda.           	  *
+ **********************************************************************************/
+void moveAliens(alien_t* aliens);
+
+/**********************************************************************************
+ * Función: alienIsShot                                                           *
+ * Esta función se encarga de chequear si a un alien le dispararon.         	  *
+ **********************************************************************************/
 void alienIsShot(alien_t* alien, bullet_t* spaceshipBullet); //no
 
 //Inicializa posicion y vidas.
+//ACORDARSE DE INICIALIZAR LO DEL SCORE Y EL TIPO DE ALIEN.
 void initAliens(alien_t* aliens, int numAliens) {
     int i;
     if (numAliens < NUM_ALIENS) {
@@ -17,7 +27,6 @@ void initAliens(alien_t* aliens, int numAliens) {
             aliens[i].alive = DEAD;
         }
     }
-
 }
 
 void updateAliens(alien_t* aliens, bullet_t* spaceshipBullet) {

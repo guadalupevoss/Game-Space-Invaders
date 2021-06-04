@@ -7,22 +7,28 @@ Idea del juego:
 - Imprimir
 */
 
-enum{NOTHING=0, SS_BULLET, SS_MOVE_R, SS_MOVE_L, PAUSE, EXIT};
+//enum{SS_BULLET = 1, SS_MOVE_R, SS_MOVE_L, PAUSE, EXIT_P}; 
 
-int playSpaceInvaders(graphics_t* graphics, int* playerScore) {
+int playSpaceInvaders(graphics_t* graphics, player_t* player) {
+	player->points = 0;
 	int doExit = 0;
-	int eventState;
-	int i; 
+	int eventState = NOTHING;
+	int newMenuState = PLAY;
+	int i, ciclosTotal = 0, ciclosRandom; 
 
 	//Creamos e inicializamos todos los objetos.
 	alien_t aliens[NUM_ALIENS];
-	initAliens(&aliens, INIT_NUM_ALIENS);
+	initAliens(aliens, INIT_NUM_ALIENS);
 	barriers_t barriers[NUM_BARRIERS];
-	initBarriers(&barriers);
+	initBarriers(barriers);
 	spaceship_t spaceShip;
 	initSpaceship(&spaceShip);
 	alienRandom_t alienRandom;
 	initRandomAlien(&alienRandom);
+
+
+	srand(time(NULL));
+	ciclosRandom = rand() % (1000);
 
 	while (!doExit) {
 		//eventState = getEvent();
@@ -30,36 +36,64 @@ int playSpaceInvaders(graphics_t* graphics, int* playerScore) {
 			case NOTHING:
 				break;
 			case SS_BULLET:
+				printf("TIRA BALA\n");
 				throwBullet(&spaceShip);
 				break;
 			case SS_MOVE_R:
+				printf("SE MUEVE DERECHA\n");
 				moveSpaceship(DERECHA, &spaceShip);
 				break;
 			case SS_MOVE_L:
+				printf("SE MUEVE IZQUIERDA\n");
 				moveSpaceship(IZQUIERDA, &spaceShip);
 				break;
 			case PAUSE:
-				//funcion de pausa
+				printf("pausa\n");
+				//newMenuState = pause(graphics);
 				break;
 			case EXIT:
 				doExit = 1;
 				break;
 		}
-		//(graphics_t* graphics, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien)
+
+		/*
+			//Que si no esta en play se vaya al estado q corresponde, onda si se pasa a menu tiene q salir de play e imprimir el menu otra vez.
+			if(newMenuState != PLAY){
+				doExit = 1;
+			}
+		*/
+
 		//clearSpaceInvaders(graphics, aliens, barriers, &spaceShip, &alienRandom);
+
+		//Si llego a la cantidad de ciclos establecida de manera random y el alienRandom esta muerto entonces lo revivo y establezco un nuevo numero de ciclos random.
+		if((ciclosTotal == ciclosRandom) && (alienRandom.alive == DEAD)){
+			randomAlienIsBorn(&alienRandom, ciclosRandom);
+			ciclosRandom = rand() % (1000);
+			ciclosTotal = 0;
+		}
 
 		//Actualizamos todos los objetos
 		//playerScore += updateAliens(aliens, &spaceShip.bullet);
+		updateAliens(aliens, &spaceShip.bullet);
 		updateBarriers(barriers, aliens, &spaceShip.bullet);
 		//playerScore += updateRandomAlien(&alienRandom, &spaceShip.bullet);
+		updateRandomAlien(&alienRandom, &spaceShip.bullet);
 		for (i = 0; i < NUM_ALIENS; ++i) {
 			if (updateSpaceship(&aliens[i].bullet, &spaceShip)) { 
 			}
 
 		}
 
-		//printSpaceInvaders(graphics, aliens, barriers, &spaceShip, &alienRandom);
+		printSpaceInvaders(graphics, aliens, barriers, &spaceShip, &alienRandom);
+		if (ciclosTotal > 1000) {
+			ciclosTotal = 0;
+		}
+		else {
+			++ciclosTotal;
+		}
 	}
+
+	return newMenuState;
 }
 
 

@@ -11,7 +11,6 @@
  * letras del abecedario y los números en la Raspberry Pi.
  * Created on February 12, 2021, 2:20 PM
  */
-
 #ifdef RASPI
 
 /*******************************************************************************
@@ -23,7 +22,8 @@
 /*******************************************************************************
  *                        GLOBAL FUNCTIONS DEFINITIONS                         *
  *******************************************************************************/
-//Letra a
+
+//Letras
 void draw_a (int ax, int ay)
 {
 	dcoord_t myPoint_a1 = {ax+1,ay-4};
@@ -53,7 +53,6 @@ void draw_a (int ax, int ay)
 	return;
 }
 
-//letra b
 void draw_b (int bx, int by)
 {
 	dcoord_t myPoint_b1 = {bx,by-4};
@@ -1121,5 +1120,268 @@ void draw_0 (int x_0, int y_0)
     disp_write (myPoint0_13, D_ON);
 }
 
+
+
+
+//TECLADO
+
+// Esta funcion se encarga de cargar la matriz del teclado de la raspi con sus respectivas letras. 				
+void init_keyboard(char letter_keyboard[NUMBER_OF_SCREENS][NAMELENGHT])
+{
+	letter_keyboard[0][0] = 'A';
+	letter_keyboard[0][1] = 'B';
+	letter_keyboard[0][2] = 'C';
+	letter_keyboard[1][0] = 'D';
+	letter_keyboard[1][1] = 'E';
+	letter_keyboard[1][2] = 'F';
+	letter_keyboard[2][0] = 'G';
+	letter_keyboard[2][1] = 'H';
+	letter_keyboard[2][2] = 'I';
+	letter_keyboard[3][0] = 'J';
+	letter_keyboard[3][1] = 'K';
+	letter_keyboard[3][2] = 'L';
+	letter_keyboard[4][0] = 'M';
+	letter_keyboard[4][1] = 'N';
+	letter_keyboard[4][2] = 'O';
+	letter_keyboard[5][0] = 'P';
+	letter_keyboard[5][1] = 'Q';
+	letter_keyboard[5][2] = 'R';
+	letter_keyboard[6][0] = 'S';
+	letter_keyboard[6][1] = 'T';
+	letter_keyboard[6][2] = 'U';
+	letter_keyboard[7][0] = 'V';
+	letter_keyboard[7][1] = 'W';
+	letter_keyboard[7][2] = NULL; //esta pantalla solo tiene dos letras
+	letter_keyboard[8][0] = 'X';
+	letter_keyboard[8][1] = 'Y';
+	letter_keyboard[8][2] = 'Z';
+}
+
+/*******************************************************************************
+*	Esta funcion se encarga de mostrarle al usuario todas las letras		   *
+*	hasta que se selecciona una. Imprime las letras, responde al joystick	   *
+*	y finalmente devuelve la letra seleccionada.							   *
+*******************************************************************************/
+char get_letter(void){
+	int screen_number = 1;				//arranca mostrando la primer pantalla
+	screen_1_raspi();
+	jswitch_t mySwitch = 0;
+	jcoord_t myCoords;
+	int lado;
+	while (mySwitch != J_PRESS){			//mientras que no se aprete el joystick
+		joy_update();
+		mySwitch = joy_get_switch();
+		myCoords = joy_get_coord();		//agarra las coordenadas
+		if (myCoords.x > 10){				//si se mueve el joystick a la derecha, cambia a la pantalla correspondiente
+			if (screen_number == 9)		//si esta mostrando la ultima vuelve a la primera
+				screen_number = 1;
+			else
+				screen_number += 1;		//pasa a la proxima pantalla
+			CHANGESCREEN(screen_number); //imprime la pantalla 
+		}
+		else if (myCoords.x < -10){	//lo mismo pero si va para la izquierda
+			if (screen_number == 1)	//de la primer pantalla pasa a la ultima
+				screen_number = 9;
+			else
+				screen_number -= 1;	//pasa a la pantalla anterior
+			CHANGESCREEN(screen_number); //imprime la pantalla
+		}
+		disp_update();
+	}
+	//aca seria una vez que toca el boton del joystick
+
+	int guion_number = 1; //el guion se "para" sobre la primer letra
+
+	while (mySwitch != J_PRESS){ //mientras que no se presione el 
+		joy_update();
+		mySwitch = joy_get_switch();
+		myCoords = joy_get_coord();
+		if (screen_number == 8){
+			guion_number == 1 ? guion_number = 2 : guion_number = 1;
+			draw_guion_5(guion_number, screen_number);
+		}
+		else if (myCoords.x > 10){				//si se mueve el joystick a la derecha, cambia a la pantalla correspondiente
+			if (guion_number == 3)
+				guion_number = 1;
+			else
+				guion_number += 1;
+		}
+		else if (myCoords.x < -10){
+			if (guion_number == 1)
+				guion_number = 3;
+			else
+				guion_number -= 1;
+		}
+		switch (screen_number) //cada pantalla es un caso especial, ya que hay letras 4x5 y letras 5x5
+			case 1:
+			case 2:
+			case 4:
+			case 6:
+				//todas estas pantallas tienen 3 letras 4x5
+				draw_guion_4(guion_number);
+				break;
+			case 3:
+				//la tercera letra es 5x5
+				guion_number == 3 ? draw_guion_5(guion_number, screen_number) : draw_guion_4(guion_number, screen_number);
+				break;
+			case 5:
+				//la primer letra es 5x5
+				guion_number == 1 ? draw_guion_5(guion_number, screen_number) : draw_guion_4(guion_number, screen_number);
+				break;
+			case 7:
+				//la segunda letra es 5x5
+				guion_number == 2 ? draw_guion_5(guion_number, screen_number) : draw_guion_4(guion_number, screen_number);
+				break;
+			case 9:
+				guion_number == 3 ? draw_guion_4(guion_number, screen_number) : draw_guion_3(guion_number, screen_number);
+				break;
+		disp_update();
+	}
+	return letter_keyboard[screen_number - 1][guion_number - 1]; //una vez seleccionada la letra, la devuelve
+}
+
+/*******************************************************************************
+*   Estas funciones dibujan cada pantalla que ve el usuario. Cada una muestra  *
+*	tres letras (excepto una)												   *
+*******************************************************************************/
+void screen_1_raspi(){
+	disp_clear();
+	draw_a(1, 6);
+	draw_b(6, 6);
+	draw_c(11, 6);
+	draw_flechitas();
+}
+void screen_2_raspi(){
+	disp_clear();
+	draw_d(1, 6);
+	draw_e(6, 6);
+	draw_f(11, 6);
+	draw_flechitas();
+}
+void screen_3_raspi(){
+	disp_clear();
+	draw_g(1, 6);
+	draw_h(6, 6);
+	draw_i(11, 6);
+	draw_flechitas();
+}
+void screen_4_raspi(){
+	disp_clear();
+	draw_j(1, 6);
+	draw_k(6, 6);
+	draw_l(11, 6);
+	draw_flechitas();
+}
+void screen_5_raspi(){
+	disp_clear();
+	draw_m(0, 6)
+		draw_n(6, 6)
+		draw_o(11, 6)
+}
+void screen_6_raspi(){
+	disp_clear();
+	draw_p(1, 6);
+	draw_q(6, 6);
+	draw_r(11, 6);
+	draw_flechitas();
+}
+void screen_7_raspi(){
+	disp_clear();
+	draw_s(0, 6);
+	draw_t(5, 6);
+	draw_u(11, 6);
+	draw_flechitas();
+}
+void screen_8_raspi(){
+	disp_clear();
+	draw_v(2, 6);
+	draw_w(9, 6);
+	draw_flechitas();
+}
+void screen_9_raspi(){
+	disp_clear();
+	draw_x(0, 6);
+	draw_y(6, 6);
+	draw_z(12, 6);
+	draw_flechitas();
+}
+
+/*******************************************************************************
+*	Estas funciones se encargan de dibujar los guiones. Reciben el numero de   *
+*	guion y el numero de pantalla, con el fin de establecer una coordenada x   *
+*	de referencia para dibujar el guion.									   *
+*	El fin de los guiones, es mostrarle al usuario sobre que letra esta parado *
+*	una vez seleccionada la pantalla. 										   *
+*******************************************************************************/
+
+void draw_guion_4(int x, int screen_number){ //para las letras 4x5
+	if (x == 1){
+		if (screen_number == 7){ //caso especial 
+			x = 0; //acomodo el guion para que apunte a la primer letra
+		}
+		else{
+			//deja el x=1
+		}
+	}
+	else if (x == 2){
+		x = 6;	//acomoda el guion para que apunte a la segunda letra
+	}
+	else if (x == 3){
+		if (screen_number == 9){
+			x = 12; //caso especial
+		}
+		else{
+			x = 11;	//acomoda el guion para que apunte a la tercera letra
+		}
+	}
+	dcoord_t myPoint_guion41 = { x,8 };
+	disp_write(myPoint_guion41, D_ON);
+	dcoord_t myPoint_guion42 = { x + 1,8 };
+	disp_write(myPoint_guion42, D_ON);
+	dcoord_t myPoint_guion43 = { x + 2,8 };
+	disp_write(myPoint_guion43, D_ON);
+	dcoord_t myPoint_guion44 = { x + 3,8 };
+	disp_write(myPoint_guion44, D_ON);
+}
+
+void draw_guion_5(int x, int screen_number){ //para las letras 5x5
+	if (x == 1){
+		switch (screen_number)
+			case 5:
+			case 9:
+				x = 0;		//acomoda el guion para que apunte a la primer letra
+				break;
+			case 8:			//acomoda el guion para que apunte a la primer letra
+				x = 2;
+				break;
+	}
+	else if (x == 2){
+		switch (screen_number)
+			case 7:
+				x = 5;		//acomoda el guion para que apunte a la segunda letra
+				break;
+			case 8:
+				x = 9;		//acomoda el guion para que apunte a la segunda letra
+				break;
+			case 9:
+				x = 6;
+				break;
+	}
+	else if (x == 3){
+		if (screen_number == 3){ //para comprobar que haya entrado bien
+			x = 11;		//acomoda el guion para que apunte a la tercera letra
+		}
+	}
+	dcoord_t myPoint_guion51 = { x,8 };
+	disp_write(myPoint_guion51, D_ON);
+	dcoord_t myPoint_guion52 = { x + 1,8 };
+	disp_write(myPoint_guion52, D_ON);
+	dcoord_t myPoint_guion53 = { x + 2,8 };
+	disp_write(myPoint_guion53, D_ON);
+	dcoord_t myPoint_guion54 = { x + 3,8 };
+	disp_write(myPoint_guion54, D_ON);
+	dcoord_t myPoint_guion55 = { x + 4,8 };
+	disp_write(myPoint_guion55, D_ON);
+}
 
 #endif

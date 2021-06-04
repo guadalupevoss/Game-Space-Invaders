@@ -1,23 +1,31 @@
 #include "randomalien.h"
 
-//Se encarga de mover el alien para la derecha o la izquierda segun corresponda
-void moveRandomAlien(alienRandom_t* alien); 
-//Se fija si le dispararon al alien random.
+/**********************************************************************************
+ * Función: moveRandomAlien                                                       *
+ * Esta función se encarga de mover el alien para la derecha o la izquierda segun *
+ * corresponda.                                                                   *
+ **********************************************************************************/
+void moveRandomAlien(alienRandom_t* alien);
+
+/**********************************************************************************
+ * Función: randomAlienIsShot                                                     *
+ * Esta función se encarga de fijarse si le dispararon al alien.	              *
+ **********************************************************************************/
 void randomAlienIsShot(alienRandom_t* alien, bullet_t* bullet);
 
 void initRandomAlien(alienRandom_t* alien) {
     alien->alive = DEAD;
 }
 
-void randomAlienIsBorn(alienRandom_t* alien, int ciclos_random) {
+void randomAlienIsBorn(alienRandom_t* alien, int ciclosRandom) {
     //srand(time(NULL));
     alien->alive = ALIVE;
     int x;
-    if ((ciclos_random % 2) == 0) {
+    if ((ciclosRandom % 2) == 0) {
         x = 0;
         alien->direction = DERECHA;
     }
-    else if ((ciclos_random % 2) == 0) {
+    else if ((ciclosRandom % 2) == 0) {
         x = WIDTH - 1;
         alien->direction = IZQUIERDA;
     }

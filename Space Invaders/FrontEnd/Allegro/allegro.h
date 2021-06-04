@@ -16,90 +16,18 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
+#include "../../BackEnd/barriers.h"
+#include "../../BackEnd/randomalien.h"
+#include "../../BackEnd/spaceship.h"
 
-//En caso de error las funciones devuelven ERROR_GRAPHICS, si todo está bien devuelven un OK_GRSPHICS.
-#define ERROR_GRAPHICS -1
-#define OK_GRAPHICS		0
-
-#define FPS             60.0
-
-#define MOVE_RATE       5.0 //Para el movimiento
-
-//Tamaño del display
-#define SCREEN_W 800
-#define SCREEN_H 800
-
-#define UNIDAD SCREEN_W/16
-
-//Defines para mouse
-#define MOUSE_IN_PLAY ((ev.mouse.x>210)&(ev.mouse.x<550)&(ev.mouse.y>334)&(ev.mouse.y<407)) //COORDENADAS DE LOS BOTONES DEL MENÚ
-#define MOUSE_IN_EXIT ((ev.mouse.x>208)&(ev.mouse.x<548)&(ev.mouse.y>680)&(ev.mouse.y<767))
-#define MOUSE_IN_HIGH_SCORE ((ev.mouse.x>130)&(ev.mouse.x<650)&(ev.mouse.y>531)&(ev.mouse.y<568))
-
-//Defines de la nave
-#define NAVE_SIZE_X     40  //TAMAnO DE LA NAVE
-#define NAVE_SIZE_Y     40
-#define SPACESHIP_POS_Y SCREEN_H
-#define INITIAL_SPASESHIP_POS_X SCREEN_W/2 
-#define SPACESHIP_LIVES 3
-
-//Defines de los aliens
-#define ALIEN_SIZE_X    32  //TAMAnO DEL ALIEN
-#define ALIEN_SIZE_Y    32
-#define DISTANCIA_TECHO_Y   60  //DISTANCIA INICIAL ENTRE ALIEN Y BORDE SUPERIOR DE LA PANTALLA.
-#define NUM_ALIENS		55
-#define INIT_NUM_ALIENS 6
-#define INITIAL_ALIEN_SPEED 50
-#define CANT_TIPOS_ALIEN    6   //TIPOS DE ALIENS (CONTANDO LA IMAGEN DEL ALIEN MUERTO)
-#define INITIAL_ALIEN_BULLET_SPEED	1.5
-#define COLUMNAS        7   //COLUMNAS Y FILAS (DE ALIENS)MAXIMAS
-#define FILAS           5
-
-//Defines de las barreras
-#define BARRERA_SIZE_X  52
-#define BARRERA_SIZE_Y  42
-#define NUM_BARRIERS   4
-#define CANT_TIPOS_BARRERAS     5   //TIPOS DE BARRERAS (CONTANDO LA IMAGEN DE LA BARRERA MUERTA)
-
-
-//Defines del alien random
-#define RANDOM_ALIEN_POS_Y 5
-#define RANDOM_ALIEN_SIZE_X 40  //Establece el tamaNo del alien random.
-#define RANDOM_ALIEN_SIZE_Y 35
-#define RANDOM_ALIEN_POSICION_Y  30 //PosiciOn en el eje y que mantendrA el alien random
-#define RANDOM_ALIEN_SPEED  2
-
-//Defines de las balas
-#define BALA_SIZE_X     5   //TAMANO DE LA BALA (DEPENDE DE LA IMAGEN QUE TENGA)
-#define BALA_SIZE_Y     14
-
-//Defines de las imagenes
-#define SCORE_SIZE_X    67  //TAMANO DE LA IMAGEN "SCORE"
-#define SCORE_SIZE_Y    20
-#define HEART_SIZE_X    33  //TAMANO DE IMAGEN DE CORAZON (VIVO Y MUERTO)
-#define HEART_SIZE_Y    30
-#define ESP_SCORE_NUM   15	//ESPACIO ENTRE LA PALABRA "SCORE" Y LOS NUMEROS
-#define CARACTER_SCORE  11  //NUMERO DEL ARREGLO DONDE ESTA SCORE (y esto??????????????)
-#define CIFRAS_SCORE    9
-#define CANT_BTM_MENU	6	//Numero de bitmaps para el menú.
-#define CANT_SAMPL_MENU	4	//Establece la cantidad de audios que se utilizan en el menú.
-#define CANT_LIVES_BTM	2
-#define CANT_FONDOS_EXTRA 3
-
-//Defines para el highscore
-#define FUENTE_SIZE			30
-#define ENTER_PLAYER_NAME_X 200
-#define ENTER_PLAYER_NAME_Y 190
-#define PLAYER_NAME_X       200
-#define PLAYER_NAME_Y       230
-#define MESSAGE_X           200
-#define MESSAGE_Y           290
-#define MAXSCORES			10
-#define NAMELENGHT			10
-#define MAX_ARR_CARACTER	40 
-#define DISTANCE_POINTS_PLAYER 250
+//ver si esta bien esto
+#include "../../BackEnd/highscore.h"
 
 #ifndef  RASPI
+
+//Estados del juego
+enum { NOTHING = 0, SS_BULLET, SS_MOVE_R, SS_MOVE_L, PAUSE, EXIT };
+
 typedef struct {
 	int state;
 
@@ -113,10 +41,10 @@ typedef struct {
 	ALLEGRO_SAMPLE* menuSamples[CANT_SAMPL_MENU];
 
 	//Para los aliens
-	ALLEGRO_BITMAP* aliensBitmaps[NUM_ALIENS];
+	ALLEGRO_BITMAP* aliensBitmaps[CANT_TIPOS_ALIEN];
 
 	//Para las barreras
-	ALLEGRO_BITMAP* barriersBitmaps[NUM_BARRIERS];
+	ALLEGRO_BITMAP* barriersBitmaps[CANT_TIPOS_BARRERAS];
 
 	//Para el random alien
 	ALLEGRO_BITMAP* randomAlienBitmap;
@@ -138,12 +66,14 @@ typedef struct {
 enum{MENU_GR=0, PLAY_GR, HIGHSCORE_GR, EXIT_GR, FONDO_GR, SPACEINVADERS_GR};
 enum{ALIEN0=0, ALIEN1, ALIEN2, ALIEN3, ALIEN4, DEADALIEN};
 enum{BARRIER0=0, BARRIER1, BARRIER2, BARRIER3, DEADBARRIER};
-enum{DEAD=0, ALIVE};
+//enum{DEAD=0, ALIVE};
 enum{GAMEOVER=0, HIGHSCORES, MENUPAUSE};
 
 
 //Estados del MENU
-enum { MENU = 0, PLAY, HIGHSCORE, EXIT, ERROR};
+enum { MENU = 0, PLAY, HIGHSCORE, EXIT_M, ERROR};
+//Estados del MENU DE PAUSA
+enum { MENU_PAUSE=1, PLAY_PAUSE, EXIT_PAUSE, ERROR_PAUSE };
 
 //Inicializa Allegro y sus variables.
 int initGraphics(graphics_t* allegro);
@@ -155,6 +85,8 @@ void updateGraphics(void);
 void printMenu(graphics_t* graphics);
 //Función que se fija si cambió el estado (si se presionó algún botón o saltó error) y devuelve el estado indicado.
 int stateMenu(graphics_t* graphics);
+//Imprime ej juego.
+void printSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien);
 
 #endif // ! RASPI
 

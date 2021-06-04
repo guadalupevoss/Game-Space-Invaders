@@ -21,7 +21,7 @@ void updateBarriers(barriers_t* barriers, alien_t* aliens, bullet_t* spaceshipBu
 			}
 		}
 		if (spaceshipBullet->state == ON) {
-			barrierIsShot(&barriers[i], &spaceshipBullet);
+			barrierIsShot(&barriers[i], spaceshipBullet);
 		}
 	}
 }

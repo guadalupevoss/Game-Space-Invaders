@@ -2,8 +2,6 @@
 #define SPACESHIP_H
 
 #include "bullet.h"
-#include "position.h"
-#include "../FrontEnd/graphics.h"
 
 typedef struct {
 	position_t pos;

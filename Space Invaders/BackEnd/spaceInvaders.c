@@ -1,11 +1,24 @@
 #include "spaceInvaders.h"
 
-//Inicializa lo que necesita spaceInvaders.
+
+/**********************************************************************************
+ * Función: initSpaceInvaders                                                     *
+ * Esta función se encarga de inicializar lo que necesita spaceInvaders.		  *
+ **********************************************************************************/
 int initSpaceInvaders(player_t* player, graphics_t* graphics);
-//Inicializa la variables del jugador.
+
+/**********************************************************************************
+ * Función: initPlayer                                                            *
+ * Esta función se encarga de inicializar las variables del jugador.			  *
+ **********************************************************************************/
 void initPlayer(player_t* player);
-//Limpia un arreglo de char de cantidad de caracteres countChar.
-void clearArr(char* arr, int countChar);
+
+/**********************************************************************************
+ * Función: clearArr                                                              *
+ * Esta función se encarga de limpiar un arreglo de char de cantidad de caracteres*
+ * countChar.																	  *
+ **********************************************************************************/
+//void clearArr(char* arr, int countChar);
 
 int spaceInvaders(void) {
 	//Variable para controlar la salida del while.
@@ -14,8 +27,8 @@ int spaceInvaders(void) {
 	int estado = MENU;
 	//Variable con los datos del jugador.
 	player_t player;
-	char playerName[NAME_LENGHT];
-	player.name=playerName;
+	player_t highscores[SCORES_NUM];
+
 	//Variable con recursos gráficos.
 	graphics_t graphics;
 
@@ -24,6 +37,8 @@ int spaceInvaders(void) {
 		doExit = 1;
 		estado = ERROR;
 	}
+
+	scoreboardInit(highscores);
 
 	while ((!doExit)) {
 		switch (estado) {
@@ -34,7 +49,10 @@ int spaceInvaders(void) {
 			//Si el estado es PLAY, entra al juego. 
 			//Si se cierra el display devuelve EXIT. Ante un error devuelve ERROR. Si se vuelve al menú o pierde devuelve el puntaje.
 		case PLAY:
-			//estado = playSpaceInvaders();
+			estado = playSpaceInvaders(&graphics, &player);
+			if (testNewScore(&player, highscores)) {
+				// anotar el nombre
+			}
 			break;
 			//Entra a los highsocres. 
 			//Si se cierra el display cierra el display devuelve EXIT. En caso contrario devuelve MENU.
@@ -51,7 +69,7 @@ int spaceInvaders(void) {
 			break;
 			//Cuando se manda el puntaje entra acá.
 		default:
-			player.score = estado;
+			//player.score = estado;
 			//player.name= funcion Ingresar nombre. 
 			//Cargar Score al txt.
 			estado = MENU;
@@ -80,13 +98,13 @@ int initSpaceInvaders(player_t* player, graphics_t* graphics) {
 }
 
 void initPlayer(player_t* player) {
-	player->score = 0;
-	clearArr(&player->name, NAME_LENGHT);
+	player->points = 0;
+	clearArr(player->name, NAME_LENGHT);
 }
-void clearArr(char* arr, int countChar) {
-
-	int i = 0;
-	for (i = 0; i < countChar; ++i) {
-		arr[i] = ' ';
-	}
-}
+//void clearArr(char* arr, int countChar) {
+//
+//	int i = 0;
+//	for (i = 0; i < countChar; ++i) {
+//		arr[i] = ' ';
+//	}
+//}

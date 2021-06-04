@@ -4,6 +4,7 @@
 
 #include "allegro.h"
 
+
 //Carga los bitmaps necesarios. Si está todo bien devuelve OK_GRAPHICS. En caso contrario devuelve ERROR_GRAPHICS.
 int loadAllBitmaps(graphics_t* allegro);
 //Recibe un arreglo de bitmaps a cargar, con su path y su cantidad y los carga. Si esta todo bien devuelve OK_GRAPHICS. En caso contrario devuelve ERROR_GRAPHICS.
@@ -13,20 +14,9 @@ int loadMenuSamples(ALLEGRO_SAMPLE* menuSamples[]);
 void destroyBitmaps(graphics_t* allegro);
 void destroyBitmap(ALLEGRO_BITMAP* bitmaps[], int cant);
 
-////Carga los bitmaps para el menu. Si está todo bien devuelve OK_GRAPHICS. En caso contrario devuelve ERROR_GRAPHICS.
-//int loadMenuBitmaps(ALLEGRO_BITMAP* menuBitmaps[]);
-////Carga los bitmaps para las barreras. Si esta todo bien devuelve OK_GRAPHICS. En caso contrario devuelve ERROR_GRAPHICS.
-//int loadBarrierBitmaps(ALLEGRO_BITMAP* barriersBitmaps[]);
-////Carga los bitmaps para los aliens. Si está todo bien devuelve OK_GRAPHICS. En caso contrario devuelve ERROR_GRAPHICS.
-//int loadAliensBitmaps(ALLEGRO_BITMAP* aliensBitmaps[]);
-////Carga el bitmap para el random alien. Si está todo bien devuelve OK_GRAPHICS. En caso contrario devuelve ERROR_GRAPHICS.
-//int loadRandomAlienBitmap(ALLEGRO_BITMAP* randomAlienBitmap)
-////Carga el bitmap para la bala. Si está todo bien devuelve OK_GRAPHICS. En caso contrario devuelve ERROR_GRAPHICS.
-//int loadBulletBitmap(ALLEGRO_BITMAP* bulletBitmap)
-////Carga el bitmap para la nave. Si está todo bien devuelve OK_GRAPHICS. En caso contrario devuelve ERROR_GRAPHICS.
-//int loadSpaceshipBitmap(ALLEGRO_BITMAP* spaceshipBitmap)
-////Carga los bitmaps para las vidas. Si está todo bien devuelve OK_GRAPHICS. En caso contrario devuelve ERROR_GRAPHICS.
-//int loadLivesBitmaps(ALLEGRO_BITMAP* livesBitmaps[])
+int print_scores(ALLEGRO_FONT* fuente_score, ALLEGRO_EVENT_QUEUE* ev_queue);
+void read_keyboard(char arr_char[], ALLEGRO_EVENT_QUEUE* ev_queue, ALLEGRO_FONT* fuente_score, ALLEGRO_BITMAP* fondo_read);
+void clearArr(char* arr, int countChar);
 
 //Inicializa Allegro y sus variables.
 int initGraphics(graphics_t* allegro) {
@@ -159,14 +149,12 @@ void destroyBitmaps(graphics_t* allegro) {
     destroyBitmap(allegro->menuBitmaps, CANT_BTM_MENU);
 }
 
-void destroyBitmap(ALLEGRO_BITMAP* bitmaps[], int cant)
-{
+void destroyBitmap(ALLEGRO_BITMAP* bitmaps[], int cant){
     int i;
     for (i = 0; i < cant; ++i)
     {
         al_destroy_bitmap(bitmaps[i]);
     }
-
 }
 
 int loadMenuSamples(ALLEGRO_SAMPLE* menuSamples[]) {
@@ -244,7 +232,7 @@ int stateMenu(graphics_t* graphics) {
     ALLEGRO_EVENT ev;
     if (al_get_next_event(graphics->eventQueue, &ev)) {
         if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
-            tempState = EXIT;
+            tempState = EXIT_M;
         }
         else if(ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP){
             switch(graphics->state){
@@ -255,7 +243,7 @@ int stateMenu(graphics_t* graphics) {
                     tempState = HIGHSCORE;
                     break;
                 case EXIT_GR:
-                    tempState = EXIT;
+                    tempState = EXIT_M;
                     break;
             }
         }
@@ -281,199 +269,401 @@ int stateMenu(graphics_t* graphics) {
 }
 
 //enum{NOTHING=0, SS_BULLET, SS_MOVE_R, SS_MOVE_L, PAUSE, EXIT};
-int getEvent(graphics_t graphics){
-    
-    int tempEvent =NOTHING;
+
+int getEvent(graphics_t graphics) {
+    int tempEvent = NOTHING;
     ALLEGRO_EVENT ev;
+    //Tomo el siguiente evento en la cola de eventos.
+    if (al_get_next_event(graphics.eventQueue, &ev)) {
 
-     //Tomo el siguiente evento en la cola de eventos.
-    if (al_get_next_event(graphics->eventQueue, &ev)){
-
-        if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
-                tempEvent = EXIT;
-            }
+        if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+            tempEvent = EXIT;
+        }
 
         else if (ev.type == ALLEGRO_EVENT_TIMER) {
 
         }
-        else if (ev.type == ALLEGRO_EVENT_KEY_DOWN){
+        else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
 
             switch (ev.keyboard.keycode) {
-			    case ALLEGRO_KEY_LEFT:
-			        key_pressed[KEY_LEFT] = true;
-			        break;
-			    case ALLEGRO_KEY_RIGHT:
-			        key_pressed[KEY_RIGHT] = true;
-			        break;
-			    case ALLEGRO_KEY_SPACE:
-			        key_pressed[KEY_SPACE] = true;
-			        break;
-		    }
+            case ALLEGRO_KEY_LEFT:
+                tempEvent = SS_MOVE_L;
+                break;
+            case ALLEGRO_KEY_RIGHT:
+                tempEvent = SS_MOVE_R;
+                break;
+            case ALLEGRO_KEY_SPACE:
+                tempEvent = SS_BULLET;
+                break;
+            case ALLEGRO_KEY_ESCAPE:
+                tempEvent = PAUSE;
+                break;
+            }
         }
-        else if (ev.type == ALLEGRO_EVENT_KEY_UP){
+        else if (ev.type == ALLEGRO_EVENT_KEY_UP) {
             switch (ev.keyboard.keycode) {
-			    case ALLEGRO_KEY_LEFT:
-			        key_pressed[KEY_LEFT] = false;
-			        break;
-			    case ALLEGRO_KEY_RIGHT:
-			        key_pressed[KEY_RIGHT] = false;
-			        break;
-			    case ALLEGRO_KEY_SPACE:
-			        key_pressed[KEY_SPACE] = false;
-			        break;
+            case ALLEGRO_KEY_LEFT:
+                break;
+            case ALLEGRO_KEY_RIGHT:
+                break;
+            case ALLEGRO_KEY_SPACE:
+                break;
+            case ALLEGRO_KEY_ESCAPE:
+                break;
+
+            }
+        }
+
+       
+    }
+    return tempEvent;
+}
+
+
+
+void printSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien){
+
+    //Defino un contador.
+    int i=0;
+
+    //Imprime el fondo del juego.
+    al_draw_bitmap(graphics->menuBitmaps[FONDO_GR], 0, 0, 0);
+
+    //Imprime a los aliens en su posición y las balas que tengan.-----Acá falta la parte del alien muerto(explota).
+    for(i=0;i<NUM_ALIENS;++i){
+        if(aliens[i].alive==ALIVE){
+            switch (aliens[i].score) {
+			        case SCORE_1:
+			            al_draw_bitmap(graphics->aliensBitmaps[0], (aliens[i].pos.x)*UNIDAD, (aliens[i].pos.y)*UNIDAD, 0);
+			            break;
+			        case SCORE_2:
+                        al_draw_bitmap(graphics->aliensBitmaps[1], (aliens[i].pos.x)*UNIDAD, (aliens[i].pos.y)*UNIDAD, 0);
+			            break;
+			        case SCORE_3:
+                        al_draw_bitmap(graphics->aliensBitmaps[2], (aliens[i].pos.x)*UNIDAD, (aliens[i].pos.y)*UNIDAD, 0);
+			            break;
+                    case SCORE_4:
+                        al_draw_bitmap(graphics->aliensBitmaps[3], (aliens[i].pos.x)*UNIDAD, (aliens[i].pos.y)*UNIDAD, 0);
+			            break;
+                    case SCORE_5:
+                        al_draw_bitmap(graphics->aliensBitmaps[4], (aliens[i].pos.x)*UNIDAD, (aliens[i].pos.y)*UNIDAD, 0);
+			            break;
+		        }   
+        }
+        if(aliens[i].bullet.state==ON){
+            al_draw_bitmap(graphics->bulletBitmap, (aliens[i].bullet.pos.x)*UNIDAD, (aliens[i].bullet.pos.y)*UNIDAD, 0);
+        }
+    }
+
+
+    //Imprime al alien random.-----Acá falta la parte del alien random muerto(explota).
+    if(rAlien->alive==ALIVE){
+            al_draw_bitmap(graphics->randomAlienBitmap, (rAlien->pos.x)*UNIDAD, (rAlien->pos.y)*UNIDAD, 0);
+    }
+
+
+    //Imprime las barreras.-----Acá falta la parte de la barrera muerta(explota).
+    for (i = 0; i < NUM_BARRIERS; i++){
+            switch (barriers[i].lives) {
+                case BARRIER_LIVES:
+                    al_draw_bitmap(graphics->barriersBitmaps[0], (barriers[i].pos.x) * UNIDAD, (barriers[i].pos.y) * UNIDAD, 0);
+                    break;
+                case BARRIER_LIVES-1:
+                    al_draw_bitmap(graphics->barriersBitmaps[1], (barriers[i].pos.x) * UNIDAD, (barriers[i].pos.y) * UNIDAD, 0);
+                    break;
+                case BARRIER_LIVES-2:
+                    al_draw_bitmap(graphics->barriersBitmaps[2], (barriers[i].pos.x) * UNIDAD, (barriers[i].pos.y) * UNIDAD, 0);
+                    break;
+                case BARRIER_LIVES-3:
+                    al_draw_bitmap(graphics->barriersBitmaps[3], (barriers[i].pos.x) * UNIDAD, (barriers[i].pos.y) * UNIDAD, 0);
+                    break;
+            }
+    }
+
+
+    //Imprime la nave y su bala.
+    al_draw_bitmap(graphics->spaceshipBitmap, (spaceship->pos.x)*UNIDAD, (spaceship->pos.y)*UNIDAD, 0);
+    if(spaceship->bullet.state==ON){
+            al_draw_bitmap(graphics->bulletBitmap, (spaceship->bullet.pos.x)*UNIDAD, (spaceship->bullet.pos.y)*UNIDAD, 0);
+    }
+
+    updateGraphics();
+
+}
+
+
+//Para highscores
+
+int print_scores(ALLEGRO_FONT* fuente_score, ALLEGRO_EVENT_QUEUE* ev_queue){
+    float       text_x, text_y;
+    char        str[MAX_ARR_CARACTER];
+    bool        do_exit_score = false;
+
+    ALLEGRO_BITMAP* fondo_lista_high_score;
+    ALLEGRO_BITMAP* fondo_score;
+
+    fondo_lista_high_score = al_load_bitmap("Resources/Bitmaps/high_scores.bmp"); //fondo lista de high scores
+    if (!fondo_lista_high_score) {
+        fprintf(stderr, "failed to create high score bitmap!\n");
+        return 0;
+    }
+    fondo_score = al_load_bitmap("Resources/Bitmaps/fondo_juego.bmp"); //fondo lista de high scores
+    if (!fondo_score) {
+        fprintf(stderr, "failed to create fondo score bitmap!\n");
+        return 0;
+    }
+
+    al_convert_mask_to_alpha(fondo_lista_high_score, al_map_rgb(0, 255, 0));
+    al_convert_mask_to_alpha(fondo_score, al_map_rgb(0, 255, 0));
+
+    al_register_event_source(ev_queue, al_get_mouse_event_source());
+
+    al_draw_bitmap(fondo_score, 0, 0, 0);
+    al_draw_bitmap(fondo_lista_high_score, 0, 0, 0);
+    al_flip_display();
+
+
+    FILE* fp;
+    fp = fopen("Resources/scoreboard.txt", "r");
+    if (fp == NULL)
+    {
+        printf("Error en fp");
+    }
+
+    clearArr(str, MAX_ARR_CARACTER);
+    text_x = 210;
+    text_y = 200;
+
+    //ESCRIBO LA LISTA
+    while (!feof(fp))
+    {
+        fscanf(fp, "%s", str);
+        al_draw_text(fuente_score, al_map_rgb(255, 255, 255), text_x - 1, text_y, ALLEGRO_ALIGN_LEFT, str);
+        al_draw_text(fuente_score, al_map_rgb(224, 192, 0), text_x, text_y, ALLEGRO_ALIGN_LEFT, str);
+        clearArr(str, MAX_ARR_CARACTER);
+        fscanf(fp, "%s", str);
+        al_draw_text(fuente_score, al_map_rgb(255, 255, 255), text_x + DISTANCE_POINTS_PLAYER - 1, text_y, ALLEGRO_ALIGN_LEFT, str);
+        al_draw_text(fuente_score, al_map_rgb(224, 192, 0), text_x + DISTANCE_POINTS_PLAYER, text_y, ALLEGRO_ALIGN_LEFT, str);
+        clearArr(str, MAX_ARR_CARACTER);
+        text_y += FUENTE_SIZE;
+    }
+    fclose(fp);
+    al_flip_display();
+
+    //ME MANTENGO ADENTRO DE LA LISTA HASTA QUE APRIETO LA FLECHA
+    while (!do_exit_score)
+    {
+        ALLEGRO_EVENT ev;
+
+        if (al_get_next_event(ev_queue, &ev))
+        {
+
+            if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+            {
+                do_exit_score = true;
+            }
+            else if ((ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) && (MOUSE_IN_EXIT_SCORE))
+            {
+                do_exit_score = true;
+            }
+
+        }
+    }
+
+    al_destroy_bitmap(fondo_score);
+    al_destroy_bitmap(fondo_lista_high_score);
+    return 1;
+}
+void read_keyboard(char arr_char[], ALLEGRO_EVENT_QUEUE* ev_queue, ALLEGRO_FONT* fuente_score, ALLEGRO_BITMAP* fondo_read)
+{
+    bool exit_keyboard = false;
+
+    int     character_counter = 0;
+    clearArr(arr_char, NAMELENGHT);
+
+    if (!al_install_keyboard()) {
+        fprintf(stderr, "failed to initialize the keyboard!\n");
+    }
+
+
+    al_register_event_source(ev_queue, al_get_keyboard_event_source()); //REGISTRAMOS EL TECLADO
+
+    while (!exit_keyboard)
+    {
+        ALLEGRO_EVENT event;
+
+        //  1° TOMA EL ÚLTIMO EVENTO DE LA COLA DE EVENTOS
+        if (al_get_next_event(ev_queue, &event))
+        {
+
+            if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+            {
+                exit_keyboard = true;
+            }
+
+            if (character_counter < NAMELENGHT)
+            {
+                if (event.type == ALLEGRO_EVENT_KEY_DOWN)
+                {
+                    switch (event.keyboard.keycode)
+                    {
+                    case ALLEGRO_KEY_A:
+                        arr_char[character_counter] = 'A';
+                        ++character_counter;
+                        break;
+                    case ALLEGRO_KEY_B:
+                        arr_char[character_counter] = 'B';
+                        printf("%s", arr_char);
+                        ++character_counter;
+                        break;
+                    case ALLEGRO_KEY_C:
+                        arr_char[character_counter] = 'C';
+                        ++character_counter;
+                        break;
+                    case ALLEGRO_KEY_D:
+                        arr_char[character_counter] = 'D';
+                        ++character_counter;
+                        break;
+                    case ALLEGRO_KEY_E:
+                        arr_char[character_counter] = 'E';
+                        ++character_counter;
+                        break;
+                    case ALLEGRO_KEY_F:
+                        arr_char[character_counter] = 'F';
+                        ++character_counter;
+                        break;
+                    case ALLEGRO_KEY_G:
+                        arr_char[character_counter] = 'G';
+                        ++character_counter;
+                        break;
+                    case ALLEGRO_KEY_H:
+                        arr_char[character_counter] = 'H';
+                        ++character_counter;
+                        break;
+                    case ALLEGRO_KEY_I:
+                        arr_char[character_counter] = 'I';
+                        ++character_counter;
+                        break;
+                    case ALLEGRO_KEY_J:
+                        arr_char[character_counter] = 'J';
+                        ++character_counter;
+                        break;
+                    case ALLEGRO_KEY_K:
+                        arr_char[character_counter] = 'K';
+                        ++character_counter;
+                        break;
+                    case ALLEGRO_KEY_L:
+                        arr_char[character_counter] = 'L';
+                        ++character_counter;
+                        break;
+                    case ALLEGRO_KEY_M:
+                        arr_char[character_counter] = 'M';
+                        ++character_counter;
+                        break;
+                    case ALLEGRO_KEY_N:
+                        arr_char[character_counter] = 'N';
+                        ++character_counter;
+                        break;
+                    case ALLEGRO_KEY_P:
+                        arr_char[character_counter] = 'P';
+                        ++character_counter;
+                        break;
+                    case ALLEGRO_KEY_O:
+                        arr_char[character_counter] = 'O';
+                        ++character_counter;
+                        break;
+                    case ALLEGRO_KEY_Q:
+                        arr_char[character_counter] = 'Q';
+                        ++character_counter;
+                        break;
+                    case ALLEGRO_KEY_R:
+                        arr_char[character_counter] = 'R';
+                        ++character_counter;
+                        break;
+                    case ALLEGRO_KEY_S:
+                        arr_char[character_counter] = 'S';
+                        ++character_counter;
+                        break;
+                    case ALLEGRO_KEY_T:
+                        arr_char[character_counter] = 'T';
+                        ++character_counter;
+                        break;
+                    case ALLEGRO_KEY_U:
+                        arr_char[character_counter] = 'U';
+                        ++character_counter;
+                        break;
+                    case ALLEGRO_KEY_V:
+                        arr_char[character_counter] = 'V';
+                        ++character_counter;
+                        break;
+                    case ALLEGRO_KEY_W:
+                        arr_char[character_counter] = 'W';
+                        ++character_counter;
+                        break;
+                    case ALLEGRO_KEY_X:
+                        arr_char[character_counter] = 'X';
+                        ++character_counter;
+                        break;
+                    case ALLEGRO_KEY_Y:
+                        arr_char[character_counter] = 'Y';
+                        ++character_counter;
+                        break;
+                    case ALLEGRO_KEY_Z:
+                        arr_char[character_counter] = 'Z';
+                        ++character_counter;
+                        break;
+                    }
+
+                }
+            }
+
+            if (event.type == ALLEGRO_EVENT_KEY_UP)
+            {
+                switch (event.keyboard.keycode)
+                {
+                case ALLEGRO_KEY_BACKSPACE:
+                    if (character_counter > 0)
+                    {
+                        --character_counter;
+                        arr_char[character_counter] = '\0';
+                    }
+                    break;
+                case ALLEGRO_KEY_ENTER:
+                    if (character_counter > 0)
+                    {
+                        exit_keyboard = true;
+                    }
+
+                    break;
+
+                }
+            }
+
+            al_draw_bitmap(fondo_read, 0, 0, 0);
+
+            if (character_counter == NAMELENGHT)
+            {
+                al_draw_text(fuente_score, al_map_rgb(255, 255, 255), MESSAGE_X - 2, MESSAGE_Y, ALLEGRO_ALIGN_LEFT, "CHARACTER LIMIT REACHED");
+                al_draw_text(fuente_score, al_map_rgb(224, 192, 0), MESSAGE_X, MESSAGE_Y, ALLEGRO_ALIGN_LEFT, "CHARACTER LIMIT REACHED");
+            }
+
+
+            al_draw_text(fuente_score, al_map_rgb(255, 255, 255), ENTER_PLAYER_NAME_X - 2, ENTER_PLAYER_NAME_Y, ALLEGRO_ALIGN_LEFT, "ENTER PLAYER NAME:");
+            al_draw_text(fuente_score, al_map_rgb(224, 192, 0), ENTER_PLAYER_NAME_X, ENTER_PLAYER_NAME_Y, ALLEGRO_ALIGN_LEFT, "ENTER PLAYER NAME:");
+            al_draw_text(fuente_score, al_map_rgb(255, 255, 255), PLAYER_NAME_X - 2, PLAYER_NAME_Y, ALLEGRO_ALIGN_LEFT, arr_char);
+            al_draw_text(fuente_score, al_map_rgb(224, 192, 0), PLAYER_NAME_X, PLAYER_NAME_Y, ALLEGRO_ALIGN_LEFT, arr_char);
+            al_flip_display();
         }
     }
 
 }
-//int loadMenuBitmaps(ALLEGRO_BITMAP* menuBitmaps[]){
-//    int i=0, err=0;
-//    char* path;
-//
-//    for(i=0; (err==0)&&(i<CANT_BTM_MENU); ++i){
-//        sprintf(path, "Resources/Bitmaps/BitmapMenu%d.bmp",i);
-//        menuBitmaps[i] = al_load_bitmap(path);
-//        if(menuBitmaps[i]==NULL){
-//            err=1;            
-//        }
-//    }
-//    //Si todo está bien devuelvo OK. En caso contrario devuelvo ERROR.
-//    if(err==0){
-//        return OK_GRAPHICS;
-//    }
-//    else{
-//        return ERROR_GRAPHICS;
-//    }
-//}
-//
-//int loadAliensBitmaps(ALLEGRO_BITMAP* aliensBitmaps[]) {
-//    int i = 0, err = 0;
-//    char* path;
-//
-//    for (i = 0; (err == 0) && (i < CANT_TIPOS_ALIEN); ++i) {
-//        sprintf(path, "Resources/Bitmaps/BitmapAlien%d.bmp", i);
-//        aliensBitmaps[i] = al_load_bitmap(path);
-//        if (aliensBitmaps[i] == NULL) {
-//            err = 1;
-//        }
-//    }
-//    //Si todo está bien devuelvo OK. En caso contrario devuelvo ERROR.
-//    if (err == 0) {
-//        return OK_GRAPHICS;
-//    }
-//    else {
-//        return ERROR_GRAPHICS;
-//    }
-//}
-//
-//int loadBarrierBitmaps(ALLEGRO_BITMAP* barriersBitmaps[]) {
-//    int i = 0, err = 0;
-//    char* path;
-//
-//    for (i = 0; (err == 0) && (i < CANT_TIPOS_BARRERAS); ++i) {
-//        sprintf(path, "Resources/Bitmaps/BitmapBarriers%d.bmp", i); //CAMBIAR
-//        barriersBitmaps[i] = al_load_bitmap(path);
-//        if (barriersBitmaps[i] == NULL) {
-//            err = 1;
-//        }
-//    }
-//    //Si todo está bien devuelvo OK. En caso contrario devuelvo ERROR.
-//    if (err == 0) {
-//        return OK_GRAPHICS;
-//    }
-//    else {
-//        return ERROR_GRAPHICS;
-//    }
-//}
-//
-//int loadRandomAlienBitmap(ALLEGRO_BITMAP* randomAlienBitmap) {
-//    int i = 0, err = 0;
-//    char* path;
-//    path = "Resources/Bitmaps/BitmapRandomAlien.bmp";
-//    randomAlienBitmap = al_load_bitmap(path);
-//    if (randomAlienBitmap == NULL) {
-//        err = 1;
-//    }
-//    //Si todo está bien devuelvo OK. En caso contrario devuelvo ERROR.
-//    if (err == 0) {
-//        return OK_GRAPHICS;
-//    }
-//    else {
-//        return ERROR_GRAPHICS;
-//    }
-//}
-//
-//int loadBulletBitmap(ALLEGRO_BITMAP* bulletBitmap) {
-//    int i = 0, err = 0;
-//    char* path;
-//    path = "Resources/Bitmaps/BitmapBullet.bmp";
-//    bulletBitmap = al_load_bitmap(path);
-//    if (bulletBitmap == NULL) {
-//        err = 1;
-//    }
-//    //Si todo está bien devuelvo OK. En caso contrario devuelvo ERROR.
-//    if (err == 0) {
-//        return OK_GRAPHICS;
-//    }
-//    else {
-//        return ERROR_GRAPHICS;
-//    }
-//}
-//
-//int loadSpaceshipBitmap(ALLEGRO_BITMAP* spaceshipBitmap) {
-//    int i = 0, err = 0;
-//    char* path;
-//    path = "Resources/Bitmaps/BitmapSpaceship.bmp";
-//    spaceshipBitmap = al_load_bitmap(path);
-//    if (spaceshipBitmap == NULL) {
-//        err = 1;
-//    }
-//    //Si todo está bien devuelvo OK. En caso contrario devuelvo ERROR.
-//    if (err == 0) {
-//        return OK_GRAPHICS;
-//    }
-//    else {
-//        return ERROR_GRAPHICS;
-//    }
-//}
-//
-//int loadLivesBitmaps(ALLEGRO_BITMAP* livesBitmaps[]) {
-//    int i = 0, err = 0;
-//    char* path;
-//
-//    for (i = 0; (err == 0) && (i < CANT_LIVES_BTM); ++i) {
-//        sprintf(path, "Resources/Bitmaps/BitmapLives%d.bmp", i); 
-//        livesBitmaps[i] = al_load_bitmap(path);
-//        if (livesBitmaps[i] == NULL) {
-//            err = 1;
-//        }
-//    }
-//    //Si todo está bien devuelvo OK. En caso contrario devuelvo ERROR.
-//    if (err == 0) {
-//        return OK_GRAPHICS;
-//    }
-//    else {
-//        return ERROR_GRAPHICS;
-//    }
-//}
-//
-//int loadFondosExtraBitmap(ALLEGRO_BITMAP* fondosExtraBitmaps[]) {
-//
-//    int i = 0, err = 0;
-//    char* path;
-//    for (i = 0; (err == 0) && (i < CANT_FONDOS_EXTRA); ++i) {
-//        sprintf(path, "Resources/Bitmaps/BitmapFondosExtra%d.bmp", i);
-//        fondosExtraBitmaps[i] = al_load_bitmap(path);
-//        if (fondosExtraBitmaps[i] == NULL) {
-//            err = 1;
-//        }
-//    }
-//    //Si todo está bien devuelvo OK. En caso contrario devuelvo ERROR.
-//    if (err == 0) {
-//        return OK_GRAPHICS;
-//    }
-//    else {
-//        return ERROR_GRAPHICS;
-//    }
-//}
+
+void clearArr(char* arr, int countChar) {
+
+    int i = 0;
+    for (i = 0; i < countChar; ++i) {
+        arr[i] = ' ';
+    }
+}
 
 #endif // !RASPI
