@@ -1,7 +1,4 @@
 #include "spaceship.h"
-#pragma warning(disable : 4996)
-#pragma warning(disable : 6387)
-
 
 //Devuelve 1 si le dispararon a la nave o 0 si no.
 int isSpaceshipShot(bullet_t* bullet, spaceship_t* spaceship);
@@ -14,10 +11,8 @@ void initSpaceship(spaceship_t* spaceship) {
 
 int updateSpaceship(bullet_t* bullet, spaceship_t* spaceship){
 	int lost = 0;
-	char hola[100];
 	if (isSpaceshipShot(bullet, spaceship)){
 		bullet->state = OFF;
-		--spaceship->lives;
 		if (spaceship->lives == 0) {
 			lost = 1;
 		}
@@ -39,7 +34,25 @@ int isSpaceshipShot(bullet_t* bullet, spaceship_t* spaceship) {
 	if (bullet->type == ALIEN_BULLET && bullet->state == ON){
 		if (comparePosition(spaceship->pos, bullet->pos)){
 			shot = 1;
+			--spaceship->lives;
 		}
+	}
+	if (NAVE_SIZE_X == 3) {
+		changePosition(&spaceship->pos, 1, 0);
+		if (bullet->type == ALIEN_BULLET && bullet->state == ON) {
+			if (comparePosition(spaceship->pos, bullet->pos)) {
+				shot = 1;
+				--spaceship->lives;
+			}
+		}
+		changePosition(&spaceship->pos, 1, 0);
+		if (bullet->type == ALIEN_BULLET && bullet->state == ON) {
+			if(comparePosition(spaceship->pos, bullet->pos)) {
+				shot = 1;
+				--spaceship->lives;
+			}
+		}
+		changePosition(&spaceship->pos, -2, 0);
 	}
 	return shot;
 }
@@ -47,7 +60,7 @@ int isSpaceshipShot(bullet_t* bullet, spaceship_t* spaceship) {
 void throwBullet(spaceship_t* spaceship) {
 	if (spaceship->bullet.state == OFF) {
 		changePosition(&spaceship->bullet.pos, (-1) * (spaceship->bullet.pos.x), (-1) * (spaceship->bullet.pos.y));
-		changePosition(&spaceship->bullet.pos, spaceship->pos.x, spaceship->pos.y - 1);
+		changePosition(&spaceship->bullet.pos, spaceship->pos.x + POS_CENTRO, spaceship->pos.y - 1 - POS_CENTRO);
 		spaceship->bullet.state = ON;
 	}
 }

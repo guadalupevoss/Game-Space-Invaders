@@ -12,6 +12,7 @@ typedef struct {
 int scoreboardInit(player_t highscores[MAXSCORES]);
 int testNewScore(player_t* player, player_t highscores[MAXSCORES]);
 int enterNewHighscore(player_t* player, player_t highscores[MAXSCORES]);
+void clearArr(char* arr, int countChar);
 
 
 #endif // HIGHSCORE_H

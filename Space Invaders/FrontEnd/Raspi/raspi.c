@@ -10,7 +10,7 @@
  * 
  * Created on February 21, 2021, 11:21 AM
  */
-//#define RASPI
+
 #ifdef RASPI
 
 #include "raspi.h"
@@ -23,6 +23,7 @@ void selectNumber(int number[NUMBERLENGHT], int cifra);
 void printName(player_t highscores[MAXSCORES], int contNames);
 void readNumber(unsigned long num, int number[NUMBERLENGHT]);
 int letterSize(char letter);
+
 
 //Inicializa Raspi y sus variables.
 int initGraphics(graphics_t* allegro) {
@@ -144,7 +145,7 @@ int stateMenu(graphics_t* graphics) {
 				disp_clear();
 				break;
 			case EXIT_GR:
-				newState = EXIT;
+				newState = EXIT_M;
 				disp_clear();
 				break;
 		}
@@ -210,12 +211,12 @@ int getEvent(graphics_t graphics) {
 	return newState;
 }
 
-void printSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien, int level, int frames) {
-	static int prevSSLives = 4, prevSSX = INITIAL_SPASESHIP_POS_X;
+void printSpaceInvaders(graphics_t* graphics, player_t* player, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien, int level, int frames) {
+	static int prevSSX = INITIAL_SPASESHIP_POS_X;
 	int numberAliens = getFilas(level) * getColumnas(level);
 	int i;
 	if ((spaceship->pos.x != prevSSX) && spaceship->lives) {
-		if (prevSSX < 13) {
+		if (prevSSX <= 13) {
 			clearNave(prevSSX);
 		}
 		printNave(spaceship->pos.x);
@@ -232,10 +233,7 @@ void printSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barri
 		}
 		printAlienRandom(rAlien->pos.x, rAlien->pos.y);
 	}
-	if(spaceship->lives != prevSSLives){
-		printLives(spaceship->lives);
-		prevSSLives = spaceship->lives;
-	}
+	printLives(spaceship->lives);
 	for (i = 0; i < numberAliens; ++i) {
 		if (aliens[i].bullet.state == ON) {
 			clearBala(aliens[i].bullet.pos.x, aliens[i].bullet.pos.y - 1);
@@ -251,9 +249,8 @@ void printSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barri
 	updateGraphics();
 }
 
-void clearSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien, int level) {
-	int numberAliens = getFilas(level) * getColumnas(level);
-	clearAliens(aliens, numberAliens);
+void clearSpaceInvaders(void) {
+	disp_clear();
 }
 
 //Función que imprime el menú de pausa.
@@ -378,68 +375,6 @@ int statePause(graphics_t* graphics) {
 }
 
 //Funciones para ingresar y mostrar un nuevo highscore
-
-int printHighscore(player_t highscores[MAXSCORES]) {
-	int contNames = 1;
-	int nameSizeX = 0;
-	int number[NUMBERLENGHT];
-	jswitch_t mySwitch;
-	jcoord_t myCoords;
-	mySwitch = joy_get_switch();
-	myCoords = joy_get_coord();
-	while (mySwitch != J_PRESS){
-		readNumber(highscores[contNames - 1].points, number);
-		int primeraCifra = 0;		//me fijo cual es la primer cifra distinta de 0 en el arreglo del numero
-		int contPrint = 0;
-		while (number[primeraCifra] == 0){
-			primeraCifra++;
-		}
-		printName(highscores, contNames);
-		while ((myCoords.y < 7) && (myCoords.y > -7)){ //mientras no se mueva para arriba o para abajo
-			joy_update();
-			mySwitch = joy_get_switch();
-			myCoords = joy_get_coord();
-			if (myCoords.x > 10){
-				if (contPrint == 19){
-					//no hago nada
-				}
-				else{
-					++contPrint;         //QUE CHOTA ES CONT PRINT
-				}
-			}
-			else if (myCoords.x < 10){
-				if (contPrint == 0){
-					//no hago nada
-				}
-				else{
-					--contPrint;
-				}
-			}
-			selectNumber(number, (primeraCifra)+(3 * contPrint));
-		}
-		switch (contNames){ //ver a que pantalla cambio del highscore
-		case 1:
-			if (myCoords.y > 10)   //queda igual
-				contNames = 1;
-			else if (myCoords.y < 10)	//cambia al segundo highscore
-				contNames = 2;
-			break;
-		case 2:
-			if (myCoords.y > 10) 	//muestra el primer highscore
-				contNames = 1;
-			else if (myCoords.y < 10)		//muestra el ultimo highscore
-				contNames = 3;
-			break;
-		case 3:
-			if (myCoords.y > 10)   //cambia al segundo highscore
-				contNames = 2;
-			else if (myCoords.y < 10)	//queda igual
-				contNames = 3;
-			break;
-		}
-	}
-	return 1;
-}
 
 //	Esta funcion recibe un unsigned long y llena un arreglo con sus cifras	   
 void readNumber(unsigned long num, int number[NUMBERLENGHT]){
@@ -647,7 +582,31 @@ void selectNumber(int number[NUMBERLENGHT], int cifra){
 }
 
 void printGameOver(graphics_t* graphics) {
+	disp_clear();
 	draw_gameover();
 }
+
+void read_keyboard(player_t* player, graphics_t* graphics) {
+	char letter_keyboard[NUMBER_OF_SCREENS][NAMELENGHT]; //matriz de todas las letras, cada pantalla es un arreglo de 3 letras
+	init_keyboard(letter_keyboard);
+	int contador;
+	for (contador = 0; contador < NAMELENGHT; contador++){
+		(player->name)[contador] = get_letter(letter_keyboard);
+	}
+	disp_clear();
+}
+
+int print_scores (graphics_t * graphics, player_t lista_scores[MAXSCORES]){ //enrealidad buscar cuando se define lista_scores
+	int i;
+	printf("\n\t\t\tNAME:\t\t\tSCORE\n\n");
+	for (i = 0; i < MAXSCORES; ++i) {
+		printf("\t\t\t%s\t\t\t%lu\n", lista_scores[i].name, lista_scores[i].points);
+	}
+	graphics->state = MENU;
+	return MENU;
+}
+
+
+
 
 #endif

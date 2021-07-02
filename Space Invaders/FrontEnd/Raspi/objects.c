@@ -1,4 +1,4 @@
-//#define RASPI
+
 #ifdef RASPI
 
 #include "objects.h"
@@ -6,12 +6,14 @@
 
 //Funciones para imprimir aliens
 //Para la cantidad de aliens usados usar lastAlien.
-void clearAliens(alien_t aliens[], int cantidad_aliens_usados){
-	static int side = 0; //side en 1 es derecha y side en 0 es izq, down en 1 es bajo y en 0 es no bajo todavia.
+//Agregar las ctes izq y der
+void clearAliens(alien_t aliens[], int cantidad_aliens_usados) {
+	static int side = 0, down = 0; //side en 1 es va a la derecha y side en 0 es izq, down en 1 es bajo y en 0 es no bajo todavia.
 	int contador;
 	//Se encarga de apagar todos los aliens que esten vivos.
-	if ((aliens[0].pos.x >= 0) && (aliens[cantidad_aliens_usados - 1].pos.x <= 15)){
-		for (contador = 0; contador < cantidad_aliens_usados; ++contador){
+
+	if ((aliens[0].pos.x >= 0) && (aliens[cantidad_aliens_usados - 1].pos.x <= 15)) {
+		for (contador = 0; contador < cantidad_aliens_usados; ++contador) {
 			if ((aliens[cantidad_aliens_usados - 1].pos.x == 15) && !side) {
 				dcoord_t CLEARPOINT(contador) = { aliens[contador].pos.x, aliens[contador].pos.y - 1 };
 				disp_write(CLEARPOINT(contador), D_OFF);
@@ -20,32 +22,57 @@ void clearAliens(alien_t aliens[], int cantidad_aliens_usados){
 				dcoord_t CLEARPOINT(contador) = { aliens[contador].pos.x, aliens[contador].pos.y - 1 };
 				disp_write(CLEARPOINT(contador), D_OFF);
 			}
-			else if (side) {
+			else if (side && (aliens[cantidad_aliens_usados - 1].pos.x != 15) && (aliens[0].pos.x != 0)) {
 				dcoord_t CLEARPOINT(contador) = { aliens[contador].pos.x - 1, aliens[contador].pos.y };
 				disp_write(CLEARPOINT(contador), D_OFF);
 			}
-			else if (!side) {
+			else if (!side && (aliens[cantidad_aliens_usados - 1].pos.x != 15) && (aliens[0].pos.x != 0)) {
 				dcoord_t CLEARPOINT(contador) = { aliens[contador].pos.x + 1, aliens[contador].pos.y };
 				disp_write(CLEARPOINT(contador), D_OFF);
 			}
-		}
-		if ((aliens[cantidad_aliens_usados - 1].pos.x == 15) && side) {
-			side = 0;
-		}
-		else if ((aliens[0].pos.x == 0) && !side) {
-			side = 1;
+			else if ((aliens[cantidad_aliens_usados - 1].pos.x == 15) && side) {
+				dcoord_t CLEARPOINT(contador) = { aliens[contador].pos.x, aliens[contador].pos.y };
+				disp_write(CLEARPOINT(contador), D_OFF);
+			}
+			else if ((aliens[0].pos.x == 0) && !side) {
+				dcoord_t CLEARPOINT(contador) = { aliens[contador].pos.x, aliens[contador].pos.y };
+				disp_write(CLEARPOINT(contador), D_OFF);
+			}
 		}
 	}
+	if ((aliens[cantidad_aliens_usados - 1].pos.x == 15) && (side)){
+		side = 0;
+	}
+	if ((aliens[0].pos.x == 0) && (!side)) {
+		side = 1;
+	}
 }
+
+//if ((aliens[cantidad_aliens_usados - 1].pos.x == 15) && !side) {
+//	dcoord_t CLEARPOINT(contador) = { aliens[contador].pos.x, aliens[contador].pos.y - 1 };
+//	disp_write(CLEARPOINT(contador), D_OFF);
+//}
+//else if ((aliens[0].pos.x == 0) && side) {
+//	dcoord_t CLEARPOINT(contador) = { aliens[contador].pos.x, aliens[contador].pos.y - 1 };
+//	disp_write(CLEARPOINT(contador), D_OFF);
+//}
+//else if (side) {
+//	dcoord_t CLEARPOINT(contador) = { aliens[contador].pos.x - 1, aliens[contador].pos.y };
+//	disp_write(CLEARPOINT(contador), D_OFF);
+//}
+//else if (!side) {
+//	dcoord_t CLEARPOINT(contador) = { aliens[contador].pos.x + 1, aliens[contador].pos.y };
+//	disp_write(CLEARPOINT(contador), D_OFF);
+//}
 
 void printAliens(alien_t aliens[], int cantidad_aliens_usados){
 	int contador = 0;
 
 	//Se encarga de imprimir todos los aliens que esten vivos.
-	if ((aliens[0].pos.x > 0) && (aliens[cantidad_aliens_usados - 1].pos.x < 15)){
+	if ((aliens[0].pos.x >= 0) && (aliens[cantidad_aliens_usados - 1].pos.x <= 15)){
 		for (contador = 0; contador < NUM_ALIENS; ++contador){
-			if (aliens[contador].alive){
-				dcoord_t MYPOINT(contador) = { aliens[contador].pos.x,aliens[contador].pos.y };
+			if (aliens[contador].alive == ALIVE){
+				dcoord_t MYPOINT(contador) = { aliens[contador].pos.x, aliens[contador].pos.y };
 				disp_write(MYPOINT(contador), D_ON);
 			}
 		}
@@ -140,7 +167,8 @@ void printLives(int cantidad_vidas){
 }
 
 void printBarriers(barriers_t* barriers){
-	if (barriers[0].lives == 0){
+	if ((barriers[0].lives == RECENT_SHOT) || (barriers[0].lives == 0)){
+		barriers[0].lives = 0;
 		dcoord_t myPoint_apago_barrera = { 1, BARRIER_POS_Y };
 		disp_write(myPoint_apago_barrera, D_OFF);
 		dcoord_t myPoint_apago_barrera1 = { 2, BARRIER_POS_Y };
@@ -153,7 +181,8 @@ void printBarriers(barriers_t* barriers){
 		disp_write(myPoint_barrera1, D_ON);
 	}
 
-	if (barriers[1].lives == 0) {
+	if ((barriers[1].lives == RECENT_SHOT) || (barriers[1].lives == 0)) {
+		barriers[1].lives = 0;
 		dcoord_t myPoint_apago_barrera2 = { 5, BARRIER_POS_Y };
 		disp_write(myPoint_apago_barrera2, D_OFF);
 		dcoord_t myPoint_apago_barrera3 = { 6, BARRIER_POS_Y };
@@ -166,7 +195,8 @@ void printBarriers(barriers_t* barriers){
 		disp_write(myPoint_barrera3, D_ON);
 	}
 
-	if (barriers[2].lives == 0) {
+	if ((barriers[2].lives == RECENT_SHOT) || (barriers[2].lives == 0)) {
+		barriers[2].lives = 0;
 		dcoord_t myPoint_apago_barrera4 = { 9, BARRIER_POS_Y };
 		disp_write(myPoint_apago_barrera4, D_OFF);
 		dcoord_t myPoint_apago_barrera5 = { 10, BARRIER_POS_Y };
@@ -179,7 +209,8 @@ void printBarriers(barriers_t* barriers){
 		disp_write(myPoint_barrera5, D_ON);
 	}
 
-	if (barriers[3].lives == 0) {
+	if ((barriers[3].lives == RECENT_SHOT) || (barriers[3].lives == 0)) {
+		barriers[3].lives = 0;
 		dcoord_t myPoint_apago_barrera6 = { 13, BARRIER_POS_Y };
 		disp_write(myPoint_apago_barrera6, D_OFF);
 		dcoord_t myPoint_apago_barrera7 = { 14, BARRIER_POS_Y };

@@ -1,5 +1,6 @@
 #include "randomalien.h"
-
+#include <stdlib.h>
+#include <time.h>
 /**********************************************************************************
  * Función: moveRandomAlien                                                       *
  * Esta función se encarga de mover el alien para la derecha o la izquierda segun *

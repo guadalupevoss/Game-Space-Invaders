@@ -33,8 +33,21 @@ void barrierIsShot(barriers_t* barrier, bullet_t* bullet) {
 			--barrier->lives;
 			bullet->state = OFF;
 		}
-		else if(barrier->lives == 1){
+		else if (barrier->lives == 1) {
 			barrier->lives = RECENT_SHOT;
 		}
+	}
+	if (BARRERA_SIZE_X != 1) {
+		changePosition(&barrier->pos, 1, 0);
+		if (comparePosition(barrier->pos, bullet->pos)) {
+			if (barrier->lives > 1) {
+				--barrier->lives;
+				bullet->state = OFF;
+			}
+			else if (barrier->lives == 1) {
+				barrier->lives = RECENT_SHOT;
+			}
+		}
+		changePosition(&barrier->pos, -1, 0);
 	}
 }

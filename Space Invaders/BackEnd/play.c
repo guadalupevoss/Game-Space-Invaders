@@ -1,4 +1,6 @@
 #include "play.h"
+#include <stdlib.h>
+#include <time.h>
 
 //enum{SS_BULLET = 1, SS_MOVE_R, SS_MOVE_L, PAUSE, EXIT_P}; 
 
@@ -65,12 +67,10 @@ int playSpaceInvaders(graphics_t* graphics, player_t* player) {
 			updateAliens(aliens, &spaceShip.bullet, frames, player, level);
 			updateBarriers(barriers, aliens, &spaceShip.bullet);
 			updateRandomAlien(&alienRandom, &spaceShip.bullet, frames, player);
-			for (i = 0; i < NUM_ALIENS; ++i) {
-				if (updateSpaceship(&aliens[i].bullet, &spaceShip) == 1) {
+			for (i = (NUM_ALIENS - 1); i >=0; --i) {
+				if (updateSpaceship(&aliens[i].bullet, &spaceShip) == 1){
 					printGameOver(graphics);
 					updateGraphics();
-					//al_rest(2.0);
-					//Aca deberia hacer algo para q desp llame a lo de meter el nombre.
 					doExit = 1;
 					newMenuState = MENU;
 				}
@@ -78,8 +78,15 @@ int playSpaceInvaders(graphics_t* graphics, player_t* player) {
 
 					updateBullet(&aliens[i].bullet, frames);
 				}
+				else if((aliens[i].alive==ALIVE)&&(aliens[i].pos.y == BARRIER_POS_Y)){
+					printGameOver(graphics);
+					updateGraphics();
+					doExit = 1;
+					newMenuState = MENU;
+					i = 0; //Para que salga del for.
+
+				}
 			}
-			//printf("cantidad de vidas de la nave desp = %d\n", spaceShip.lives);
 			if (spaceShip.bullet.state == ON) {
 				updateBullet(&spaceShip.bullet, frames);
 			}
@@ -92,14 +99,14 @@ int playSpaceInvaders(graphics_t* graphics, player_t* player) {
 		}
 		else{
 			++level;
+			clearSpaceInvaders();
 			initAliens(aliens, level);
 			initBarriers(barriers);
 			initSpaceship(&spaceShip);
 			initRandomAlien(&alienRandom);
 		}
 		if (doExit != 1) {
-			//clearSpaceInvaders(graphics, aliens, barriers, &spaceShip, &alienRandom, level);
-			printSpaceInvaders(graphics, aliens, barriers, &spaceShip, &alienRandom, level, frames);
+			printSpaceInvaders(graphics, player, aliens, barriers, &spaceShip, &alienRandom, level, frames);
 		}
 
 		if (ciclosTotal > 1000) {

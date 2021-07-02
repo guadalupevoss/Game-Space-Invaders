@@ -19,6 +19,7 @@
 #include "../../BackEnd/barriers.h"
 #include "../../BackEnd/randomalien.h"
 #include "../../BackEnd/spaceship.h"
+#include "../../BackEnd/highscore.h"
 
 //ver si esta bien esto
 #include "../../BackEnd/highscore.h"
@@ -84,14 +85,24 @@ void printMenu(graphics_t* graphics);
 //Función que se fija si cambió el estado (si se presionó algún botón o saltó error) y devuelve el estado indicado.
 int stateMenu(graphics_t* graphics);
 //Imprime ej juego.
-void printSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien, int level, int frames);
+void printSpaceInvaders(graphics_t* graphics, player_t* player, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien, int level, int frames);
 
 int getEvent(graphics_t graphics);
 
 int statePause(graphics_t* graphics);
 void printPause(graphics_t* graphics);
 void printGameOver(graphics_t* graphics);
-void clearSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien, int level);
+void clearSpaceInvaders(void);
+int print_scores(graphics_t* graphics, player_t highscores[MAXSCORES]);
+void read_keyboard(player_t* player, graphics_t* graphics);
+
+/**********************************************************************************
+ * Función: clearArr                                                              *
+ * Esta función se encarga de limpiar un arreglo de char de cantidad de caracteres*
+ * countChar.																	  *
+ **********************************************************************************/
+void clearArr(char* arr, int countChar);
+
 
 #endif // ! RASPI
 

@@ -13,13 +13,6 @@ int initSpaceInvaders(player_t* player, graphics_t* graphics);
  **********************************************************************************/
 void initPlayer(player_t* player);
 
-/**********************************************************************************
- * Función: clearArr                                                              *
- * Esta función se encarga de limpiar un arreglo de char de cantidad de caracteres*
- * countChar.																	  *
- **********************************************************************************/
-void clearArr(char* arr, int countChar);
-
 int spaceInvaders(void) {
 	//Variable para controlar la salida del while.
 	int doExit = 0;
@@ -52,14 +45,16 @@ int spaceInvaders(void) {
 			estado = playSpaceInvaders(&graphics, &player);
 			if (testNewScore(&player, highscores)) {
 				//anotar el nombre
-				//read_keyboard();
-				//enterNewHighscore(&player, highscores);
+				read_keyboard(&player, &graphics);
+				if (player.name[0] != '\0') {
+					enterNewHighscore(&player, highscores);
+				}
 			}
 			break;
 			//Entra a los highsocres. 
 			//Si se cierra el display cierra el display devuelve EXIT. En caso contrario devuelve MENU.
 		case HIGHSCORE:
-			//estado = showHighscore();
+			estado = print_scores(&graphics, highscores);
 			break;
 		//Cierra el programa.
 		case EXIT_M:
@@ -102,12 +97,4 @@ int initSpaceInvaders(player_t* player, graphics_t* graphics) {
 void initPlayer(player_t* player) {
 	player->points = 0;
 	clearArr(player->name, NAMELENGHT);
-}
-
-void clearArr(char* arr, int countChar) {
-
-	int i = 0;
-	for (i = 0; i < countChar; ++i) {
-		arr[i] = ' ';
-	}
 }

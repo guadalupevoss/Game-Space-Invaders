@@ -4,7 +4,7 @@
 void moveBullet(bullet_t* bullet);
 
 void initBullet(bullet_t* bullet, int x, int y, int type, int speed) {
-	initPosition(&bullet->pos, x, y);
+	initPosition(&bullet->pos, x + POS_CENTRO, y - POS_CENTRO);
 	bullet->type = type;
 	bullet->speed = speed;
 	bullet->state = OFF;

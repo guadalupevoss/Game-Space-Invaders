@@ -21,8 +21,8 @@
 
 //Defines para mouse
 #define MOUSE_IN_PLAY ((ev.mouse.x>210)&(ev.mouse.x<550)&(ev.mouse.y>334)&(ev.mouse.y<407)) //COORDENADAS DE LOS BOTONES DEL MENÚ
-#define MOUSE_IN_EXIT ((ev.mouse.x>208)&(ev.mouse.x<548)&(ev.mouse.y>680)&(ev.mouse.y<767))
-#define MOUSE_IN_HIGH_SCORE ((ev.mouse.x>130)&(ev.mouse.x<650)&(ev.mouse.y>531)&(ev.mouse.y<568))
+#define MOUSE_IN_EXIT ((ev.mouse.x>208)&(ev.mouse.x<548)&(ev.mouse.y>620)&(ev.mouse.y<747))
+#define MOUSE_IN_HIGH_SCORE ((ev.mouse.x>130)&(ev.mouse.x<650)&(ev.mouse.y>500)&(ev.mouse.y<538))
 #define MOUSE_IN_EXIT_SCORE 1
 #define MOUSE_IN_PAUSE_RESUME     ((ev.mouse.x>199)&(ev.mouse.x<611)&(ev.mouse.y>351)&(ev.mouse.y<421))
 #define MOUSE_IN_PAUSE_MENU   ((ev.mouse.x>199)&(ev.mouse.x<611)&(ev.mouse.y>435)&(ev.mouse.y<506))
@@ -33,7 +33,8 @@
 #define SPACESHIP_POS_Y 15
 #define INITIAL_SPASESHIP_POS_X 8 
 #define SPACESHIP_LIVES 3
-#define SPACESHIP_BULLET_SPEED	50
+#define SPACESHIP_BULLET_SPEED	30
+#define POS_CENTRO 0
 
 //Defines de los aliens
 #define ALIEN_SIZE_X    32  //TAMAnO DEL ALIEN
@@ -48,11 +49,11 @@
 #define INITIAL_ALIEN_BULLET_SPEED	100
 #define COLUMNAS        7   //COLUMNAS Y FILAS (DE ALIENS)MAXIMAS
 #define FILAS           5
-#define BULLET_FRAMES	75
+#define BULLET_FRAMES	100
 
 //Defines de las barreras
-#define BARRERA_SIZE_X  52
-#define BARRERA_SIZE_Y  42
+#define BARRERA_SIZE_X  1//52
+#define BARRERA_SIZE_Y  0//42
 #define NUM_BARRIERS   4
 #define CANT_TIPOS_BARRERAS     5   //TIPOS DE BARRERAS (CONTANDO LA IMAGEN DE LA BARRERA MUERTA)
 #define BARRIER_POS_Y 14
@@ -111,7 +112,8 @@
 #define SPACESHIP_POS_Y 15
 #define INITIAL_SPASESHIP_POS_X 8
 #define SPACESHIP_LIVES 3
-#define SPACESHIP_BULLET_SPEED	5
+#define SPACESHIP_BULLET_SPEED	2
+#define POS_CENTRO 1
 
 
 //Defines de los aliens
@@ -128,7 +130,7 @@
 #define NUM_ALIENS		18
 #define INIT_NUM_ALIENS	4
 #define INIT_SCORE		20
-#define BULLET_FRAMES	5
+#define BULLET_FRAMES	20
 #define INITIAL_ALIEN_BULLET_SPEED	5
 
 
@@ -141,7 +143,7 @@
 #define NUM_SIZE_Y      5
 #define CANTIDAD_NUM    10
 #define CIFRAS_SCORE    9
-#define MAXSCORES       3
+#define MAXSCORES       10
 #define NAMELENGHT      3
 #define NUMBERLENGHT 10
 #define NUMBER_OF_SCREENS 9

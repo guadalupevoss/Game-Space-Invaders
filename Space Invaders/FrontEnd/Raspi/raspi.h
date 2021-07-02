@@ -77,14 +77,7 @@ void updateGraphics();
  * Esta función se encarga de imprimir todos los objetos del juego en caso de ser *
  * necesarios.																	  *
  **********************************************************************************/
-void printSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien, int level, int frames);
-
-/**********************************************************************************
- * Función: clearSpaceInvaders                                                    *
- * Esta función se encarga de hacer los clears de todos los objetos que lo		  *
- * necesiten.																	  *
- **********************************************************************************/
-void clearSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien, int level);
+void printSpaceInvaders(graphics_t* graphics, player_t* player, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien, int level, int frames);
 //Se fija si apretaron algo nuevo o si movieron la nave. 
 
 /**********************************************************************************
@@ -104,6 +97,9 @@ void printGameOver(graphics_t* graphics);
 void printPause(graphics_t* graphics);
 int statePause(graphics_t* graphics);
 
+void read_keyboard(player_t* player, graphics_t* graphics);
+int print_scores(graphics_t* graphics, player_t lista_scores[MAXSCORES]);
+void clearSpaceInvaders(void);
 
 #endif
 

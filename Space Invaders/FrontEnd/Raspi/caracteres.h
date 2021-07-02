@@ -21,6 +21,7 @@
 #include "disdrv.h"
 #include "joydrv.h"
 #include "../../BackEnd/constantes.h"
+#include "fondos.h"
 
 //#define CHANGESCREEN(s) screen_##s##_raspi
 

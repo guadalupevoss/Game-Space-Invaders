@@ -12,10 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-//Para usar strcpy()
 #pragma warning (disable: 4996)
-
-//asumo q en player_t player esta lo de este jugador
 
 //devuelve 0 si todo ok
 int scoreboardInit(player_t highscores[MAXSCORES]) {
@@ -40,7 +37,7 @@ int scoreboardInit(player_t highscores[MAXSCORES]) {
             highscores[counter].points = 0;
         }
         for (counter = 0; counter < MAXSCORES; counter++) {             //lee datos del archivo txt y los guarda en la estructura
-            errorBis = fscanf(scoreboard_file, "%s %lu", &highscores[counter].name, &highscores[counter].points);
+            errorBis = fscanf(scoreboard_file, "%s %lu", highscores[counter].name, &highscores[counter].points);
         }
         if (errorBis == 1) {
             printf("Error en fscanf\n");
@@ -64,11 +61,14 @@ int enterNewHighscore(player_t* player, player_t highscores[MAXSCORES]){
     unsigned int counter, stop = 0, error = 0;
     unsigned long pointsTemp;
     char nameTemp[NAMELENGHT];
+    clearArr(nameTemp, NAMELENGHT);
     if(highscores[0].points==0){
+        //clearArr(highscores[0].name, NAMELENGHT);
         highscores[0].points= player->points;
         strcpy(highscores[0].name,player->name);
     }
     else{
+        //clearArr(highscores[MAXSCORES-1].name, NAMELENGHT);
         strcpy(highscores[MAXSCORES-1].name,player->name);
         highscores[MAXSCORES-1].points=player->points;
         for(counter=(MAXSCORES-1) ; ((stop==0)&&(counter!=0)) ; counter--){               //ordena el nuevo score en la posicion adecuada
@@ -87,8 +87,8 @@ int enterNewHighscore(player_t* player, player_t highscores[MAXSCORES]){
             }
         }
     }
-    FILE *scoreboard_write = fopen("Resources/scoreboard.txt", "w");
-    if (scoreboard_write==NULL){
+    FILE *scoreboard_write = fopen(PATH, "w");
+    if (scoreboard_write == NULL){
         error = 1;
         printf("Error de apertura de archivo para escritura\n");
     }
@@ -100,6 +100,14 @@ int enterNewHighscore(player_t* player, player_t highscores[MAXSCORES]){
         fclose(scoreboard_write);
     }
     return error;
+}
+
+void clearArr(char* arr, int countChar) {
+
+    int i = 0;
+    for (i = 0; i < countChar; ++i) {
+        arr[i] = '\0';
+    }
 }
 
 //termina de jugar se llama a test new score, si da 1 se llama a enter new highscore

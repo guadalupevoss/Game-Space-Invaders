@@ -15,8 +15,6 @@ int loadMenuSamples(ALLEGRO_SAMPLE* menuSamples[]);
 void destroyBitmaps(graphics_t* allegro);
 void destroyBitmap(ALLEGRO_BITMAP* bitmaps[], int cant);
 
-int print_scores(ALLEGRO_FONT* fuente_score, ALLEGRO_EVENT_QUEUE* ev_queue);
-void read_keyboard(char arr_char[], ALLEGRO_EVENT_QUEUE* ev_queue, ALLEGRO_FONT* fuente_score, ALLEGRO_BITMAP* fondo_read);
 //void clearArr(char* arr, int countChar);
 
 //Inicializa Allegro y sus variables.
@@ -324,7 +322,7 @@ int getEvent(graphics_t graphics) {
 	return tempEvent;
 }
 
-void printSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien, int level, int frames){
+void printSpaceInvaders(graphics_t* graphics, player_t* player, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien, int level, int frames){
 
 	//Defino un contador.
 	int i=0;
@@ -417,44 +415,27 @@ void printSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barri
 			break;
 	}
 	
-	//print_scores();
+	//Imprime el puntaje actual.
+	al_draw_textf(graphics->font, al_map_rgb(255, 255, 255), 0, FUENTE_SIZE/2, 0, "Puntaje %d", player->points);
 	updateGraphics();
-
-}
-
-void clearSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien, int level) {
 
 }
 
 //Para highscores
 
-int print_scores(ALLEGRO_FONT* fuente_score, ALLEGRO_EVENT_QUEUE* ev_queue){
+int print_scores(graphics_t* graphics, player_t highscores[MAXSCORES]){
 	float       text_x, text_y;
 	char        str[MAX_ARR_CARACTER];
 	bool        do_exit_score = false;
 	int error = 0;
 
-	ALLEGRO_BITMAP* fondo_lista_high_score;
-	ALLEGRO_BITMAP* fondo_score;
+	al_convert_mask_to_alpha(graphics->fondosExtra[1], al_map_rgb(0, 255, 0));
+	al_convert_mask_to_alpha(graphics->menuBitmaps[4], al_map_rgb(0, 255, 0));
 
-	fondo_lista_high_score = al_load_bitmap("Resources/Bitmaps/high_scores.bmp"); //fondo lista de high scores
-	if (!fondo_lista_high_score) {
-		fprintf(stderr, "failed to create high score bitmap!\n");
-		return 0;
-	}
-	fondo_score = al_load_bitmap("Resources/Bitmaps/fondo_juego.bmp"); //fondo lista de high scores
-	if (!fondo_score) {
-		fprintf(stderr, "failed to create fondo score bitmap!\n");
-		return 0;
-	}
+	al_register_event_source(graphics->eventQueue, al_get_mouse_event_source());
 
-	al_convert_mask_to_alpha(fondo_lista_high_score, al_map_rgb(0, 255, 0));
-	al_convert_mask_to_alpha(fondo_score, al_map_rgb(0, 255, 0));
-
-	al_register_event_source(ev_queue, al_get_mouse_event_source());
-
-	al_draw_bitmap(fondo_score, 0, 0, 0);
-	al_draw_bitmap(fondo_lista_high_score, 0, 0, 0);
+	al_draw_bitmap(graphics->menuBitmaps[4], 0, 0, 0);
+	al_draw_bitmap(graphics->fondosExtra[1], 0, 20, 0);
 	al_flip_display();
 
 
@@ -467,25 +448,22 @@ int print_scores(ALLEGRO_FONT* fuente_score, ALLEGRO_EVENT_QUEUE* ev_queue){
 
 	clearArr(str, MAX_ARR_CARACTER);
 	text_x = 210;
-	text_y = 200;
+	text_y = 350;
 
 	//ESCRIBO LA LISTA
 	if (fp != NULL) {
 		while (!feof(fp))
 		{
 			error = fscanf(fp, "%s", str);
-			if (error == 0) {
-				al_draw_text(fuente_score, al_map_rgb(255, 255, 255), text_x - 1, text_y, ALLEGRO_ALIGN_LEFT, str);
-				al_draw_text(fuente_score, al_map_rgb(224, 192, 0), text_x, text_y, ALLEGRO_ALIGN_LEFT, str);
-				clearArr(str, MAX_ARR_CARACTER);
-			}
+			al_draw_text(graphics->font, al_map_rgb(255, 255, 255), text_x - 1, text_y, ALLEGRO_ALIGN_LEFT, str);
+			al_draw_text(graphics->font, al_map_rgb(224, 192, 0), text_x, text_y, ALLEGRO_ALIGN_LEFT, str);
+			clearArr(str, MAX_ARR_CARACTER);
+
 			error = fscanf(fp, "%s", str);
-			if (error == 0) {
-				al_draw_text(fuente_score, al_map_rgb(255, 255, 255), text_x + DISTANCE_POINTS_PLAYER - 1, text_y, ALLEGRO_ALIGN_LEFT, str);
-				al_draw_text(fuente_score, al_map_rgb(224, 192, 0), text_x + DISTANCE_POINTS_PLAYER, text_y, ALLEGRO_ALIGN_LEFT, str);
-				clearArr(str, MAX_ARR_CARACTER);
-				text_y += FUENTE_SIZE;
-			}
+			al_draw_text(graphics->font, al_map_rgb(255, 255, 255), text_x + DISTANCE_POINTS_PLAYER - 1, text_y, ALLEGRO_ALIGN_LEFT, str);
+			al_draw_text(graphics->font, al_map_rgb(224, 192, 0), text_x + DISTANCE_POINTS_PLAYER, text_y, ALLEGRO_ALIGN_LEFT, str);
+			clearArr(str, MAX_ARR_CARACTER);
+			text_y += FUENTE_SIZE;
 		}
 		fclose(fp);
 		al_flip_display();
@@ -496,7 +474,7 @@ int print_scores(ALLEGRO_FONT* fuente_score, ALLEGRO_EVENT_QUEUE* ev_queue){
 	{
 		ALLEGRO_EVENT ev;
 
-		if (al_get_next_event(ev_queue, &ev))
+		if (al_get_next_event(graphics->eventQueue, &ev))
 		{
 
 			if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
@@ -510,31 +488,28 @@ int print_scores(ALLEGRO_FONT* fuente_score, ALLEGRO_EVENT_QUEUE* ev_queue){
 
 		}
 	}
-
-	al_destroy_bitmap(fondo_score);
-	al_destroy_bitmap(fondo_lista_high_score);
-	return 1;
+	graphics->state = MENU;
+	return MENU;
 }
-void read_keyboard(char arr_char[], ALLEGRO_EVENT_QUEUE* ev_queue, ALLEGRO_FONT* fuente_score, ALLEGRO_BITMAP* fondo_read)
+void read_keyboard(player_t* player, graphics_t* graphics)
 {
 	bool exit_keyboard = false;
 
-	int     character_counter = 0;
-	clearArr(arr_char, NAMELENGHT);
+	int character_counter = 0;
+	clearArr(player->name, NAMELENGHT);
 
 	if (!al_install_keyboard()) {
 		fprintf(stderr, "failed to initialize the keyboard!\n");
 	}
 
-
-	al_register_event_source(ev_queue, al_get_keyboard_event_source()); //REGISTRAMOS EL TECLADO
+	al_register_event_source(graphics->eventQueue, al_get_keyboard_event_source()); //REGISTRAMOS EL TECLADO
 
 	while (!exit_keyboard)
 	{
 		ALLEGRO_EVENT event;
 
 		//  1° TOMA EL ÚLTIMO EVENTO DE LA COLA DE EVENTOS
-		if (al_get_next_event(ev_queue, &event))
+		if (al_get_next_event(graphics->eventQueue, &event))
 		{
 
 			if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
@@ -549,108 +524,107 @@ void read_keyboard(char arr_char[], ALLEGRO_EVENT_QUEUE* ev_queue, ALLEGRO_FONT*
 					switch (event.keyboard.keycode)
 					{
 					case ALLEGRO_KEY_A:
-						arr_char[character_counter] = 'A';
+						player->name[character_counter] = 'A';
 						++character_counter;
 						break;
 					case ALLEGRO_KEY_B:
-						arr_char[character_counter] = 'B';
-						printf("%s", arr_char);
+						player->name[character_counter] = 'B';
 						++character_counter;
 						break;
 					case ALLEGRO_KEY_C:
-						arr_char[character_counter] = 'C';
+						player->name[character_counter] = 'C';
 						++character_counter;
 						break;
 					case ALLEGRO_KEY_D:
-						arr_char[character_counter] = 'D';
+						player->name[character_counter] = 'D';
 						++character_counter;
 						break;
 					case ALLEGRO_KEY_E:
-						arr_char[character_counter] = 'E';
+						player->name[character_counter] = 'E';
 						++character_counter;
 						break;
 					case ALLEGRO_KEY_F:
-						arr_char[character_counter] = 'F';
+						player->name[character_counter] = 'F';
 						++character_counter;
 						break;
 					case ALLEGRO_KEY_G:
-						arr_char[character_counter] = 'G';
+						player->name[character_counter] = 'G';
 						++character_counter;
 						break;
 					case ALLEGRO_KEY_H:
-						arr_char[character_counter] = 'H';
+						player->name[character_counter] = 'H';
 						++character_counter;
 						break;
 					case ALLEGRO_KEY_I:
-						arr_char[character_counter] = 'I';
+						player->name[character_counter] = 'I';
 						++character_counter;
 						break;
 					case ALLEGRO_KEY_J:
-						arr_char[character_counter] = 'J';
+						player->name[character_counter] = 'J';
 						++character_counter;
 						break;
 					case ALLEGRO_KEY_K:
-						arr_char[character_counter] = 'K';
+						player->name[character_counter] = 'K';
 						++character_counter;
 						break;
 					case ALLEGRO_KEY_L:
-						arr_char[character_counter] = 'L';
+						player->name[character_counter] = 'L';
 						++character_counter;
 						break;
 					case ALLEGRO_KEY_M:
-						arr_char[character_counter] = 'M';
+						player->name[character_counter] = 'M';
 						++character_counter;
 						break;
 					case ALLEGRO_KEY_N:
-						arr_char[character_counter] = 'N';
+						player->name[character_counter] = 'N';
 						++character_counter;
 						break;
 					case ALLEGRO_KEY_P:
-						arr_char[character_counter] = 'P';
+						player->name[character_counter] = 'P';
 						++character_counter;
 						break;
 					case ALLEGRO_KEY_O:
-						arr_char[character_counter] = 'O';
+						player->name[character_counter] = 'O';
 						++character_counter;
 						break;
 					case ALLEGRO_KEY_Q:
-						arr_char[character_counter] = 'Q';
+						player->name[character_counter] = 'Q';
 						++character_counter;
 						break;
 					case ALLEGRO_KEY_R:
-						arr_char[character_counter] = 'R';
+						player->name[character_counter] = 'R';
 						++character_counter;
 						break;
 					case ALLEGRO_KEY_S:
-						arr_char[character_counter] = 'S';
+						player->name[character_counter] = 'S';
 						++character_counter;
 						break;
 					case ALLEGRO_KEY_T:
-						arr_char[character_counter] = 'T';
+						player->name[character_counter] = 'T';
 						++character_counter;
 						break;
 					case ALLEGRO_KEY_U:
-						arr_char[character_counter] = 'U';
+						player->name[character_counter] = 'U';
 						++character_counter;
 						break;
 					case ALLEGRO_KEY_V:
-						arr_char[character_counter] = 'V';
+						player->name[character_counter] = 'V';
 						++character_counter;
 						break;
 					case ALLEGRO_KEY_W:
-						arr_char[character_counter] = 'W';
+						player->name[character_counter] = 'W';
 						++character_counter;
 						break;
 					case ALLEGRO_KEY_X:
-						arr_char[character_counter] = 'X';
+						player->name[character_counter] = 'X';
 						++character_counter;
 						break;
 					case ALLEGRO_KEY_Y:
-						arr_char[character_counter] = 'Y';
+						player->name[character_counter] = 'Y';
 						++character_counter;
 						break;
 					case ALLEGRO_KEY_Z:
-						arr_char[character_counter] = 'Z';
+						player->name[character_counter] = 'Z';
 						++character_counter;
 						break;
 					}
@@ -666,7 +640,7 @@ void read_keyboard(char arr_char[], ALLEGRO_EVENT_QUEUE* ev_queue, ALLEGRO_FONT*
 					if (character_counter > 0)
 					{
 						--character_counter;
-						arr_char[character_counter] = '\0';
+						player->name[character_counter] = '\0';
 					}
 					break;
 				case ALLEGRO_KEY_ENTER:
@@ -680,19 +654,19 @@ void read_keyboard(char arr_char[], ALLEGRO_EVENT_QUEUE* ev_queue, ALLEGRO_FONT*
 				}
 			}
 
-			al_draw_bitmap(fondo_read, 0, 0, 0);
+			al_draw_bitmap(graphics->menuBitmaps[FONDO_GR], 0, 0, 0);
 
 			if (character_counter == NAMELENGHT)
 			{
-				al_draw_text(fuente_score, al_map_rgb(255, 255, 255), MESSAGE_X - 2, MESSAGE_Y, ALLEGRO_ALIGN_LEFT, "CHARACTER LIMIT REACHED");
-				al_draw_text(fuente_score, al_map_rgb(224, 192, 0), MESSAGE_X, MESSAGE_Y, ALLEGRO_ALIGN_LEFT, "CHARACTER LIMIT REACHED");
+				al_draw_text(graphics->font, al_map_rgb(255, 255, 255), MESSAGE_X - 2, MESSAGE_Y, ALLEGRO_ALIGN_LEFT, "CHARACTER LIMIT REACHED");
+				al_draw_text(graphics->font, al_map_rgb(224, 192, 0), MESSAGE_X, MESSAGE_Y, ALLEGRO_ALIGN_LEFT, "CHARACTER LIMIT REACHED");
 			}
 
 
-			al_draw_text(fuente_score, al_map_rgb(255, 255, 255), ENTER_PLAYER_NAME_X - 2, ENTER_PLAYER_NAME_Y, ALLEGRO_ALIGN_LEFT, "ENTER PLAYER NAME:");
-			al_draw_text(fuente_score, al_map_rgb(224, 192, 0), ENTER_PLAYER_NAME_X, ENTER_PLAYER_NAME_Y, ALLEGRO_ALIGN_LEFT, "ENTER PLAYER NAME:");
-			al_draw_text(fuente_score, al_map_rgb(255, 255, 255), PLAYER_NAME_X - 2, PLAYER_NAME_Y, ALLEGRO_ALIGN_LEFT, arr_char);
-			al_draw_text(fuente_score, al_map_rgb(224, 192, 0), PLAYER_NAME_X, PLAYER_NAME_Y, ALLEGRO_ALIGN_LEFT, arr_char);
+			al_draw_text(graphics->font, al_map_rgb(255, 255, 255), ENTER_PLAYER_NAME_X - 2, ENTER_PLAYER_NAME_Y, ALLEGRO_ALIGN_LEFT, "ENTER PLAYER NAME:");
+			al_draw_text(graphics->font, al_map_rgb(224, 192, 0), ENTER_PLAYER_NAME_X, ENTER_PLAYER_NAME_Y, ALLEGRO_ALIGN_LEFT, "ENTER PLAYER NAME:");
+			al_draw_text(graphics->font, al_map_rgb(255, 255, 255), PLAYER_NAME_X - 2, PLAYER_NAME_Y, ALLEGRO_ALIGN_LEFT, player->name);
+			al_draw_text(graphics->font, al_map_rgb(224, 192, 0), PLAYER_NAME_X, PLAYER_NAME_Y, ALLEGRO_ALIGN_LEFT, player->name);
 			al_flip_display();
 		}
 	}
@@ -750,5 +724,8 @@ void printGameOver(graphics_t* graphics) {
 	al_draw_bitmap(graphics->fondosExtra[0], 0, 0, 0);
 }
 
+void clearSpaceInvaders(void) {
+
+}
 
 #endif // !RASPI
