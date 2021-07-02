@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "../Space Invaders/BackEnd/spaceInvaders.h"
+#include "BackEnd/spaceInvaders.h"
 
 int main(void) {
 

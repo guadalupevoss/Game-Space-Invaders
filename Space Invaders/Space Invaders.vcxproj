@@ -162,6 +162,7 @@
     <ClInclude Include="BackEnd\aliens.h" />
     <ClInclude Include="BackEnd\barriers.h" />
     <ClInclude Include="BackEnd\bullet.h" />
+    <ClInclude Include="BackEnd\constantes.h" />
     <ClInclude Include="BackEnd\highscore.h" />
     <ClInclude Include="BackEnd\menu.h" />
     <ClInclude Include="BackEnd\pause.h" />
@@ -188,25 +189,14 @@
     <Font Include="Resources\space_invaders.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Resources\Bitmaps\0.bmp" />
-    <Image Include="Resources\Bitmaps\1.bmp" />
-    <Image Include="Resources\Bitmaps\2.bmp" />
-    <Image Include="Resources\Bitmaps\3.bmp" />
-    <Image Include="Resources\Bitmaps\4.bmp" />
-    <Image Include="Resources\Bitmaps\5.bmp" />
-    <Image Include="Resources\Bitmaps\6.bmp" />
-    <Image Include="Resources\Bitmaps\7.bmp" />
-    <Image Include="Resources\Bitmaps\8.bmp" />
-    <Image Include="Resources\Bitmaps\9.bmp" />
-    <Image Include="Resources\Bitmaps\alien_1.bmp" />
-    <Image Include="Resources\Bitmaps\alien_2.bmp" />
-    <Image Include="Resources\Bitmaps\alien_3.bmp" />
-    <Image Include="Resources\Bitmaps\alien_4.bmp" />
-    <Image Include="Resources\Bitmaps\alien_5.bmp" />
-    <Image Include="Resources\Bitmaps\alien_muere.bmp" />
-    <Image Include="Resources\Bitmaps\bala.bmp" />
-    <Image Include="Resources\Bitmaps\barrera_died.bmp" />
-    <Image Include="Resources\Bitmaps\barrera_entera.bmp" />
+    <Media Include="Resources\Sounds\audio.mp3" />
+    <Media Include="Resources\Sounds\exit.wav" />
+    <Media Include="Resources\Sounds\high_score.wav" />
+    <Media Include="Resources\Sounds\menu.wav" />
+    <Media Include="Resources\Sounds\menu_2.wav" />
+    <Media Include="Resources\Sounds\play.wav" />
+  </ItemGroup>
+  <ItemGroup>
     <Image Include="Resources\Bitmaps\BitmapAlien0.bmp" />
     <Image Include="Resources\Bitmaps\BitmapAlien1.bmp" />
     <Image Include="Resources\Bitmaps\BitmapAlien2.bmp" />
@@ -232,34 +222,8 @@
     <Image Include="Resources\Bitmaps\BitmapMenu5.png" />
     <Image Include="Resources\Bitmaps\BitmapRandomAlien0.bmp" />
     <Image Include="Resources\Bitmaps\BitmapSpaceship0.bmp" />
-    <Image Include="Resources\Bitmaps\cuarta_barrera.bmp" />
-    <Image Include="Resources\Bitmaps\fondo_exit.bmp" />
-    <Image Include="Resources\Bitmaps\fondo_exit_1.bmp" />
-    <Image Include="Resources\Bitmaps\fondo_high_score.bmp" />
-    <Image Include="Resources\Bitmaps\fondo_high_score_1.bmp" />
     <Image Include="Resources\Bitmaps\fondo_juego.bmp" />
-    <Image Include="Resources\Bitmaps\fondo_menu.bmp" />
-    <Image Include="Resources\Bitmaps\fondo_menu_1.bmp" />
-    <Image Include="Resources\Bitmaps\fondo_play.bmp" />
-    <Image Include="Resources\Bitmaps\fondo_play_1.bmp" />
-    <Image Include="Resources\Bitmaps\game_over.bmp" />
-    <Image Include="Resources\Bitmaps\high_scores.bmp" />
-    <Image Include="Resources\Bitmaps\menu_pause.bmp" />
-    <Image Include="Resources\Bitmaps\muerto.bmp" />
-    <Image Include="Resources\Bitmaps\mystery.bmp" />
-    <Image Include="Resources\Bitmaps\nave.bmp" />
     <Image Include="Resources\Bitmaps\score.bmp" />
-    <Image Include="Resources\Bitmaps\segunda_barrera.bmp" />
-    <Image Include="Resources\Bitmaps\tercer_barrera.bmp" />
-    <Image Include="Resources\Bitmaps\vivo.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="Resources\Sounds\audio.mp3" />
-    <Media Include="Resources\Sounds\exit.wav" />
-    <Media Include="Resources\Sounds\high_score.wav" />
-    <Media Include="Resources\Sounds\menu.wav" />
-    <Media Include="Resources\Sounds\menu_2.wav" />
-    <Media Include="Resources\Sounds\play.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

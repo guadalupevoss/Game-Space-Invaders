@@ -1,7 +1,7 @@
 #ifndef ALLEGRO_H
 #define ALLEGRO_H
 
-
+#ifndef RASPI
 //Include de allegro.
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_color.h>
@@ -22,11 +22,6 @@
 
 //ver si esta bien esto
 #include "../../BackEnd/highscore.h"
-
-#ifndef  RASPI
-
-//Estados del juego
-enum { NOTHING = 0, SS_BULLET, SS_MOVE_R, SS_MOVE_L, PAUSE, EXIT };
 
 typedef struct {
 	int state;
@@ -63,7 +58,10 @@ typedef struct {
 
 }graphics_t;
 
-enum{MENU_GR=0, PLAY_GR, HIGHSCORE_GR, EXIT_GR, FONDO_GR, SPACEINVADERS_GR};
+//Estados del juego
+enum { NOTHING = 0, SS_BULLET, SS_MOVE_R, SS_MOVE_L, PAUSE, EXIT };
+enum { MENU_GR = 0, PLAY_GR, HIGHSCORE_GR, EXIT_GR, FONDO_GR, SPACEINVADERS_GR };
+
 enum{ALIEN0=0, ALIEN1, ALIEN2, ALIEN3, ALIEN4, DEADALIEN};
 enum{BARRIER0=0, BARRIER1, BARRIER2, BARRIER3, DEADBARRIER};
 //enum{DEAD=0, ALIVE};
@@ -86,7 +84,14 @@ void printMenu(graphics_t* graphics);
 //Función que se fija si cambió el estado (si se presionó algún botón o saltó error) y devuelve el estado indicado.
 int stateMenu(graphics_t* graphics);
 //Imprime ej juego.
-void printSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien);
+void printSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien, int level, int frames);
+
+int getEvent(graphics_t graphics);
+
+int statePause(graphics_t* graphics);
+void printPause(graphics_t* graphics);
+void printGameOver(graphics_t* graphics);
+void clearSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien, int level);
 
 #endif // ! RASPI
 

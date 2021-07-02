@@ -149,9 +149,6 @@
     <ClInclude Include="FrontEnd\Raspi\libaudio.h">
       <Filter>Header Files\FrontEnd\Raspi</Filter>
     </ClInclude>
-    <ClInclude Include="FrontEnd\Raspi\raspi.h">
-      <Filter>Header Files\FrontEnd\Raspi</Filter>
-    </ClInclude>
     <ClInclude Include="FrontEnd\Allegro\allegro.h">
       <Filter>Header Files\FrontEnd\Allegro</Filter>
     </ClInclude>
@@ -163,6 +160,12 @@
     </ClInclude>
     <ClInclude Include="BackEnd\pause.h">
       <Filter>Header Files\BackEnd</Filter>
+    </ClInclude>
+    <ClInclude Include="BackEnd\constantes.h">
+      <Filter>Header Files\BackEnd</Filter>
+    </ClInclude>
+    <ClInclude Include="FrontEnd\Raspi\raspi.h">
+      <Filter>Header Files\FrontEnd\Raspi</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -176,123 +179,26 @@
     </Font>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Resources\Bitmaps\0.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\1.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\2.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\3.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\4.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\5.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\6.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\7.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\8.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\9.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\alien_1.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\alien_2.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\alien_3.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\alien_4.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\alien_5.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\alien_muere.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\bala.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\barrera_died.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\barrera_entera.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\cuarta_barrera.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\fondo_exit.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\fondo_exit_1.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\fondo_high_score.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\fondo_high_score_1.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\fondo_juego.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\fondo_menu.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\fondo_menu_1.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\fondo_play.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\fondo_play_1.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\game_over.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\high_scores.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\menu_pause.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\muerto.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\mystery.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\nave.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\score.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\segunda_barrera.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\tercer_barrera.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
-    <Image Include="Resources\Bitmaps\vivo.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
+    <Media Include="Resources\Sounds\exit.wav">
+      <Filter>Resource Files\Sounds</Filter>
+    </Media>
+    <Media Include="Resources\Sounds\audio.mp3">
+      <Filter>Resource Files\Sounds</Filter>
+    </Media>
+    <Media Include="Resources\Sounds\high_score.wav">
+      <Filter>Resource Files\Sounds</Filter>
+    </Media>
+    <Media Include="Resources\Sounds\menu.wav">
+      <Filter>Resource Files\Sounds</Filter>
+    </Media>
+    <Media Include="Resources\Sounds\menu_2.wav">
+      <Filter>Resource Files\Sounds</Filter>
+    </Media>
+    <Media Include="Resources\Sounds\play.wav">
+      <Filter>Resource Files\Sounds</Filter>
+    </Media>
+  </ItemGroup>
+  <ItemGroup>
     <Image Include="Resources\Bitmaps\BitmapAlien0.bmp">
       <Filter>Resource Files\Bitmaps</Filter>
     </Image>
@@ -368,25 +274,11 @@
     <Image Include="Resources\Bitmaps\BitmapSpaceship0.bmp">
       <Filter>Resource Files\Bitmaps</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="Resources\Sounds\exit.wav">
-      <Filter>Resource Files\Sounds</Filter>
-    </Media>
-    <Media Include="Resources\Sounds\audio.mp3">
-      <Filter>Resource Files\Sounds</Filter>
-    </Media>
-    <Media Include="Resources\Sounds\high_score.wav">
-      <Filter>Resource Files\Sounds</Filter>
-    </Media>
-    <Media Include="Resources\Sounds\menu.wav">
-      <Filter>Resource Files\Sounds</Filter>
-    </Media>
-    <Media Include="Resources\Sounds\menu_2.wav">
-      <Filter>Resource Files\Sounds</Filter>
-    </Media>
-    <Media Include="Resources\Sounds\play.wav">
-      <Filter>Resource Files\Sounds</Filter>
-    </Media>
+    <Image Include="Resources\Bitmaps\fondo_juego.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="Resources\Bitmaps\score.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
   </ItemGroup>
 </Project>

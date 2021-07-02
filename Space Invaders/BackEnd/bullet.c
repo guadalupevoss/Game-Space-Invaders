@@ -10,20 +10,22 @@ void initBullet(bullet_t* bullet, int x, int y, int type, int speed) {
 	bullet->state = OFF;
 }
 
-void updateBullet(bullet_t* bullet){
-	moveBullet(bullet);
+void updateBullet(bullet_t* bullet, int frames){
+	if ((frames % bullet->speed) == 0) {
+		moveBullet(bullet);
+	}
 }
 
 void moveBullet(bullet_t* bullet) {
-	if (bullet->pos.y != 0 || bullet->pos.y != (HEIGHT-1)) {
+	if ((bullet->pos.y != 0) && (bullet->pos.y != 15)) {
 		if (bullet->type == ALIEN_BULLET) {
-			changePosition(&bullet->pos, 0, bullet->speed);
+			changePosition(&bullet->pos, 0, 1);
 		}
 		if (bullet->type == SPACESHIP_BULLET) {
-			changePosition(&bullet->pos, 0, (-1) * bullet->speed);
+			changePosition(&bullet->pos, 0, -1);
 		}
 	}
-	else {
+	else if((bullet->pos.y == 0) || (bullet->pos.y == 15)) {
 		bullet->state = OFF;
 	}
 }

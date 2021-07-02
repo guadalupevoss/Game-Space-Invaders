@@ -29,9 +29,12 @@ void updateBarriers(barriers_t* barriers, alien_t* aliens, bullet_t* spaceshipBu
 //Si la bala llega a la barrera, entonces pierde una vida.
 void barrierIsShot(barriers_t* barrier, bullet_t* bullet) {
 	if (comparePosition(barrier->pos, bullet->pos)) {
-		if (barrier->lives > 0) {
+		if (barrier->lives > 1) {
 			--barrier->lives;
 			bullet->state = OFF;
+		}
+		else if(barrier->lives == 1){
+			barrier->lives = RECENT_SHOT;
 		}
 	}
 }

@@ -14,13 +14,15 @@
 
 #ifndef CARACTERES_H
 #define CARACTERES_H
-
 /*******************************************************************************
  *                              HEADER FILES                                   *
  *******************************************************************************/
+#include <stdio.h>
 #include "disdrv.h"
+#include "joydrv.h"
+#include "../../BackEnd/constantes.h"
 
-#define CHANGESCREEN(s) screen_##s##_raspi()
+//#define CHANGESCREEN(s) screen_##s##_raspi
 
 /*******************************************************************************
  *                    FUNCTION PROTOTYPES WITH GLOBAL SCOPE                    *
@@ -278,7 +280,19 @@ void draw_9 (int x_9, int y_9);
  *************************************************************************/
 void draw_0 (int x_0, int y_0);
 
-
+void init_keyboard(char letter_keyboard[NUMBER_OF_SCREENS][NAMELENGHT]);
+char get_letter(char letter_keyboard[NUMBER_OF_SCREENS][NAMELENGHT]);
+void screen_1_raspi();
+void screen_2_raspi();
+void screen_3_raspi();
+void screen_4_raspi();
+void screen_5_raspi();
+void screen_6_raspi();
+void screen_7_raspi();
+void screen_8_raspi();
+void screen_9_raspi();
+void draw_guion_4(int x, int screen_number);
+void draw_guion_5(int x, int screen_number);
 
 #endif /* CARACTERES_H */
 

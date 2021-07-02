@@ -2,6 +2,7 @@
 #define OBJECTS_H
 
 #include "../../BackEnd/aliens.h"
+#include "../../BackEnd/barriers.h"
 
 #define CLEARPOINT(f) myPoint_##f##_clear
 #define MYPOINT(s) myPoint_##s##_level
@@ -18,5 +19,6 @@ void clearBala(int x, int y);
 void printNave(int x);
 void clearNave(int x);
 void printLives(int cantidad_vidas);
+void printBarriers(barriers_t* barriers);
 
 #endif // OBJECTS_H

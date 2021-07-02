@@ -3,6 +3,7 @@
 
 #include "aliens.h"
 
+#define RECENT_SHOT 5
 
 typedef struct {
 	position_t pos;

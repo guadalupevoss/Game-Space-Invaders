@@ -23,21 +23,23 @@
 #include "../../BackEnd/barriers.h"
 #include "../../BackEnd/spaceship.h"
 #include "../../BackEnd/randomalien.h"
+#include "../../BackEnd/aliens.h"
 
 //ver si esta bien esto
 #include "../../BackEnd/highscore.h"
 
-
+//Estados del juego
+enum { NOTHING = 0, SS_BULLET, SS_MOVE_R, SS_MOVE_L, PAUSE, EXIT };
+enum { MENU_GR = 0, PLAY_GR, HIGHSCORE_GR, EXIT_GR, FONDO_GR, SPACEINVADERS_GR };
 //Estados del MENU
-enum { MENU = 0, PLAY, HIGHSCORE, EXIT, ERROR };
-
+enum { MENU = 0, PLAY, HIGHSCORE, EXIT_M, ERROR };
 //Estados del MENU DE PAUSA
-enum {NOTHING = 0, MENU_PAUSE, PLAY_PAUSE, EXIT_PAUSE, ERROR_PAUSE};
+enum { MENU_PAUSE = 1, PLAY_PAUSE, EXIT_PAUSE, ERROR_PAUSE };
 
 #ifdef RASPI
-	typedef struct {
-		int state;
-	}graphics_t
+typedef struct {
+	int state;
+}graphics_t;
 
 /**********************************************************************************
  * Función: initGraphics                                                          *
@@ -49,7 +51,7 @@ int initGraphics(graphics_t* allegro);
  * Función: destroyGraphics                                                       *
  * Esta función se encarga de destruir todo lo necesario relacionado con la RPi	  *
  **********************************************************************************/
- int destroyGraphics(graphics_t* allegro);
+ void destroyGraphics(graphics_t* allegro);
 
 /**********************************************************************************
  * Función: printMenu                                                             *
@@ -75,14 +77,14 @@ void updateGraphics();
  * Esta función se encarga de imprimir todos los objetos del juego en caso de ser *
  * necesarios.																	  *
  **********************************************************************************/
-void printSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien);
+void printSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien, int level, int frames);
 
 /**********************************************************************************
  * Función: clearSpaceInvaders                                                    *
  * Esta función se encarga de hacer los clears de todos los objetos que lo		  *
  * necesiten.																	  *
  **********************************************************************************/
-void clearSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien);
+void clearSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien, int level);
 //Se fija si apretaron algo nuevo o si movieron la nave. 
 
 /**********************************************************************************
@@ -90,13 +92,19 @@ void clearSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barri
  * Esta función se encarga de chequear si ocurrio algun evento nuevo.			  *
  * Devuelve un int con el tipo de evento ocurrido.								  *
  **********************************************************************************/
-int getEvent(graphics_t* graphics);
+int getEvent(graphics_t graphics);
 
 /**********************************************************************************
  * Función: printHighscore														  *
  * Esta función se encarga de imprimir la tabla de highscore					  *
  **********************************************************************************/
-int printHighscore(player_t highscores[SCORES_NUM])
+int printHighscore(player_t highscores[MAXSCORES]);
+
+void printGameOver(graphics_t* graphics);
+void printPause(graphics_t* graphics);
+int statePause(graphics_t* graphics);
+
+
 #endif
 
 #endif /* RASPI_H */

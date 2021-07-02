@@ -10,12 +10,19 @@
  * 
  * Created on February 21, 2021, 11:21 AM
  */
+//#define RASPI
 #ifdef RASPI
 
 #include "raspi.h"
 
-//Estados del juego
-enum { NOTHING = 0, SS_BULLET, SS_MOVE_R, SS_MOVE_L, PAUSE, EXIT };
+////Estados del juego
+//enum { NOTHING = 0, SS_BULLET, SS_MOVE_R, SS_MOVE_L, PAUSE, EXIT };
+
+void printLetter(char letter, int x);
+void selectNumber(int number[NUMBERLENGHT], int cifra);
+void printName(player_t highscores[MAXSCORES], int contNames);
+void readNumber(unsigned long num, int number[NUMBERLENGHT]);
+int letterSize(char letter);
 
 //Inicializa Raspi y sus variables.
 int initGraphics(graphics_t* allegro) {
@@ -23,24 +30,25 @@ int initGraphics(graphics_t* allegro) {
     joy_init();
     //init_sound();
     draw_play();
+	return OK_GRAPHICS;
 }
 //Destruye Raspi y las variables.
-int destroyGraphics(graphics_t* allegro) {
+void destroyGraphics(graphics_t* allegro) {
     disp_clear();
 }
 //Función que imprime el menú.
 void printMenu(graphics_t* graphics) {
 	switch (graphics->state)
 	{
-		case PLAY:
+		case PLAY_GR:
 			draw_play();
 			//play_highscore();
 			break;
-		case HIGHSCORE:
+		case HIGHSCORE_GR:
 			draw_highscore();
 			//play_exit();
 			break;
-		case EXIT:
+		case EXIT_GR:
 			draw_exit();
 			//play_play();
 			break;
@@ -49,7 +57,7 @@ void printMenu(graphics_t* graphics) {
 
 //Función que se fija si cambió el estado (si se presionó algún botón o saltó error) y devuelve el estado indicado.
 int stateMenu(graphics_t* graphics) {
-	int newState;
+	int newState = MENU;
 	joy_update();
 
 	jcoord_t myCoords;
@@ -57,8 +65,12 @@ int stateMenu(graphics_t* graphics) {
 	jswitch_t mySwitch;
 	mySwitch = joy_get_switch();
 
+	if ((graphics->state != HIGHSCORE_GR) && (graphics->state != EXIT_GR)) {
+		graphics->state = PLAY_GR;
+	}
+
 	//Se fija si se mueve el joystick para la izquierda o la derecha. En caso de que si pasa a la pantalla correspondiente siguiente. Si se aprieta el botón del joystick se selecciona esa opción.
-	while (mySwitch != J_PRESS){
+	if (mySwitch != J_PRESS){
 		joy_update();
 		myCoords = joy_get_coord();
 		mySwitch = joy_get_switch();
@@ -66,14 +78,17 @@ int stateMenu(graphics_t* graphics) {
 		if (myCoords.x > 50){
 			switch (graphics->state)
 			{
-				case PLAY:
-					graphics->state = HIGHSCORE;
+				case PLAY_GR:
+					graphics->state = HIGHSCORE_GR;
+					disp_clear();
 					break;
-				case HIGHSCORE:
-					graphics->state = EXIT;
+				case HIGHSCORE_GR:
+					graphics->state = EXIT_GR;
+					disp_clear();
 					break;
-				case EXIT:
-					graphics->state = PLAY;
+				case EXIT_GR:
+					graphics->state = PLAY_GR;
+					disp_clear();
 					break;
 			}
 		}
@@ -82,14 +97,17 @@ int stateMenu(graphics_t* graphics) {
 		{
 			switch (graphics->state)
 			{
-				case PLAY:
-					graphics->state = EXIT;
+				case PLAY_GR:
+					graphics->state = EXIT_GR;
+					disp_clear();
 					break;
-				case HIGHSCORE:
-					graphics->state = PLAY;
+				case HIGHSCORE_GR:
+					graphics->state = PLAY_GR;
+					disp_clear();
 					break;
-				case EXIT:
-					graphics->state = HIGHSCORE;
+				case EXIT_GR:
+					graphics->state = HIGHSCORE_GR;
+					disp_clear();
 					break;
 			}
 		}
@@ -108,7 +126,7 @@ int stateMenu(graphics_t* graphics) {
 		}
 	}
 
-	if (mySwitch == J_PRESS)
+	else if (mySwitch == J_PRESS)
 	{
 		while (mySwitch == J_PRESS)
 		{
@@ -117,17 +135,21 @@ int stateMenu(graphics_t* graphics) {
 		}
 		switch (graphics->state)
 		{
-			case PLAY:
+			case PLAY_GR:
 				newState = PLAY;
+				disp_clear();
 				break;
-			case HIGHSCORE:
+			case HIGHSCORE_GR:
 				newState = HIGHSCORE;
+				disp_clear();
 				break;
-			case EXIT:
+			case EXIT_GR:
 				newState = EXIT;
+				disp_clear();
 				break;
 		}
 	}
+	return newState;
 }
 
 //Se encarga de hacer el flip display.
@@ -135,8 +157,8 @@ void updateGraphics(void) {
 	disp_update();
 }
 
-int getEvent(graphics_t* graphics) {
-	int newState;
+int getEvent(graphics_t graphics) {
+	int newState = NOTHING;
 	joy_update();
 
 	jcoord_t myCoords;
@@ -188,29 +210,50 @@ int getEvent(graphics_t* graphics) {
 	return newState;
 }
 
-void printSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien) {
-	static int prevSSLives = 3, prevSSX = INITIAL_SPASESHIP_POS_X, prevRAX = ;
+void printSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien, int level, int frames) {
+	static int prevSSLives = 4, prevSSX = INITIAL_SPASESHIP_POS_X;
+	int numberAliens = getFilas(level) * getColumnas(level);
+	int i;
 	if ((spaceship->pos.x != prevSSX) && spaceship->lives) {
-		clearNave(prevSSX);
+		if (prevSSX < 13) {
+			clearNave(prevSSX);
+		}
 		printNave(spaceship->pos.x);
 		prevSSX = spaceship->pos.x;
 	}
-	printAliens(aliens, lastAlien(aliens));
+	clearAliens(aliens, numberAliens);
+	printAliens(aliens, numberAliens);
 	if (rAlien->alive) {
+		if (rAlien->direction == DERECHA) {
+			clearAlienRandom(rAlien->pos.x - 1, rAlien->pos.y);
+		}
+		else {
+			clearAlienRandom(rAlien->pos.x + 1, rAlien->pos.y);
+		}
 		printAlienRandom(rAlien->pos.x, rAlien->pos.y);
 	}
 	if(spaceship->lives != prevSSLives){
 		printLives(spaceship->lives);
 		prevSSLives = spaceship->lives;
 	}
+	for (i = 0; i < numberAliens; ++i) {
+		if (aliens[i].bullet.state == ON) {
+			clearBala(aliens[i].bullet.pos.x, aliens[i].bullet.pos.y - 1);
+			printBala(aliens[i].bullet.pos.x, aliens[i].bullet.pos.y);
+		}
+	}
+
+	if (spaceship->bullet.state == ON) {
+		clearBala(spaceship->bullet.pos.x, spaceship->bullet.pos.y + 1);
+		printBala(spaceship->bullet.pos.x, spaceship->bullet.pos.y);
+	}
+	printBarriers(barriers);
+	updateGraphics();
 }
 
-void clearSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien) {
-	static int prevSSLives = 3, prevSSX = INITIAL_SPASESHIP_POS_X;
-	clearAliens(aliens, lastAlien(aliens));
-	if (rAlien->alive) {
-		clearAlienRandom(rAlien->pos.x, rAlien->pos.y);
-	}
+void clearSpaceInvaders(graphics_t* graphics, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien, int level) {
+	int numberAliens = getFilas(level) * getColumnas(level);
+	clearAliens(aliens, numberAliens);
 }
 
 //Función que imprime el menú de pausa.
@@ -231,16 +274,27 @@ void printPause(graphics_t* graphics) {
 
 //Función que se fija si cambió el estado (si se presionó algún botón o saltó error) y devuelve el estado indicado.
 int statePause(graphics_t* graphics) {
+	static int numb = 0;
 	int newState = NOTHING;
 	joy_update();
+
+	//Para que se imprima correctamente el menu de pausa, sin basura.
+	if (numb == 0) {
+		disp_clear();
+		numb = 1;
+	}
 
 	jcoord_t myCoords;
 	myCoords = joy_get_coord();
 	jswitch_t mySwitch;
 	mySwitch = joy_get_switch();
 
+	if ((graphics->state != MENU_PAUSE) && (graphics->state != EXIT_PAUSE)) {
+		graphics->state = PLAY_PAUSE;
+	}
+
 	//Se fija si se mueve el joystick para la izquierda o la derecha. En caso de que si pasa a la pantalla correspondiente siguiente. Si se aprieta el botón del joystick se selecciona esa opción.
-	while (mySwitch != J_PRESS){
+	if (mySwitch != J_PRESS){
 		joy_update();
 		myCoords = joy_get_coord();
 		mySwitch = joy_get_switch();
@@ -250,15 +304,15 @@ int statePause(graphics_t* graphics) {
 			{
 				case PLAY_PAUSE:
 					graphics->state = MENU_PAUSE;
+					disp_clear();
 					break;
 				case MENU_PAUSE:
 					graphics->state = EXIT_PAUSE;
+					disp_clear();
 					break;
 				case EXIT_PAUSE:
 					graphics->state = PLAY_PAUSE;
-					break;
-				default:
-					graphics->state = PLAY_PAUSE;
+					disp_clear();
 					break;
 			}
 		}
@@ -269,12 +323,15 @@ int statePause(graphics_t* graphics) {
 			{
 				case PLAY_PAUSE:
 					graphics->state = EXIT_PAUSE;
+					disp_clear();
 					break;
 				case MENU_PAUSE:
 					graphics->state = PLAY_PAUSE;
+					disp_clear();
 					break;
 				case EXIT_PAUSE:
 					graphics->state = MENU_PAUSE;
+					disp_clear();
 					break;
 			}
 		}
@@ -304,15 +361,15 @@ int statePause(graphics_t* graphics) {
 		{
 			case PLAY_PAUSE:
 				newState = PLAY_PAUSE;
+				disp_clear();
 				break;
 			case MENU_PAUSE:
 				newState = MENU_PAUSE;
+				disp_clear();
 				break;
 			case EXIT_PAUSE:
 				newState = EXIT_PAUSE;
-				break;
-			default:
-				newState = NOTHING;
+				disp_clear();
 				break;
 		}
 	}
@@ -320,23 +377,16 @@ int statePause(graphics_t* graphics) {
 	return newState;
 }
 
-
-
-/* defines que necesito 
-	#define NUMBERLENGHT 20
-	#define NAME_LENGHT 3
-
-*/
-
 //Funciones para ingresar y mostrar un nuevo highscore
 
-
-int printHighscore(player_t highscores[SCORES_NUM]) {
+int printHighscore(player_t highscores[MAXSCORES]) {
 	int contNames = 1;
 	int nameSizeX = 0;
 	int number[NUMBERLENGHT];
 	jswitch_t mySwitch;
 	jcoord_t myCoords;
+	mySwitch = joy_get_switch();
+	myCoords = joy_get_coord();
 	while (mySwitch != J_PRESS){
 		readNumber(highscores[contNames - 1].points, number);
 		int primeraCifra = 0;		//me fijo cual es la primer cifra distinta de 0 en el arreglo del numero
@@ -348,7 +398,7 @@ int printHighscore(player_t highscores[SCORES_NUM]) {
 		while ((myCoords.y < 7) && (myCoords.y > -7)){ //mientras no se mueva para arriba o para abajo
 			joy_update();
 			mySwitch = joy_get_switch();
-			jcoord_t myCoords = joy_get_coord();
+			myCoords = joy_get_coord();
 			if (myCoords.x > 10){
 				if (contPrint == 19){
 					//no hago nada
@@ -403,25 +453,25 @@ void readNumber(unsigned long num, int number[NUMBERLENGHT]){
 /*Esta funcion recibe la lista con las estructuras de los highscores y el 
 numero de la lista que quieras imprimir, e imprime el nombre que le corresponde 
 (si le envia 1 imprime el nombre del mejor highscore)	*/
-void printName(player_t highscores[MAXSCORES], int contNames - 1){ //decia +1 puse -1 
+void printName(player_t highscores[MAXSCORES], int contNames){ //decia +1 puse -1 
 	int contLetters;
 	int nameSizeX = 0;
 	for (contLetters = 0; contLetters < NAMELENGHT; contLetters++){  //calculo el tamano de la palabra
-		char letter = highscores[contNames].name[contLetters];
+		char letter = highscores[contNames-1].name[contLetters];
 		nameSizeX += letterSize(letter);
 	}
 	if (nameSizeX < 15){
 		nameSizeX = 0;
 		for (contLetters = 0; contLetters < NAMELENGHT; contLetters++){
-			char letter = highscores[contNames].name[contLetters];
-			printLetter(letter, contLetter + nameSizeX);
+			char letter = highscores[contNames-1].name[contLetters];
+			printLetter(letter, contLetters + nameSizeX);
 			nameSizeX += letterSize(letter);
 		}
 	}
 	else if (nameSizeX == 15){ //si el nombre tiene tres letras de 5x5
 		for (contLetters = 0; contLetters < NAMELENGHT; contLetters++){
-			char letter = highscores[contNames].name[contLetters];
-			printLetter(letter, contLetter * 5);   //imprime las tres letras pegadas (sino no entran de otra forma) 
+			char letter = highscores[contNames-1].name[contLetters];
+			printLetter(letter, contLetters * 5);   //imprime las tres letras pegadas (sino no entran de otra forma) 
 			nameSizeX += letterSize(letter);
 		}
 	}
@@ -514,43 +564,44 @@ void printLetter(char letter, int x){
 
 //Recibe un numero y sus coordenadas y lo imprime
 void printNumber(int num, int x, int y){
-	switch (num)
-		case 0:
-			draw_0(x, y);
-			break;
-		case 1:
-			draw_1(x, y);
-			break;
-		case 2:
-			draw_2(x, y);
-			break;
-		case 3:
-			draw_3(x, y);
-			break;
-		case 4:
-			draw_4(x, y);
-			break;
-		case 5:
-			draw_5(x, y);
-			break;
-		case 6:
-			draw_6(x, y);
-			break;
-		case 7:
-			draw_7(x, y);
-			break;
-		case 8:
-			draw_8(x, y);
-			break;
-		case 9:
-			draw_9(x, y);
-			break;
+	switch (num) {
+	case 0:
+		draw_0(x, y);
+		break;
+	case 1:
+		draw_1(x, y);
+		break;
+	case 2:
+		draw_2(x, y);
+		break;
+	case 3:
+		draw_3(x, y);
+		break;
+	case 4:
+		draw_4(x, y);
+		break;
+	case 5:
+		draw_5(x, y);
+		break;
+	case 6:
+		draw_6(x, y);
+		break;
+	case 7:
+		draw_7(x, y);
+		break;
+	case 8:
+		draw_8(x, y);
+		break;
+	case 9:
+		draw_9(x, y);
+		break;
+	}
 }
 
 //Esta funcion recibe una letra y devuelve el tamano de su coordenada x	
 int letterSize(char letter){
-	int size_x;
-	switch{
+	int size_x = 0;
+	switch(letter){
 		case 'A':
 		case 'B':
 		case 'C':
@@ -593,6 +644,10 @@ void selectNumber(int number[NUMBERLENGHT], int cifra){
 		printNumber(number[cifra + contador], (5 * contador) + 1, 13); 
 		//5*contador+1 es una cuenta que calcula la coordenada x dependiendo si hablamos del primer numero el segundo o el tercero que se muestra
 	}
+}
+
+void printGameOver(graphics_t* graphics) {
+	draw_gameover();
 }
 
 #endif

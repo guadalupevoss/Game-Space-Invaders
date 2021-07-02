@@ -18,7 +18,7 @@
  *******************************************************************************/
 #include "caracteres.h"
 
-
+void changeScreen(int screenNumber);
 /*******************************************************************************
  *                        GLOBAL FUNCTIONS DEFINITIONS                         *
  *******************************************************************************/
@@ -1120,9 +1120,6 @@ void draw_0 (int x_0, int y_0)
     disp_write (myPoint0_13, D_ON);
 }
 
-
-
-
 //TECLADO
 
 // Esta funcion se encarga de cargar la matriz del teclado de la raspi con sus respectivas letras. 				
@@ -1162,8 +1159,10 @@ void init_keyboard(char letter_keyboard[NUMBER_OF_SCREENS][NAMELENGHT])
 *	hasta que se selecciona una. Imprime las letras, responde al joystick	   *
 *	y finalmente devuelve la letra seleccionada.							   *
 *******************************************************************************/
-char get_letter(void){
-	int screen_number = 1;				//arranca mostrando la primer pantalla
+char get_letter(char letter_keyboard[NUMBER_OF_SCREENS][NAMELENGHT]){
+	int screenNumber = 1;	//arranca mostrando la primer pantalla
+	int guion_number;
+	guion_number = 1; //el guion se "para" sobre la primer letra
 	screen_1_raspi();
 	jswitch_t mySwitch = 0;
 	jcoord_t myCoords;
@@ -1173,32 +1172,36 @@ char get_letter(void){
 		mySwitch = joy_get_switch();
 		myCoords = joy_get_coord();		//agarra las coordenadas
 		if (myCoords.x > 10){				//si se mueve el joystick a la derecha, cambia a la pantalla correspondiente
-			if (screen_number == 9)		//si esta mostrando la ultima vuelve a la primera
-				screen_number = 1;
+			if (screenNumber == 9)		//si esta mostrando la ultima vuelve a la primera
+				screenNumber = 1;
 			else
-				screen_number += 1;		//pasa a la proxima pantalla
-			CHANGESCREEN(screen_number); //imprime la pantalla 
+				screenNumber += 1;		//pasa a la proxima pantalla
+			//switch(screen_number){}
+			changeScreen(screenNumber); //imprime la pantalla 
 		}
 		else if (myCoords.x < -10){	//lo mismo pero si va para la izquierda
-			if (screen_number == 1)	//de la primer pantalla pasa a la ultima
-				screen_number = 9;
+			if (screenNumber == 1)	//de la primer pantalla pasa a la ultima
+				screenNumber = 9;
 			else
-				screen_number -= 1;	//pasa a la pantalla anterior
-			CHANGESCREEN(screen_number); //imprime la pantalla
+				screenNumber -= 1;	//pasa a la pantalla anterior
+			changeScreen(screenNumber); //imprime la pantalla
 		}
 		disp_update();
 	}
 	//aca seria una vez que toca el boton del joystick
 
-	int guion_number = 1; //el guion se "para" sobre la primer letra
-
 	while (mySwitch != J_PRESS){ //mientras que no se presione el 
 		joy_update();
 		mySwitch = joy_get_switch();
 		myCoords = joy_get_coord();
-		if (screen_number == 8){
-			guion_number == 1 ? guion_number = 2 : guion_number = 1;
-			draw_guion_5(guion_number, screen_number);
+		if (screenNumber == 8){
+			if (guion_number == 1) {
+				guion_number = 2;
+			}
+			else {
+				guion_number = 1;
+			}
+			draw_guion_5(guion_number, screenNumber);
 		}
 		else if (myCoords.x > 10){				//si se mueve el joystick a la derecha, cambia a la pantalla correspondiente
 			if (guion_number == 3)
@@ -1212,32 +1215,34 @@ char get_letter(void){
 			else
 				guion_number -= 1;
 		}
-		switch (screen_number) //cada pantalla es un caso especial, ya que hay letras 4x5 y letras 5x5
-			case 1:
-			case 2:
-			case 4:
-			case 6:
-				//todas estas pantallas tienen 3 letras 4x5
-				draw_guion_4(guion_number);
-				break;
-			case 3:
-				//la tercera letra es 5x5
-				guion_number == 3 ? draw_guion_5(guion_number, screen_number) : draw_guion_4(guion_number, screen_number);
-				break;
-			case 5:
-				//la primer letra es 5x5
-				guion_number == 1 ? draw_guion_5(guion_number, screen_number) : draw_guion_4(guion_number, screen_number);
-				break;
-			case 7:
-				//la segunda letra es 5x5
-				guion_number == 2 ? draw_guion_5(guion_number, screen_number) : draw_guion_4(guion_number, screen_number);
-				break;
-			case 9:
-				guion_number == 3 ? draw_guion_4(guion_number, screen_number) : draw_guion_3(guion_number, screen_number);
-				break;
+		switch (screenNumber) {//cada pantalla es un caso especial, ya que hay letras 4x5 y letras 5x5
+		case 1:
+		case 2:
+		case 4:
+		case 6:
+			//todas estas pantallas tienen 3 letras 4x5
+			draw_guion_4(guion_number, screenNumber);
+			break;
+		case 3:
+			//la tercera letra es 5x5
+			guion_number == 3 ? draw_guion_5(guion_number, screenNumber) : draw_guion_4(guion_number, screenNumber);
+			break;
+		case 5:
+			//la primer letra es 5x5
+			guion_number == 1 ? draw_guion_5(guion_number, screenNumber) : draw_guion_4(guion_number, screenNumber);
+			break;
+		case 7:
+			//la segunda letra es 5x5
+			guion_number == 2 ? draw_guion_5(guion_number, screenNumber) : draw_guion_4(guion_number, screenNumber);
+			break;
+		case 9:
+			//Fijarse si estan bien estos draw guion o si deberian estar al reves el 4 y el 5
+			guion_number == 3 ? draw_guion_4(guion_number, screenNumber) : draw_guion_5(guion_number, screenNumber);
+			break;
+		}
 		disp_update();
 	}
-	return letter_keyboard[screen_number - 1][guion_number - 1]; //una vez seleccionada la letra, la devuelve
+	return letter_keyboard[screenNumber - 1][guion_number - 1]; //una vez seleccionada la letra, la devuelve
 }
 
 /*******************************************************************************
@@ -1274,9 +1279,9 @@ void screen_4_raspi(){
 }
 void screen_5_raspi(){
 	disp_clear();
-	draw_m(0, 6)
-		draw_n(6, 6)
-		draw_o(11, 6)
+	draw_m(0, 6);
+	draw_n(6, 6);
+	draw_o(11, 6);
 }
 void screen_6_raspi(){
 	disp_clear();
@@ -1346,7 +1351,7 @@ void draw_guion_4(int x, int screen_number){ //para las letras 4x5
 
 void draw_guion_5(int x, int screen_number){ //para las letras 5x5
 	if (x == 1){
-		switch (screen_number)
+		switch (screen_number) {
 			case 5:
 			case 9:
 				x = 0;		//acomoda el guion para que apunte a la primer letra
@@ -1354,9 +1359,10 @@ void draw_guion_5(int x, int screen_number){ //para las letras 5x5
 			case 8:			//acomoda el guion para que apunte a la primer letra
 				x = 2;
 				break;
+		}
 	}
 	else if (x == 2){
-		switch (screen_number)
+		switch (screen_number) {
 			case 7:
 				x = 5;		//acomoda el guion para que apunte a la segunda letra
 				break;
@@ -1366,6 +1372,7 @@ void draw_guion_5(int x, int screen_number){ //para las letras 5x5
 			case 9:
 				x = 6;
 				break;
+		}
 	}
 	else if (x == 3){
 		if (screen_number == 3){ //para comprobar que haya entrado bien
@@ -1382,6 +1389,38 @@ void draw_guion_5(int x, int screen_number){ //para las letras 5x5
 	disp_write(myPoint_guion54, D_ON);
 	dcoord_t myPoint_guion55 = { x + 4,8 };
 	disp_write(myPoint_guion55, D_ON);
+}
+
+void changeScreen(int screenNumber) {
+	switch (screenNumber) {
+	case 1:
+		screen_1_raspi();
+		break;
+	case 2:
+		screen_2_raspi();
+		break;
+	case 3:
+		screen_3_raspi();
+		break;
+	case 4:
+		screen_4_raspi();
+		break;
+	case 5:
+		screen_5_raspi();
+		break;
+	case 6:
+		screen_6_raspi();
+		break;
+	case 7:
+		screen_7_raspi();
+		break;
+	case 8:
+		screen_8_raspi();
+		break;
+	case 9:
+		screen_9_raspi();
+		break;
+	}
 }
 
 #endif

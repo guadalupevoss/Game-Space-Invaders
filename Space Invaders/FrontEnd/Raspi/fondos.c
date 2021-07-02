@@ -17,9 +17,7 @@
 #include "fondos.h"
 
 void draw_play (void)
-{
-	disp_clear();
-	
+{	
 	//PLAY
 	dcoord_t myPoint_play = {0,1};
 	disp_write (myPoint_play, D_ON);
@@ -126,7 +124,6 @@ void draw_play (void)
 
 void draw_highscore (void)
 {
-	disp_clear();
 	
 	//COPA
 	dcoord_t myPoint_highscore = {3,1};
@@ -260,7 +257,6 @@ void draw_highscore (void)
 
 void draw_exit (void)
 {
-	disp_clear();
 	
 	dcoord_t myPoint_exit1 = {1,1};
 	disp_write (myPoint_exit1, D_ON);
@@ -356,7 +352,6 @@ void draw_exit (void)
 
 void draw_pause_menu (void)
 {
-    disp_clear();
     
     //palitos
     draw_palitos();
@@ -465,7 +460,6 @@ void draw_pause_menu (void)
 
 void draw_pause_play (void)
 {
-    disp_clear();
     
     //PLAY
     dcoord_t myPoint_pause_play = {1,6};
@@ -570,7 +564,6 @@ void draw_pause_play (void)
 
 void draw_pause_exit (void)
 {
-    disp_clear();
     
     //EXIT
     dcoord_t myPoint_pause_exit = {1,6};
@@ -659,7 +652,6 @@ void draw_pause_exit (void)
 
 void draw_gameover(void)
 {
-    disp_clear();
     
     //GAME OVER
     dcoord_t myPoint_gameover = {0,3};
