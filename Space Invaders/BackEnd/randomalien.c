@@ -68,12 +68,24 @@ void moveRandomAlien(alienRandom_t* alien) {
 	}
 }
 
+//Se encarga de fijarse si le dispararon al alien random.
 int randomAlienIsShot(alienRandom_t* alien, bullet_t* bullet){
 	int result = 0;
+	//Me fijo si la posicion de la bala coincide con la del alien random. En caso de que sea asi, apago la bala y lo mato.
 	if ((comparePosition(alien->pos, bullet->pos))&&(bullet->type == SPACESHIP_BULLET)){
 		alien->alive = DEAD;
 		bullet->state = OFF;
 		result = 1;
+	}
+	//Hago que tenga en cuenta todas las posiciones del alien teniendo en cuenta su tamano.
+	if (RANDOM_ALIEN_SIZE_X == 2) {
+		changePosition(&alien->pos, 1, 0);
+		if ((comparePosition(alien->pos, bullet->pos)) && (bullet->type == SPACESHIP_BULLET)) {
+			alien->alive = DEAD;
+			bullet->state = OFF;
+			result = 1;
+		}
+		changePosition(&alien->pos, -1, 0);
 	}
 	return result;
 }

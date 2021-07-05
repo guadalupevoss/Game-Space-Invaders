@@ -135,7 +135,7 @@ int loadAllBitmaps(graphics_t* allegro) {
 		printf("error 7\n");
 		return ERROR_GRAPHICS;
 	}
-	else if (loadBitmaps(&allegro->fondosExtra, "Resources/Bitmaps/BitmapFondosExtra%d.bmp", 3) == ERROR_GRAPHICS) {
+	else if (loadBitmaps(allegro->fondosExtra, "Resources/Bitmaps/BitmapFondosExtra%d.bmp", 3) == ERROR_GRAPHICS) {
 		printf("error 7\n");
 		return ERROR_GRAPHICS;
 	}

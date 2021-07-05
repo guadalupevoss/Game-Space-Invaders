@@ -85,6 +85,7 @@ int spaceInvaders(void) {
 	}
 }
 
+//Inicializa todo lo necesario para el juego.
 int initSpaceInvaders(player_t* player, graphics_t* graphics) {
 	initPlayer(player);
 	if (initGraphics(graphics) == ERROR_GRAPHICS)
@@ -94,6 +95,7 @@ int initSpaceInvaders(player_t* player, graphics_t* graphics) {
 	return OK_SPACE_INVADERS;
 }
 
+//Inicializa el jugador.
 void initPlayer(player_t* player) {
 	player->points = 0;
 	clearArr(player->name, NAMELENGHT);

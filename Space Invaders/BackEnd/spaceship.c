@@ -1,14 +1,16 @@
 #include "spaceship.h"
 
-//Devuelve 1 si le dispararon a la nave o 0 si no.
+//Esta funcion se encarga de fijarse si le dispararon a la nave. Devuelve 1 si le dispararon a la nave o 0 si no.
 int isSpaceshipShot(bullet_t* bullet, spaceship_t* spaceship);
 
+//Se encarga de inicializar la nave con la posicion inicial, las vidas y su bala.
 void initSpaceship(spaceship_t* spaceship) {
 	initPosition(&spaceship->pos, INITIAL_SPASESHIP_POS_X, SPACESHIP_POS_Y);
 	initBullet(&spaceship->bullet, spaceship->pos.x, spaceship->pos.y, SPACESHIP_BULLET, SPACESHIP_BULLET_SPEED);
 	spaceship->lives = SPACESHIP_LIVES;
 }
 
+//Se encarga de actualizar la nave, fijandose si le dispararon.
 int updateSpaceship(bullet_t* bullet, spaceship_t* spaceship){
 	int lost = 0;
 	if (isSpaceshipShot(bullet, spaceship)){
@@ -20,6 +22,7 @@ int updateSpaceship(bullet_t* bullet, spaceship_t* spaceship){
 	return lost;
 }
 
+//Se encarga de mover la nave para el lado que corresponde.
 void moveSpaceship(int moveRight, spaceship_t* spaceship) {
 	if ((moveRight)&&(spaceship->pos.x != 15)){
 		changePosition(&spaceship->pos, 1, 0);
@@ -29,6 +32,7 @@ void moveSpaceship(int moveRight, spaceship_t* spaceship) {
 	}
 }
 
+//Se encarga de fijarse si le dispararon a la nave.
 int isSpaceshipShot(bullet_t* bullet, spaceship_t* spaceship) {
 	int shot = 0;
 	if (bullet->type == ALIEN_BULLET && bullet->state == ON){
@@ -57,6 +61,7 @@ int isSpaceshipShot(bullet_t* bullet, spaceship_t* spaceship) {
 	return shot;
 }
 
+//Se encarga de encender la bala de la nave cuando es necesario, estableciendo las posiciones correspondientes.
 void throwBullet(spaceship_t* spaceship) {
 	if (spaceship->bullet.state == OFF) {
 		changePosition(&spaceship->bullet.pos, (-1) * (spaceship->bullet.pos.x), (-1) * (spaceship->bullet.pos.y));

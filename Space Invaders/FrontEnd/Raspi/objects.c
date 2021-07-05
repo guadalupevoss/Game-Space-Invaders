@@ -4,11 +4,10 @@
 #include "objects.h"
 #include "disdrv.h"
 
-//Funciones para imprimir aliens
-//Para la cantidad de aliens usados usar lastAlien.
-//Agregar las ctes izq y der
+
+//Se encarga de limpiar los aliens que estaban encendidos previamente.
 void clearAliens(alien_t aliens[], int cantidad_aliens_usados) {
-	static int side = 0, down = 0; //side en 1 es va a la derecha y side en 0 es izq, down en 1 es bajo y en 0 es no bajo todavia.
+	static int side = 0; //side en 1 es va a la derecha y side en 0 es izq.
 	int contador;
 	//Se encarga de apagar todos los aliens que esten vivos.
 
@@ -39,32 +38,17 @@ void clearAliens(alien_t aliens[], int cantidad_aliens_usados) {
 				disp_write(CLEARPOINT(contador), D_OFF);
 			}
 		}
-	}
-	if ((aliens[cantidad_aliens_usados - 1].pos.x == 15) && (side)){
-		side = 0;
-	}
-	if ((aliens[0].pos.x == 0) && (!side)) {
-		side = 1;
+
+		if ((aliens[0].pos.x == 0) && !side) {
+			side = 1;
+		}
+		else if ((aliens[cantidad_aliens_usados - 1].pos.x == 15) && side) {
+			side = 0;
+		}
 	}
 }
 
-//if ((aliens[cantidad_aliens_usados - 1].pos.x == 15) && !side) {
-//	dcoord_t CLEARPOINT(contador) = { aliens[contador].pos.x, aliens[contador].pos.y - 1 };
-//	disp_write(CLEARPOINT(contador), D_OFF);
-//}
-//else if ((aliens[0].pos.x == 0) && side) {
-//	dcoord_t CLEARPOINT(contador) = { aliens[contador].pos.x, aliens[contador].pos.y - 1 };
-//	disp_write(CLEARPOINT(contador), D_OFF);
-//}
-//else if (side) {
-//	dcoord_t CLEARPOINT(contador) = { aliens[contador].pos.x - 1, aliens[contador].pos.y };
-//	disp_write(CLEARPOINT(contador), D_OFF);
-//}
-//else if (!side) {
-//	dcoord_t CLEARPOINT(contador) = { aliens[contador].pos.x + 1, aliens[contador].pos.y };
-//	disp_write(CLEARPOINT(contador), D_OFF);
-//}
-
+//Se encarga de encender los aliens q estan vivos.
 void printAliens(alien_t aliens[], int cantidad_aliens_usados){
 	int contador = 0;
 
@@ -166,6 +150,7 @@ void printLives(int cantidad_vidas){
 	}
 }
 
+//Se encarga de imprimir las barreras que estan vivas.
 void printBarriers(barriers_t* barriers){
 	if ((barriers[0].lives == RECENT_SHOT) || (barriers[0].lives == 0)){
 		barriers[0].lives = 0;

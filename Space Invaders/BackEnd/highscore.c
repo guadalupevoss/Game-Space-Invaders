@@ -15,6 +15,7 @@
 #pragma warning (disable: 4996)
 
 //devuelve 0 si todo ok
+//Inicializa el la tabla de score
 int scoreboardInit(player_t highscores[MAXSCORES]) {
     unsigned int counter;
     int error = 0, errorBis = 0;
