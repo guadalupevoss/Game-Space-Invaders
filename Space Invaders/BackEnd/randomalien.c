@@ -1,6 +1,7 @@
 #include "randomalien.h"
 #include <stdlib.h>
 #include <time.h>
+
 /**********************************************************************************
  * Función: moveRandomAlien                                                       *
  * Esta función se encarga de mover el alien para la derecha o la izquierda segun *
@@ -14,26 +15,32 @@ void moveRandomAlien(alienRandom_t* alien);
  **********************************************************************************/
 int randomAlienIsShot(alienRandom_t* alien, bullet_t* bullet);
 
+//Inicializamos al alien random como muerto.
 void initRandomAlien(alienRandom_t* alien) {
 	alien->alive = DEAD;
 }
 
+//Cuando se llama esta funcion hacemos que el alien este vivo.
 void randomAlienIsBorn(alienRandom_t* alien, int ciclosRandom) {
 	srand(time(NULL));
 	alien->alive = ALIVE;
 	int x = 0;
+	//Si la cantidad de ciclos son pares entonces hacemos que salga por la derecha.
 	if ((ciclosRandom % 2) == 0) {
 		x = 0;
 		alien->direction = DERECHA;
 	}
-	else if ((ciclosRandom % 2) == 0) {
+	//Si la cantidad de ciclos son impares entonces hacemos que salga por la izquierda.
+	else {
 		x = WIDTH - 1;
 		alien->direction = IZQUIERDA;
 	}
 	initPosition(&alien->pos, x, RANDOM_ALIEN_POS_Y);
+	//Establecemos un puntaje random para el alien.
 	alien->puntaje = rand() % (MAX_POINTS);
 }
 
+//Se encarga del movimiento del alien random y de fijarse que este vivo.
 void updateRandomAlien(alienRandom_t * alien, bullet_t* bullet, int frames, player_t* player){
 	if (alien->alive){
 		if (bullet->state == ON) {
@@ -47,6 +54,7 @@ void updateRandomAlien(alienRandom_t * alien, bullet_t* bullet, int frames, play
 	}   
 }
 
+//Se encarga de moverlo.
 void moveRandomAlien(alienRandom_t* alien) {
 	switch(alien->direction){
 		case DERECHA:

@@ -46,7 +46,7 @@
 #define INIT_NUM_ALIENS 6
 #define INITIAL_ALIEN_SPEED 100
 #define CANT_TIPOS_ALIEN    6   //TIPOS DE ALIENS (CONTANDO LA IMAGEN DEL ALIEN MUERTO)
-#define INITIAL_ALIEN_BULLET_SPEED	100
+#define INITIAL_ALIEN_BULLET_SPEED	150
 #define COLUMNAS        7   //COLUMNAS Y FILAS (DE ALIENS)MAXIMAS
 #define FILAS           5
 #define BULLET_FRAMES	100
@@ -124,7 +124,7 @@
 #define DISTANCIA_TECHO_Y   4  //DISTANCIA INICIAL ENTRE ALIEN Y BORDE SUPERIOR DE LA PANTALLA.
 #define COLUMNAS        6   //COLUMNAS Y FILAS (DE ALIENS)MÁXIMAS
 #define FILAS           3
-#define INITIAL_ALIEN_SPEED 10
+#define INITIAL_ALIEN_SPEED 20
 #define RANGO_X         15
 #define RANGO_Y         60
 #define NUM_ALIENS		18
@@ -160,7 +160,7 @@
 #define RANDOM_ALIEN_SIZE_X 2  //Establece el tamaño del alien random.
 #define RANDOM_ALIEN_SIZE_Y 1
 #define RANDOM_ALIEN_POS_Y  1 //Posición en el eje y que mantendrá el alien random
-#define RANDOM_ALIEN_SPEED  2
+#define RANDOM_ALIEN_SPEED  15
 
 
 #endif

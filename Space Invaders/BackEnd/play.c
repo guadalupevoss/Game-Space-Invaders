@@ -1,8 +1,6 @@
 #include "play.h"
 #include <stdlib.h>
-#include <time.h>
-
-//enum{SS_BULLET = 1, SS_MOVE_R, SS_MOVE_L, PAUSE, EXIT_P}; 
+#include <time.h> 
 
 //Esta funcion se encarga de todo el funcionamiento del juego.
 int playSpaceInvaders(graphics_t* graphics, player_t* player) {
@@ -86,7 +84,6 @@ int playSpaceInvaders(graphics_t* graphics, player_t* player) {
 				}
 				
 				else if (aliens[i].bullet.state == ON) {
-
 					updateBullet(&aliens[i].bullet, frames);
 				}
 				
@@ -115,7 +112,9 @@ int playSpaceInvaders(graphics_t* graphics, player_t* player) {
 		//Si no quedan aliens vivos entonces reinicio todo.
 		else{
 			++level;
+			//Para que no queden leds prendidos cuando se usa con la RASPI.
 			clearSpaceInvaders();
+			//Volvemos a inicializar los objetos.
 			initAliens(aliens, level);
 			initBarriers(barriers);
 			initSpaceship(&spaceShip);

@@ -3,6 +3,7 @@
 //Se fija si le dispararon a la barrera que nos estamos fijando.
 void barrierIsShot(barriers_t* barrier, bullet_t* bullet);
 
+//Inicializa las posiciones de las barreras.
 void initBarriers (barriers_t* barriers){
 	int i;
 	for (i = 0; i < NUM_BARRIERS; i++) {
@@ -12,6 +13,7 @@ void initBarriers (barriers_t* barriers){
 	}
 }
 
+//Se encarga de fijarse si le dispararon tanto aliens como la nave.
 void updateBarriers(barriers_t* barriers, alien_t* aliens, bullet_t* spaceshipBullet) {
 	int i, j;
 	for (i = 0; i < NUM_BARRIERS; i++) {

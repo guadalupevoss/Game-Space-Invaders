@@ -9,24 +9,31 @@
 void clearAliens(alien_t aliens[], int cantidad_aliens_usados) {
 	static int side = 0; //side en 1 es va a la derecha y side en 0 es izq.
 	int contador;
-	//Se encarga de apagar todos los aliens que esten vivos.
 
+
+	//Para cada variable alien dentro del rango permitido.
 	if ((aliens[0].pos.x >= 0) && (aliens[cantidad_aliens_usados - 1].pos.x <= 15)) {
+
 		for (contador = 0; contador < cantidad_aliens_usados; ++contador) {
-			if ((aliens[cantidad_aliens_usados - 1].pos.x == 15) && !side) {
+			//[0], Se mueve para la derecha [0]-->>[15] y acaba de bajar.
+			if (side && (aliens[0].pos.x == 0)) {
+				dcoord_t CLEARPOINT(contador) = { aliens[contador].pos.x, aliens[contador].pos.y - 1};
+				disp_write(CLEARPOINT(contador), D_OFF);
+			}
+
+			//Se mueve para la izquierda [0]<<--[15] y acaba de bajar.
+			else if (!side && (aliens[cantidad_aliens_usados - 1].pos.x == 15)) {
 				dcoord_t CLEARPOINT(contador) = { aliens[contador].pos.x, aliens[contador].pos.y - 1 };
 				disp_write(CLEARPOINT(contador), D_OFF);
 			}
-			else if ((aliens[0].pos.x == 0) && side) {
-				dcoord_t CLEARPOINT(contador) = { aliens[contador].pos.x, aliens[contador].pos.y - 1 };
-				disp_write(CLEARPOINT(contador), D_OFF);
-			}
-			else if (side && (aliens[cantidad_aliens_usados - 1].pos.x != 15) && (aliens[0].pos.x != 0)) {
-				dcoord_t CLEARPOINT(contador) = { aliens[contador].pos.x - 1, aliens[contador].pos.y };
-				disp_write(CLEARPOINT(contador), D_OFF);
-			}
-			else if (!side && (aliens[cantidad_aliens_usados - 1].pos.x != 15) && (aliens[0].pos.x != 0)) {
+			//Se mueve para la izquierda [0]<<--[15] .
+			else if (!side) {
 				dcoord_t CLEARPOINT(contador) = { aliens[contador].pos.x + 1, aliens[contador].pos.y };
+				disp_write(CLEARPOINT(contador), D_OFF);
+			}
+			//Se mueve para la derecha [0]-->>[15].
+			else if (side) {
+				dcoord_t CLEARPOINT(contador) = { aliens[contador].pos.x - 1, aliens[contador].pos.y };
 				disp_write(CLEARPOINT(contador), D_OFF);
 			}
 			else if ((aliens[cantidad_aliens_usados - 1].pos.x == 15) && side) {
@@ -38,14 +45,18 @@ void clearAliens(alien_t aliens[], int cantidad_aliens_usados) {
 				disp_write(CLEARPOINT(contador), D_OFF);
 			}
 		}
-
-		if ((aliens[0].pos.x == 0) && !side) {
-			side = 1;
-		}
-		else if ((aliens[cantidad_aliens_usados - 1].pos.x == 15) && side) {
-			side = 0;
-		}
 	}
+
+	//Cambia side
+	if (side && (aliens[cantidad_aliens_usados - 1].pos.x == 15)) {
+		//Tiene que ir a la izquierda.
+		side = 0;
+	}
+	else if (!side && (aliens[0].pos.x == 0)) {
+		//Tiene que ir a la derecha.
+		side = 1;
+	}
+
 }
 
 //Se encarga de encender los aliens q estan vivos.

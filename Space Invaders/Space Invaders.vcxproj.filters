@@ -241,9 +241,6 @@
     <Image Include="Resources\Bitmaps\BitmapFondosExtra1.bmp">
       <Filter>Resource Files\Bitmaps</Filter>
     </Image>
-    <Image Include="Resources\Bitmaps\BitmapFondosExtra2.bmp">
-      <Filter>Resource Files\Bitmaps</Filter>
-    </Image>
     <Image Include="Resources\Bitmaps\BitmapLives0.bmp">
       <Filter>Resource Files\Bitmaps</Filter>
     </Image>
@@ -278,6 +275,9 @@
       <Filter>Resource Files\Bitmaps</Filter>
     </Image>
     <Image Include="Resources\Bitmaps\score.bmp">
+      <Filter>Resource Files\Bitmaps</Filter>
+    </Image>
+    <Image Include="Resources\Bitmaps\BitmapFondosExtra2.bmp">
       <Filter>Resource Files\Bitmaps</Filter>
     </Image>
   </ItemGroup>

@@ -86,14 +86,19 @@ void printMenu(graphics_t* graphics);
 int stateMenu(graphics_t* graphics);
 //Imprime ej juego.
 void printSpaceInvaders(graphics_t* graphics, player_t* player, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien, int level, int frames);
-
+//Se fija si hay algun evento nuevo en la cola de eventos.
 int getEvent(graphics_t graphics);
-
+//Se encarga de fijarse si se cambio el estado del menu de pausa.
 int statePause(graphics_t* graphics);
+//Imprime el menu de pausa.
 void printPause(graphics_t* graphics);
+//Imprime el game over al finalizar la partida.
 void printGameOver(graphics_t* graphics);
+//Funcion que se encarga de limpiar la pantalla.
 void clearSpaceInvaders(void);
+//Imprime la tabla de highscores.
 int print_scores(graphics_t* graphics, player_t highscores[MAXSCORES]);
+//Se encarga de interpretar lo ingresado por el teclado.
 void read_keyboard(player_t* player, graphics_t* graphics);
 
 /**********************************************************************************

@@ -12,10 +12,10 @@ int loadAllBitmaps(graphics_t* allegro);
 int loadBitmaps(ALLEGRO_BITMAP* bitmaps[], char* pathTemplate, int cantBitmaps);
 //Carga los samples para el menu. Si está todo bien devuelve OK_GRSPHICS. En caso contrario devuelve ERROR_GRAPHICS.
 int loadMenuSamples(ALLEGRO_SAMPLE* menuSamples[]);
+//Se encarga de eliminar todos los bitmaps.
 void destroyBitmaps(graphics_t* allegro);
+//Se encarga de eliminar un grupo de bitmaps.
 void destroyBitmap(ALLEGRO_BITMAP* bitmaps[], int cant);
-
-//void clearArr(char* arr, int countChar);
 
 //Inicializa Allegro y sus variables.
 int initGraphics(graphics_t* allegro) {
@@ -92,6 +92,7 @@ int initGraphics(graphics_t* allegro) {
 	return OK_GRAPHICS;
 }
 
+//Elimino los recursos gráficos de allegro.
 void destroyGraphics(graphics_t* allegro) {
 
 	al_destroy_timer(allegro->timer);
@@ -102,56 +103,64 @@ void destroyGraphics(graphics_t* allegro) {
 	al_uninstall_audio();
 }
 
+//Refresca la imágen de la pantalla.
 void updateGraphics(void) {
 	al_flip_display();
 }
 
+//Carga todos los bitmaps que necesitamos para allegro.
 int loadAllBitmaps(graphics_t* allegro) {
+	//Carga los bitmaps del menu.
 	if (loadBitmaps(allegro->menuBitmaps, "Resources/Bitmaps/BitmapMenu%d.png", CANT_BTM_MENU) == ERROR_GRAPHICS) {
 		printf("error 1\n");
 		return ERROR_GRAPHICS;
 	}
+	//Carga los bitmaps de los aliens.
 	if (loadBitmaps(allegro->aliensBitmaps, "Resources/Bitmaps/BitmapAlien%d.bmp", CANT_TIPOS_ALIEN) == ERROR_GRAPHICS) {
 		printf("error 2\n");
 		return ERROR_GRAPHICS;
 	}
+	//Carga los bitmaps del alien random.
 	else if (loadBitmaps(&allegro->randomAlienBitmap, "Resources/Bitmaps/BitmapRandomAlien%d.bmp", 1) == ERROR_GRAPHICS) {
 		printf("error 3\n");
 		return ERROR_GRAPHICS;
 	}
+	//Carga los bitmaps de las barreras.
 	else if (loadBitmaps(allegro->barriersBitmaps, "Resources/Bitmaps/BitmapBarriers%d.bmp", CANT_TIPOS_BARRERAS) == ERROR_GRAPHICS) {
 		printf("error 4\n");
 		return ERROR_GRAPHICS;
 	}
+	//Carga los bitmaps de las vidas.
 	else if (loadBitmaps(allegro->livesBitmap, "Resources/Bitmaps/BitmapLives%d.bmp", CANT_LIVES_BTM) == ERROR_GRAPHICS) {
 		printf("error 5\n");
 		return ERROR_GRAPHICS;
 	}
+	//Carga los bitmaps de la nave.
 	else if (loadBitmaps(&allegro->spaceshipBitmap, "Resources/Bitmaps/BitmapSpaceship%d.bmp", 1) == ERROR_GRAPHICS) {
 		printf("error 6\n");
 		return ERROR_GRAPHICS;
 	}
+	//Carga los bitmaps de la bala.
 	else if (loadBitmaps(&allegro->bulletBitmap, "Resources/Bitmaps/BitmapBullet%d.bmp", 1) == ERROR_GRAPHICS) {
 		printf("error 7\n");
 		return ERROR_GRAPHICS;
 	}
+	//Carga los bitmaps de fondos.
 	else if (loadBitmaps(allegro->fondosExtra, "Resources/Bitmaps/BitmapFondosExtra%d.bmp", 3) == ERROR_GRAPHICS) {
 		printf("error 7\n");
 		return ERROR_GRAPHICS;
 	}
-
-	/*if(loadMenuBitmaps(allegro->menuBitmaps)==ERROR_GRAPHICS){
-		return ERROR_GRAPHICS;
-	}*/
-
+	//Si se pudieron cargar todos los bitmaps devuelve ok.
 	return OK_GRAPHICS;
 }
 
+//Elimina los bitmaps.
 void destroyBitmaps(graphics_t* allegro) {
 	//Destruyo los bitmaps del menu.
 	destroyBitmap(allegro->menuBitmaps, CANT_BTM_MENU);
 }
 
+//Función para eliminar bitmaps.
 void destroyBitmap(ALLEGRO_BITMAP* bitmaps[], int cant){
 	int i;
 	for (i = 0; i < cant; ++i)
@@ -160,6 +169,7 @@ void destroyBitmap(ALLEGRO_BITMAP* bitmaps[], int cant){
 	}
 }
 
+//Carga los sonidos para el menu.
 int loadMenuSamples(ALLEGRO_SAMPLE* menuSamples[]) {
 	int i, err = 0;
 	char path[100];
@@ -179,6 +189,7 @@ int loadMenuSamples(ALLEGRO_SAMPLE* menuSamples[]) {
 	}
 }
 
+//Función para cargar los bitmaps.
 int loadBitmaps(ALLEGRO_BITMAP* bitmaps[], char* pathTemplate, int cantBitmaps) {
 	int i = 0, err = 0;
 	char path[100];
@@ -200,6 +211,7 @@ int loadBitmaps(ALLEGRO_BITMAP* bitmaps[], char* pathTemplate, int cantBitmaps) 
 	}
 }
 
+//Imprime menú.
 void printMenu(graphics_t* graphics){
 
 	al_draw_bitmap(graphics->menuBitmaps[FONDO_GR], 0, 0, 0);
@@ -227,6 +239,7 @@ void printMenu(graphics_t* graphics){
 	}
 }
 
+//Devuelve el estado del menú. En qué lugar está el cursor (mouse en este caso) y devuelve un nuevo estado si se toca uno de los botones (play, exit, high score).
 int stateMenu(graphics_t* graphics) {
 
 	int tempState = MENU;
@@ -271,38 +284,38 @@ int stateMenu(graphics_t* graphics) {
 	return tempState;
 }
 
-//enum{NOTHING=0, SS_BULLET, SS_MOVE_R, SS_MOVE_L, PAUSE, EXIT};
-
+//Se fija si hubo algun evento nuevo en la cola de eventos.
 int getEvent(graphics_t graphics) {
 	int tempEvent = NOTHING;
 	ALLEGRO_EVENT ev;
 	//Tomo el siguiente evento en la cola de eventos.
 	if (al_get_next_event(graphics.eventQueue, &ev)) {
-
+		//Se cerro el display entonces salgo.
 		if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
 			tempEvent = EXIT;
 		}
-
-		else if (ev.type == ALLEGRO_EVENT_TIMER) {
-
-		}
+		//Se presiono aluna tecla.
 		else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
-
 			switch (ev.keyboard.keycode) {
-			case ALLEGRO_KEY_LEFT:
-				tempEvent = SS_MOVE_L;
-				break;
-			case ALLEGRO_KEY_RIGHT:
-				tempEvent = SS_MOVE_R;
-				break;
-			case ALLEGRO_KEY_SPACE:
-				tempEvent = SS_BULLET;
-				break;
-			case ALLEGRO_KEY_ESCAPE:
-				tempEvent = PAUSE;
-				break;
+				//Se movio para la izquierda la nave.
+				case ALLEGRO_KEY_LEFT:
+					tempEvent = SS_MOVE_L;
+					break;
+				//Se movio para la derecha la nave.
+				case ALLEGRO_KEY_RIGHT:
+					tempEvent = SS_MOVE_R;
+					break;
+				//Se tiro una bala de la nave.
+				case ALLEGRO_KEY_SPACE:
+					tempEvent = SS_BULLET;
+					break;
+				//Se puso para salir.
+				case ALLEGRO_KEY_ESCAPE:
+					tempEvent = PAUSE;
+					break;
 			}
 		}
+		//Se solto la tecla.
 		else if (ev.type == ALLEGRO_EVENT_KEY_UP) {
 			switch (ev.keyboard.keycode) {
 			case ALLEGRO_KEY_LEFT:
@@ -322,6 +335,7 @@ int getEvent(graphics_t graphics) {
 	return tempEvent;
 }
 
+//Imprime toda la parte gráfica de allegro durante la ejecución del juego.
 void printSpaceInvaders(graphics_t* graphics, player_t* player, alien_t* aliens, barriers_t* barriers, spaceship_t* spaceship, alienRandom_t* rAlien, int level, int frames){
 
 	//Defino un contador.
@@ -363,7 +377,7 @@ void printSpaceInvaders(graphics_t* graphics, player_t* player, alien_t* aliens,
 
 	//Imprime al alien random.-----Acá falta la parte del alien random muerto(explota).
 	if(rAlien->alive==ALIVE){
-			al_draw_bitmap(graphics->randomAlienBitmap, (rAlien->pos.x)*UNIDAD, (rAlien->pos.y)*UNIDAD, 0);
+		al_draw_bitmap(graphics->randomAlienBitmap, (rAlien->pos.x)*UNIDAD, (rAlien->pos.y)*UNIDAD, 0);
 	}
 
 
@@ -393,30 +407,30 @@ void printSpaceInvaders(graphics_t* graphics, player_t* player, alien_t* aliens,
 	//Imprime la nave y su bala.
 	al_draw_bitmap(graphics->spaceshipBitmap, (spaceship->pos.x)*UNIDAD, (spaceship->pos.y)*UNIDAD, 0);
 	if(spaceship->bullet.state == ON){
-		//printf("no se porq no imprime \n");
 		al_draw_bitmap(graphics->bulletBitmap, (spaceship->bullet.pos.x)*UNIDAD, (spaceship->bullet.pos.y)*UNIDAD, 0);
 	}
 
+	//Imprime las vidas
 	switch (spaceship->lives) {
 		case 1:
-			al_draw_bitmap(graphics->livesBitmap[DEAD], 13 * UNIDAD, UNIDAD, 0);
-			al_draw_bitmap(graphics->livesBitmap[DEAD], 14 * UNIDAD, UNIDAD, 0);
-			al_draw_bitmap(graphics->livesBitmap[ALIVE], 15 * UNIDAD, UNIDAD, 0);
+			al_draw_bitmap(graphics->livesBitmap[DEAD], 13 * UNIDAD, HEART_SIZE_Y, 0);
+			al_draw_bitmap(graphics->livesBitmap[DEAD], 14 * UNIDAD, HEART_SIZE_Y, 0);
+			al_draw_bitmap(graphics->livesBitmap[ALIVE], 15 * UNIDAD, HEART_SIZE_Y, 0);
 			break;
 		case 2:
-			al_draw_bitmap(graphics->livesBitmap[DEAD], 13 * UNIDAD, UNIDAD, 0);
-			al_draw_bitmap(graphics->livesBitmap[ALIVE], 14 * UNIDAD, UNIDAD, 0);
-			al_draw_bitmap(graphics->livesBitmap[ALIVE], 15 * UNIDAD, UNIDAD, 0);
+			al_draw_bitmap(graphics->livesBitmap[DEAD], 13 * UNIDAD, HEART_SIZE_Y, 0);
+			al_draw_bitmap(graphics->livesBitmap[ALIVE], 14 * UNIDAD, HEART_SIZE_Y, 0);
+			al_draw_bitmap(graphics->livesBitmap[ALIVE], 15 * UNIDAD, HEART_SIZE_Y, 0);
 			break;
 		case 3:
-			al_draw_bitmap(graphics->livesBitmap[ALIVE], 13 * UNIDAD, UNIDAD, 0);
-			al_draw_bitmap(graphics->livesBitmap[ALIVE], 14 * UNIDAD, UNIDAD, 0);
-			al_draw_bitmap(graphics->livesBitmap[ALIVE], 15 * UNIDAD, UNIDAD, 0);
+			al_draw_bitmap(graphics->livesBitmap[ALIVE], 13 * UNIDAD, HEART_SIZE_Y, 0);
+			al_draw_bitmap(graphics->livesBitmap[ALIVE], 14 * UNIDAD, HEART_SIZE_Y, 0);
+			al_draw_bitmap(graphics->livesBitmap[ALIVE], 15 * UNIDAD, HEART_SIZE_Y, 0);
 			break;
 	}
 	
 	//Imprime el puntaje actual.
-	al_draw_textf(graphics->font, al_map_rgb(255, 255, 255), 0, FUENTE_SIZE/2, 0, "Puntaje %d", player->points);
+	al_draw_textf(graphics->font, al_map_rgb(255, 255, 255), UNIDAD, HEART_SIZE_Y, 0, "Points %d", player->points);
 	updateGraphics();
 
 }
@@ -698,11 +712,9 @@ int statePause(graphics_t* graphics) {
 		}
 		else if (MOUSE_IN_PAUSE_RESUME) {
 			tempCursorState = PLAY_PAUSE;
-			printf("esta el mouse en resume\n");
 		}
 		else if (MOUSE_IN_PAUSE_MENU) {
 			tempCursorState = MENU_PAUSE;
-			printf("esta el mouse en menu\n");
 		}
 	}
 
@@ -712,16 +724,18 @@ int statePause(graphics_t* graphics) {
 
 void printPause(graphics_t* graphics) {
 	al_draw_bitmap(graphics->menuBitmaps[FONDO_GR], 0, 0, 0);
-	al_draw_bitmap(graphics->menuBitmaps[SPACEINVADERS_GR], 0, 0, 0);
 	al_play_sample(graphics->menuSamples[MENU_GR], 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
 	al_draw_bitmap(graphics->fondosExtra[2], 0, 0, 0);
+
 }
 
 void printGameOver(graphics_t* graphics) {
 	al_draw_bitmap(graphics->menuBitmaps[FONDO_GR], 0, 0, 0);
-	al_draw_bitmap(graphics->menuBitmaps[SPACEINVADERS_GR], 0, 0, 0);
 	al_play_sample(graphics->menuSamples[MENU_GR], 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
 	al_draw_bitmap(graphics->fondosExtra[0], 0, 0, 0);
+	
+	al_flip_display();
+	al_rest(0.5);
 }
 
 void clearSpaceInvaders(void) {

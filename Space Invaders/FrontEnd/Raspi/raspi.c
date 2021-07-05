@@ -233,6 +233,20 @@ void printSpaceInvaders(graphics_t* graphics, player_t* player, alien_t* aliens,
 		}
 		printAlienRandom(rAlien->pos.x, rAlien->pos.y);
 	}
+	if (!rAlien->alive) {
+		if (rAlien->pos.x > 0 && rAlien->pos.x < 15) {
+			clearAlienRandom(rAlien->pos.x, rAlien->pos.y);
+		}
+		else {
+			if (rAlien->direction == DERECHA) {
+				clearAlienRandom(14, 1);
+			}
+			else {
+				clearAlienRandom(0, 1);
+			}
+		}
+	}
+
 	printLives(spaceship->lives);
 	for (i = 0; i < numberAliens; ++i) {
 		if (aliens[i].bullet.state == ON) {
@@ -583,6 +597,7 @@ void selectNumber(int number[NUMBERLENGHT], int cifra){
 
 void printGameOver(graphics_t* graphics) {
 	disp_clear();
+	disp_update();
 	draw_gameover();
 }
 
