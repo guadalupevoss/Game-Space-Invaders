@@ -43,7 +43,6 @@ int spaceInvaders(void) {
 			//Si se cierra el display devuelve EXIT. Ante un error devuelve ERROR. Si se vuelve al menú o pierde devuelve el puntaje.
 		case PLAY:
 			estado = playSpaceInvaders(&graphics, &player);
-			printf("Puntaje obtenido: %lu\n", player.points);
 			if (testNewScore(&player, highscores)) {
 				//anotar el nombre
 				read_keyboard(&player, &graphics);

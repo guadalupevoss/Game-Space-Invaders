@@ -708,7 +708,6 @@ int statePause(graphics_t* graphics) {
 			}
 		}
 		else if (ev.type == ALLEGRO_EVENT_TIMER) {
-			// redraw = true;//Podríamos probar para un redraw
 		}
 		else if (MOUSE_IN_PAUSE_RESUME) {
 			tempCursorState = PLAY_PAUSE;

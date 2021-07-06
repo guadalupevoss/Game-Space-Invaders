@@ -33,7 +33,7 @@
 #define SPACESHIP_POS_Y 15
 #define INITIAL_SPASESHIP_POS_X 8 
 #define SPACESHIP_LIVES 3
-#define SPACESHIP_BULLET_SPEED	30
+#define SPACESHIP_BULLET_SPEED	20
 #define POS_CENTRO 0
 
 //Defines de los aliens
@@ -46,7 +46,7 @@
 #define INIT_NUM_ALIENS 6
 #define INITIAL_ALIEN_SPEED 100
 #define CANT_TIPOS_ALIEN    6   //TIPOS DE ALIENS (CONTANDO LA IMAGEN DEL ALIEN MUERTO)
-#define INITIAL_ALIEN_BULLET_SPEED	150
+#define INITIAL_ALIEN_BULLET_SPEED	50
 #define COLUMNAS        7   //COLUMNAS Y FILAS (DE ALIENS)MAXIMAS
 #define FILAS           5
 #define BULLET_FRAMES	100
@@ -160,7 +160,7 @@
 #define RANDOM_ALIEN_SIZE_X 2  //Establece el tamaño del alien random.
 #define RANDOM_ALIEN_SIZE_Y 1
 #define RANDOM_ALIEN_POS_Y  1 //Posición en el eje y que mantendrá el alien random
-#define RANDOM_ALIEN_SPEED  15
+#define RANDOM_ALIEN_SPEED  5
 
 
 #endif
